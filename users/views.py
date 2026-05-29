@@ -69,7 +69,9 @@ def create_checkout_session(request):
         payment_method_types=["card"],
     )
 
-    return redirect(checkout_session.url, code=303)
+    response = HttpResponse(status=303)
+    response["Location"] = checkout_session.url
+    return response
 
 
 @djstripe_receiver("checkout.session.completed")

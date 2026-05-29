@@ -2,7 +2,7 @@ from profiles.schemas import ProfileSchema
 from pydantic_ai import Agent, RunContext
 
 profile_analyzer_agent = Agent(
-    "google-gla:gemini-2.5-flash",
+    "google:gemini-2.5-flash",
     deps_type=str,
     output_type=ProfileSchema,
     system_prompt=(

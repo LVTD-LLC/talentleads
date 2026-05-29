@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load widget_tweaks %}
 
 {% block content %}
@@ -15,7 +15,7 @@
                     </a>
                 </p>
             </div>
-            <form class="mt-8 space-y-6" method="POST" action="{% url 'account_login' %}">
+            <form class="mt-8 space-y-6" method="post" action="{% url 'account_login' %}">
                 {% csrf_token %}
                 {{ form.non_field_errors | safe }}
                 <input type="hidden" name="remember" value="true" />
