@@ -211,6 +211,13 @@
     outline: none;
   }
 
+  @media (forced-colors: active) {
+    .tl-input:focus {
+      outline: 3px solid ButtonText;
+      outline-offset: 2px;
+    }
+  }
+
   .tl-label {
     @apply block text-sm font-semibold text-slate-800;
   }
