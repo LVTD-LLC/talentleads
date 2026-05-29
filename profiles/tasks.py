@@ -57,7 +57,7 @@ def get_hn_pages_to_analyze(who_wants_to_be_hired_post_id):
             async_task(
                 analyze_hn_page,
                 int(data["id"]),
-                str(re.search("\(([^)]+)", data["title"]).group(1)),
+                str(re.search(r"\(([^)]+)", data["title"]).group(1)),
                 comment_id,
                 hook="profiles.hooks.print_result",
                 group="Analyze HN Page",

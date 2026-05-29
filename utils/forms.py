@@ -18,7 +18,7 @@ class DivErrorList(ErrorList):
                   </svg>
                 </div>
                 <div class="ml-3 text-sm text-red-700">
-                      {''.join(['<p>%s</p>' % e for e in self])}
+                      {"".join(["<p>%s</p>" % e for e in self])}
                 </div>
               </div>
             </div>
