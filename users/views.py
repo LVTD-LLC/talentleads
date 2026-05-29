@@ -27,7 +27,7 @@ class UserSettingsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     login_url = "account_login"
     model = CustomUser
     fields = ["name", "email"]
-    success_message = "User Profile Updated"
+    success_message = "Profile updated."
     success_url = reverse_lazy("settings")
     template_name = "account/settings.html"
 
@@ -112,7 +112,7 @@ class SupportView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         messages.add_message(
             self.request,
             messages.INFO,
-            "Thanks for sending your feedback. I'll get back to you ASAP.",
+            "Thanks for the note. I'll follow up by email if I need more detail.",
         )
         return reverse_lazy("support")
 
@@ -141,7 +141,7 @@ class TemplateCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = CreateOutreachTemplateForm
     template_name = "account/create-outreach-template.html"
     success_url = reverse_lazy("templates")
-    success_message = "New Template was Created"
+    success_message = "Outreach template created."
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -169,7 +169,7 @@ class TemplateUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = UpdateOutreachTemplateForm
     template_name = "account/update-outreach-template.html"
     success_url = reverse_lazy("templates")
-    success_message = "Template was Updated"
+    success_message = "Outreach template updated."
 
     def post(self, request, *args, **kwargs):
         if "delete_object" in request.POST:
@@ -181,6 +181,6 @@ class TemplateUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         self.object = self.get_object()
         self.object.delete()
 
-        messages.success(request, "Template was Deleted")
+        messages.success(request, "Outreach template deleted.")
         success_url = self.get_success_url()
         return HttpResponseRedirect(success_url)

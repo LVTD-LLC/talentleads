@@ -11,7 +11,7 @@
                     <div class="lg:col-span-4">
                         <h2 class="text-lg font-semibold text-slate-900">Personal information</h2>
                         <p class="mt-2 text-sm leading-6 text-slate-600">
-                            This information helps TalentLeads support your account and communicate about sourcing workflows.
+                            This information helps TalentLeads support your account and keep billing or product updates tied to the right person.
                         </p>
                     </div>
                     <div class="lg:col-span-8">{% include "account/components/personal-information-form.html" with form=form %}</div>
@@ -22,7 +22,7 @@
                             Subscription
                             <span class="ml-2 tl-pill-neutral">
                                 {% if subscription.status == "active" %}
-                                    Pro
+                                    Business
                                 {% else %}
                                     Free
                                 {% endif %}
@@ -40,7 +40,7 @@
                                     <button class="tl-button-primary" type="submit">Manage billing</button>
                                 </form>
                             {% else %}
-                                <a class="tl-button-primary" href="{% url 'upgrade-user' %}">Upgrade account</a>
+                                <a class="tl-button-primary" href="{% url 'upgrade-user' %}">Unlock business access</a>
                             {% endif %}
                         </div>
                     </div>

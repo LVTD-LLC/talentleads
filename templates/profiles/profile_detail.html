@@ -2,20 +2,25 @@
 {% load static %}
 {% load markdown_extras %}
 {% block meta %}
-    <title>HN Profile - {{ object.title }}</title>
-    <meta name="description" content="{{ object.description }}" />
+    <title>Candidate Profile - {{ object.title }} | TalentLeads</title>
+    <meta name="description"
+          content="{{ object.description|truncatechars:160 }}" />
     <link rel="canonical"
           href="https://{{ request.get_host }}/profiles/{{ object.id }}" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:creator" content="@rasulkireev" />
-    <meta name="twitter:title" content="HN Profile - {{ object.title }}" />
-    <meta name="twitter:description" content="{{ object.description }}" />
+    <meta name="twitter:title"
+          content="Candidate Profile - {{ object.title }} | TalentLeads" />
+    <meta name="twitter:description"
+          content="{{ object.description|truncatechars:160 }}" />
     <meta name="twitter:image"
           content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
-    <meta property="og:title" content="HN Profile - {{ object.title }}" />
+    <meta property="og:title"
+          content="Candidate Profile - {{ object.title }} | TalentLeads" />
     <meta property="og:url"
           content="https://{{ request.get_host }}/profiles/{{ object.id }}" />
-    <meta property="og:description" content="{{ object.description }}" />
+    <meta property="og:description"
+          content="{{ object.description|truncatechars:160 }}" />
     <meta property="og:image"
           content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
 {% endblock meta %}
@@ -24,7 +29,7 @@
         <a href="{% url 'profiles' %}"
            class="mb-6 inline-flex items-center text-sm font-semibold text-slate-600 hover:text-slate-900">
             <span aria-hidden="true">&larr;</span>
-            <span class="ml-2">Back to profiles</span>
+            <span class="ml-2">Back to talent search</span>
         </a>
         <div class="grid gap-5 xl:grid-cols-12">
             <article class="xl:col-span-8">
@@ -80,7 +85,7 @@
                                     <a class="block rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-600 hover:border-slate-400 hover:bg-white"
                                        href="{% url 'pricing' %}">
                                         <span class="font-semibold text-slate-900">Log in to contact candidates.</span>
-                                        Create an account to unlock private details and outreach workflows.
+                                        Create an account to unlock private details and outreach tools.
                                     </a>
                                 {% endif %}
                             </div>
@@ -175,7 +180,7 @@
                         {% endif %}
                     </section>
                     <section class="tl-panel p-5">
-                        <h2 class="text-base font-semibold text-slate-900">Private information</h2>
+                        <h2 class="text-base font-semibold text-slate-900">Contact details</h2>
                         {% if user.is_authenticated and subscription.status == "active" %}
                             <dl class="mt-5 space-y-4">
                                 {% if object.name %}
@@ -210,7 +215,7 @@
                         {% else %}
                             <a class="mt-5 block rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5 text-sm leading-6 text-slate-600 hover:border-slate-400 hover:bg-white"
                                href="{% url 'pricing' %}">
-                                <span class="block font-semibold text-slate-900">Business access required</span>
+                                <span class="block font-semibold text-slate-900">Business access unlocks contact details</span>
                                 <span class="mt-1 block">Unlock name, email, resume links, and outreach actions for candidates you want to contact.</span>
                             </a>
                         {% endif %}
@@ -225,8 +230,8 @@
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "HN Profile - {{ object.title }}",
-    "description": "{{ object.description }}",
+    "name": "Candidate Profile - {{ object.title|escapejs }}",
+    "description": "{{ object.description|escapejs }}",
     "url": "https://{{ request.get_host }}/profiles/{{ object.id }}"
   }
     </script>

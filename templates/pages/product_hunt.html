@@ -1,16 +1,37 @@
 {% extends "base.html" %}
 {% load markdown_extras %}
 {% load webpack_loader static %}
+{% block meta %}
+    <title>Product Hunt Archive | TalentLeads</title>
+    <meta name="description"
+          content="The original Product Hunt launch for TalentLeads, now focused on technical talent search for B2B sourcing teams." />
+    <link rel="canonical"
+          href="https://{{ request.get_host }}{% url 'product-hunt' %}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Product Hunt Archive | TalentLeads" />
+    <meta property="og:url"
+          content="https://{{ request.get_host }}{% url 'product-hunt' %}" />
+    <meta property="og:description"
+          content="The original Product Hunt launch for TalentLeads, now focused on technical talent search for B2B sourcing teams." />
+    <meta property="og:image"
+          content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Product Hunt Archive | TalentLeads" />
+    <meta name="twitter:description"
+          content="The original Product Hunt launch for TalentLeads, now focused on technical talent search for B2B sourcing teams." />
+    <meta name="twitter:image"
+          content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
+{% endblock meta %}
 {% block content %}
     <section class="tl-container py-16 sm:py-24">
         <div class="tl-panel-dark grid gap-10 p-6 sm:p-10 lg:grid-cols-12 lg:items-center">
             <div class="lg:col-span-7">
                 <p class="text-sm font-semibold text-white/58">Product Hunt archive</p>
                 <h1 class="mt-4 text-4xl font-semibold tracking-[-0.03em] text-white sm:text-6xl">
-                    TalentLeads launched as a focused way to find startup talent.
+                    TalentLeads launched as a focused way to find startup technical talent.
                 </h1>
                 <p class="mt-6 max-w-2xl text-lg leading-8 text-white/68">
-                    The product is evolving toward a B2B, agent-ready sourcing workflow, but the original launch still points to the same core idea: better candidate signal with less manual drag.
+                    The product now serves B2B sourcing teams, but the original launch still points to the same core idea: better candidate context with less manual research.
                 </p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                     {% if user.is_authenticated and subscription.status == "active" %}
@@ -20,14 +41,14 @@
                         </a>
                     {% elif user.is_authenticated and subscription.status != "active" %}
                         <a href="{% url 'upgrade-user' %}"
-                           class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-base font-semibold text-slate-900 hover:bg-slate-100">Get access</a>
+                           class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-base font-semibold text-slate-900 hover:bg-slate-100">Unlock business access</a>
                         <a href="{% url 'profiles' %}"
-                           class="inline-flex items-center justify-center rounded-lg border border-white/14 px-5 py-3 text-base font-semibold text-white hover:bg-white/8">View database</a>
+                           class="inline-flex items-center justify-center rounded-lg border border-white/14 px-5 py-3 text-base font-semibold text-white hover:bg-white/8">Browse talent</a>
                     {% else %}
                         <a href="{% url 'account_signup' %}"
                            class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-base font-semibold text-slate-900 hover:bg-slate-100">Start free</a>
                         <a href="{% url 'profiles' %}"
-                           class="inline-flex items-center justify-center rounded-lg border border-white/14 px-5 py-3 text-base font-semibold text-white hover:bg-white/8">View database</a>
+                           class="inline-flex items-center justify-center rounded-lg border border-white/14 px-5 py-3 text-base font-semibold text-white hover:bg-white/8">Browse talent</a>
                     {% endif %}
                 </div>
             </div>

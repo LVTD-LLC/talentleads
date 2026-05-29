@@ -2,23 +2,23 @@
 {% load markdown_extras %}
 {% load webpack_loader static %}
 {% block meta %}
-    <title>TalentLeads | Agent-ready talent sourcing</title>
+    <title>TalentLeads | Technical talent search for startup teams</title>
     <meta name="description"
-          content="Search technical candidate profiles, review structured context, and start precise outreach faster." />
+          content="Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace." />
     <link rel="canonical" href="https://{{ request.get_host }}/" />
     <meta property="og:type" content="website" />
     <meta property="og:title"
-          content="TalentLeads | Agent-ready talent sourcing" />
+          content="TalentLeads | Technical talent search for startup teams" />
     <meta property="og:url" content="https://{{ request.get_host }}/" />
     <meta property="og:description"
-          content="Search technical candidate profiles, review structured context, and start precise outreach faster." />
+          content="Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace." />
     <meta property="og:image"
           content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title"
-          content="TalentLeads | Agent-ready talent sourcing" />
+          content="TalentLeads | Technical talent search for startup teams" />
     <meta name="twitter:description"
-          content="Search technical candidate profiles, review structured context, and start precise outreach faster." />
+          content="Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace." />
     <meta name="twitter:image"
           content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
 {% endblock meta %}
@@ -28,12 +28,12 @@
              aria-hidden="true"></div>
         <div class="tl-container relative grid gap-12 pb-20 pt-16 lg:grid-cols-12 lg:pb-28 lg:pt-24">
             <div class="lg:col-span-6">
-                <p class="tl-eyebrow">Talent search for focused teams</p>
+                <p class="tl-eyebrow">Technical talent search for startup teams</p>
                 <h1 class="mt-5 max-w-4xl text-5xl font-semibold tracking-[-0.035em] text-slate-900 sm:text-6xl lg:text-7xl">
-                    Find technical candidates with enough context to act.
+                    Find technical candidates worth contacting.
                 </h1>
                 <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
-                    TalentLeads turns public hiring intent into a searchable workspace for founders, operators, and the agents that support them. Filter for fit, inspect the signal, then start outreach from the same place.
+                    TalentLeads gives founders, operators, and recruiting teams a searchable database of technical profiles with the context they need to judge fit before they send the first message.
                 </p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                     {% if user.is_authenticated and subscription.status == "active" %}
@@ -54,15 +54,15 @@
                 <div class="mt-10 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
                     <div class="rounded-lg border border-slate-200 bg-white/70 p-4">
                         <div class="text-sm font-semibold text-slate-900">{{ num_of_profiles }}+ profiles</div>
-                        <div class="mt-1 text-sm leading-5 text-slate-600">Searchable candidate intent</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-600">Technical talent you can filter</div>
                     </div>
                     <div class="rounded-lg border border-slate-200 bg-white/70 p-4">
-                        <div class="text-sm font-semibold text-slate-900">Direct outreach</div>
-                        <div class="mt-1 text-sm leading-5 text-slate-600">Templates and contact data</div>
+                        <div class="text-sm font-semibold text-slate-900">Fit context</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-600">Skills, location, capacity, and links</div>
                     </div>
                     <div class="rounded-lg border border-slate-200 bg-white/70 p-4">
-                        <div class="text-sm font-semibold text-slate-900">Agent-ready</div>
-                        <div class="mt-1 text-sm leading-5 text-slate-600">Built toward MCP workflows</div>
+                        <div class="text-sm font-semibold text-slate-900">Outreach built in</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-600">Templates and contact details</div>
                     </div>
                 </div>
             </div>
@@ -92,7 +92,9 @@
                         </div>
                         <div class="rounded-lg border border-white/10 bg-white/[0.04] p-4">
                             <p class="text-xs font-semibold uppercase tracking-[0.16em] text-white/45">Action</p>
-                            <p class="mt-2 text-sm leading-6 text-white/86">Return ranked profiles with outreach-ready context.</p>
+                            <p class="mt-2 text-sm leading-6 text-white/86">
+                                Compare relevant profiles with skills, capacity, and outreach context.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -104,11 +106,11 @@
             <div class="lg:col-span-5">
                 <p class="tl-eyebrow">How it works</p>
                 <h2 class="mt-4 text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-5xl">
-                    A short path from intent to conversation.
+                    Go from hiring criteria to a real shortlist.
                 </h2>
             </div>
             <p class="max-w-2xl text-lg leading-8 text-slate-600 lg:col-span-6 lg:col-start-7">
-                The product is intentionally narrow: search useful candidate data, inspect the fit, and send a targeted message without turning sourcing into a spreadsheet project.
+                Start with the role you need to fill, compare people on the signals that matter, and move into outreach without rebuilding the same research in a spreadsheet.
             </p>
         </div>
         <div class="mt-12 grid gap-4 lg:grid-cols-3">
@@ -116,27 +118,27 @@
                 <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-sm font-semibold text-white">
                     1
                 </div>
-                <h3 class="mt-6 text-xl font-semibold tracking-tight text-slate-900">Search for constraints</h3>
+                <h3 class="mt-6 text-xl font-semibold tracking-tight text-slate-900">Search by real hiring constraints</h3>
                 <p class="mt-3 text-base leading-7 text-slate-600">
-                    Filter by role, location, experience, capacity, remote preference, and technical stack. Keep the search grounded in the work you actually need done.
+                    Filter by role, location, experience, capacity, remote preference, and technical stack so the results match the work you actually need done.
                 </p>
             </div>
             <div class="tl-card p-6">
                 <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-sm font-semibold text-white">
                     2
                 </div>
-                <h3 class="mt-6 text-xl font-semibold tracking-tight text-slate-900">Review profile signal</h3>
+                <h3 class="mt-6 text-xl font-semibold tracking-tight text-slate-900">Compare the context that matters</h3>
                 <p class="mt-3 text-base leading-7 text-slate-600">
-                    Read candidate descriptions, skills, location context, and availability in one compact view before deciding whether the person is worth pursuing.
+                    Review descriptions, skills, location, availability, and relevant links in one place before deciding who deserves a closer look.
                 </p>
             </div>
             <div class="tl-card p-6">
                 <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-sm font-semibold text-white">
                     3
                 </div>
-                <h3 class="mt-6 text-xl font-semibold tracking-tight text-slate-900">Start precise outreach</h3>
+                <h3 class="mt-6 text-xl font-semibold tracking-tight text-slate-900">Reach out from the profile</h3>
                 <p class="mt-3 text-base leading-7 text-slate-600">
-                    Use saved templates and contact details to send relevant messages. The workflow stays direct, measurable, and ready for agent-assisted execution.
+                    Use contact details and saved templates to send a relevant first message while the candidate context is still in front of you.
                 </p>
             </div>
         </div>
@@ -146,29 +148,29 @@
             <div class="tl-panel-dark p-8 lg:col-span-7 lg:p-10">
                 <p class="text-sm font-semibold text-white/58">For B2B sourcing teams</p>
                 <h2 class="mt-4 max-w-2xl text-3xl font-semibold tracking-[-0.025em] text-white sm:text-5xl">
-                    Built for a future where agents do the searching and people make the call.
+                    A sourcing workspace built for operators, not a bloated ATS.
                 </h2>
                 <p class="mt-5 max-w-2xl text-lg leading-8 text-white/68">
-                    TalentLeads should feel useful to a human buyer today and legible to automation tomorrow: structured filters, clear profile fields, and actions that map cleanly to an MCP workflow.
+                    TalentLeads keeps the workflow narrow: find credible technical people, understand why they might fit, and take the next step without dragging your team into a full recruiting system.
                 </p>
             </div>
             <div class="grid gap-4 lg:col-span-5">
                 <div class="tl-card p-6">
-                    <h3 class="text-lg font-semibold text-slate-900">Structured data first</h3>
+                    <h3 class="text-lg font-semibold text-slate-900">Searchable signal, not a feed</h3>
                     <p class="mt-2 text-sm leading-6 text-slate-600">
-                        Talent context is organized for filtering, ranking, and action, not just browsing.
+                        Candidate context is organized for filtering and comparison, so strong matches are easier to spot.
                     </p>
                 </div>
                 <div class="tl-card p-6">
-                    <h3 class="text-lg font-semibold text-slate-900">Human review stays central</h3>
+                    <h3 class="text-lg font-semibold text-slate-900">People stay in control</h3>
                     <p class="mt-2 text-sm leading-6 text-slate-600">
-                        Operators still inspect quality, personalize outreach, and decide who deserves attention.
+                        Your team still reviews quality, personalizes outreach, and decides who is worth contacting.
                     </p>
                 </div>
                 <div class="tl-card p-6">
-                    <h3 class="text-lg font-semibold text-slate-900">Narrow workflow, lower drag</h3>
+                    <h3 class="text-lg font-semibold text-slate-900">Structured for the next workflow</h3>
                     <p class="mt-2 text-sm leading-6 text-slate-600">
-                        The product avoids a heavy ATS surface. It focuses on finding and starting conversations.
+                        Clean profile fields and direct actions keep the product useful as your sourcing process grows.
                     </p>
                 </div>
             </div>
@@ -177,12 +179,12 @@
     <section class="tl-container pb-20 pt-10 sm:pb-28">
         <div class="tl-panel grid gap-8 p-6 sm:p-8 lg:grid-cols-12 lg:items-center lg:p-10">
             <div class="lg:col-span-7">
-                <p class="tl-eyebrow">Ready when you are hiring</p>
+                <p class="tl-eyebrow">When the search gets serious</p>
                 <h2 class="mt-4 text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-5xl">
-                    Start with the live database, then upgrade when outreach matters.
+                    Browse the market first. Unlock outreach when you know who to contact.
                 </h2>
                 <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-                    Browse the available talent signal first. When the search becomes real, unlock private details and outreach workflows.
+                    Use the live database to understand the talent pool. When the search becomes active, upgrade for private details, templates, and a faster path to first conversations.
                 </p>
             </div>
             <div class="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">

@@ -1,17 +1,39 @@
 {% extends "base.html" %}
 {% load markdown_extras %}
+{% load static %}
 {% load widget_tweaks %}
+{% block meta %}
+    <title>Browse Technical Talent | TalentLeads</title>
+    <meta name="description"
+          content="Search technical candidate profiles by role, location, seniority, capacity, remote preference, and stack." />
+    <link rel="canonical"
+          href="https://{{ request.get_host }}{% url 'profiles' %}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Browse Technical Talent | TalentLeads" />
+    <meta property="og:url"
+          content="https://{{ request.get_host }}{% url 'profiles' %}" />
+    <meta property="og:description"
+          content="Search technical candidate profiles by role, location, seniority, capacity, remote preference, and stack." />
+    <meta property="og:image"
+          content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Browse Technical Talent | TalentLeads" />
+    <meta name="twitter:description"
+          content="Search technical candidate profiles by role, location, seniority, capacity, remote preference, and stack." />
+    <meta name="twitter:image"
+          content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
+{% endblock meta %}
 {% block content %}
     <section class="tl-container py-8 sm:py-10">
         <div class="mb-6 grid gap-4 lg:grid-cols-12 lg:items-end">
             <div class="lg:col-span-7">
                 <p class="tl-eyebrow">Talent workspace</p>
                 <h1 class="mt-2 text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-5xl">
-                    Search profiles with sourcing context attached.
+                    Search technical profiles with sourcing context attached.
                 </h1>
             </div>
             <p class="max-w-2xl text-sm leading-6 text-slate-600 lg:col-span-5">
-                Filter by role, location, seniority, capacity, and stack. Open a profile when the signal is strong enough for outreach.
+                Filter by role, location, seniority, capacity, and stack. Open a profile when the fit looks strong enough for outreach.
             </p>
         </div>
         <div class="grid gap-5 lg:grid-cols-12">
@@ -20,7 +42,7 @@
                     <div class="flex items-center justify-between border-b border-slate-200 pb-4">
                         <div>
                             <h2 class="text-base font-semibold text-slate-900">Filters</h2>
-                            <p class="mt-1 text-xs leading-5 text-slate-500">Tighten the search before opening profiles.</p>
+                            <p class="mt-1 text-xs leading-5 text-slate-500">Narrow the search before opening profiles.</p>
                         </div>
                         <a href="{% url 'profiles' %}"
                            class="text-sm font-semibold text-slate-600 hover:text-slate-900">Reset</a>
@@ -34,7 +56,7 @@
                                 <p class="tl-label">Role title</p>
                                 <a class="mt-2 flex items-center justify-between gap-3 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-sm text-slate-600 hover:border-slate-400 hover:bg-white"
                                    href="{% url 'pricing' %}">
-                                    <span>Text search requires business access</span>
+                                    <span>Keyword search requires business access</span>
                                     <span aria-hidden="true">&rarr;</span>
                                 </a>
                             {% endif %}
@@ -92,7 +114,7 @@
                             </div>
                         </div>
                         <div>
-                            <label for="who_wants_to_be_hired_title" class="tl-label">Month and year</label>
+                            <label for="who_wants_to_be_hired_title" class="tl-label">Source month</label>
                             <div class="mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                                 {% render_field filter.form.who_wants_to_be_hired_title id="who_wants_to_be_hired_title" name="who_wants_to_be_hired_title" class="space-y-2" %}
                             </div>
@@ -155,7 +177,7 @@
                             <li class="px-6 py-16 text-center">
                                 <h3 class="text-2xl font-semibold tracking-tight text-slate-900">No candidates match those filters.</h3>
                                 <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-600">
-                                    Try widening the role, location, or stack requirements. Talent data is sparse by nature, so strict filters can hide useful candidates.
+                                    Try widening the role, location, or stack requirements. Useful talent pools are sparse by nature, so strict filters can hide good candidates.
                                 </p>
                                 <a href="{% url 'profiles' %}" class="tl-button-secondary mt-6">Clear filters</a>
                             </li>
