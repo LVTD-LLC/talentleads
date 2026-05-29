@@ -12,23 +12,25 @@
               sizes="16x16 32x32 500x500"
               href="{% static 'vendors/favicon/logo-2.png' %}" />
         {% block meta %}
-            <title>TalentLeads | Agent-ready talent sourcing</title>
+            <title>TalentLeads | Technical talent search for startup teams</title>
             <meta name="description"
-                  content="Search a focused database of technical candidates, review useful profile context, and start outreach faster." />
+                  content="Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace." />
             <link rel="canonical" href="https://{{ request.get_host }}/" />
             <meta property="og:type" content="website" />
-            <meta property="og:title" content="TalentLeads" />
+            <meta property="og:title"
+                  content="TalentLeads | Technical talent search for startup teams" />
             <meta property="og:url" content="https://{{ request.get_host }}/" />
             <meta property="og:description"
-                  content="Agent-ready talent sourcing for teams that need signal, not resume noise." />
+                  content="Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace." />
             <meta property="og:image"
                   content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
             <meta name="twitter:card" content="summary" />
             <meta name="twitter:creator" content="@rasulkireev" />
             <meta name="twitter:site" content="@rasulkireev" />
-            <meta name="twitter:title" content="TalentLeads" />
+            <meta name="twitter:title"
+                  content="TalentLeads | Technical talent search for startup teams" />
             <meta name="twitter:description"
-                  content="Agent-ready talent sourcing for teams that need signal, not resume noise." />
+                  content="Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace." />
             <meta name="twitter:image"
                   content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
         {% endblock meta %}
@@ -192,7 +194,7 @@
                             <span class="text-sm font-semibold text-slate-900">TalentLeads</span>
                         </a>
                         <p class="mt-3 max-w-md text-sm leading-6 text-slate-600">
-                            Structured candidate search and outreach for teams building a faster sourcing workflow.
+                            Search technical candidate profiles, compare fit context, and start outreach from one focused workspace.
                         </p>
                     </div>
                     <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-slate-600">
@@ -219,7 +221,7 @@
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "TalentLeads",
-        "description": "Agent-ready talent sourcing for teams that need signal, not resume noise.",
+        "description": "Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace.",
         "thumbnailUrl": "https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}",
         "url": "https://{{ request.get_host }}/",
         "author": {

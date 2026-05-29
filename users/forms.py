@@ -45,6 +45,10 @@ class CreateOutreachTemplateForm(ModelForm):
             "text",
             "cc_s",
         ]
+        labels = {
+            "cc_s": "CCs",
+            "text": "Message",
+        }
 
 
 class UpdateOutreachTemplateForm(ModelForm):
@@ -59,3 +63,7 @@ class UpdateOutreachTemplateForm(ModelForm):
             "text",
             "cc_s",
         ]
+        labels = {
+            "cc_s": "CCs",
+            "text": "Message",
+        }

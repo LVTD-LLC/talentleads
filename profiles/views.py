@@ -94,8 +94,10 @@ def send_outreach_email(request, profile_id, email_template_id):
             template.cc_s,
             hook="profiles.hooks.email_sent",
         )
-        messages.add_message(request, messages.INFO, "Email Sent. Check your email, you were CC'd.")
+        messages.add_message(request, messages.INFO, "Outreach email queued. Check your inbox for the CC.")
     else:
-        messages.add_message(request, messages.WARNING, "You have already sent the email.")
+        messages.add_message(
+            request, messages.WARNING, "You have already sent outreach to this candidate with that template."
+        )
 
     return redirect(reverse("profile", kwargs={"pk": profile_id}))
