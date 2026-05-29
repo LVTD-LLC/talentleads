@@ -231,7 +231,7 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Candidate Profile - {{ object.title }}",
-    "description": "{{ object.description|truncatechars:160 }}",
+    "description": "{{ object.description }}",
     "url": "https://{{ request.get_host }}/profiles/{{ object.id }}"
   }
     </script>
