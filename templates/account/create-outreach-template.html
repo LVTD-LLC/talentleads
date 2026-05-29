@@ -1,128 +1,138 @@
 {% extends "base.html" %}
 {% load markdown_extras %}
 {% load widget_tweaks %}
-
 {% block content %}
-
-<main class="bg-white lg:min-w-0 md:pt-10 lg:flex-1">
-  <div class="relative max-w-4xl mx-auto">
-    {% include "components/email-not-verified.html" with email_verified=email_verified %}
-    <div class="pt-10 pb-16">
-      {% include "account/components/settings-header.html" %}
-      <div class="px-4 sm:px-6 lg:px-0">
-        <div class="py-6">
-          {% include "account/components/settings-navigation.html" with page_name="templates" %}
-
-          {% if subscription.status == "active" %}
-          <div class="mt-4">
-              <div data-controller="textarea" class="space-y-2">
-                {% for template in templates %}
-                  <div data-controller="dropdown" class="p-4 border border-gray-200 rounded bg-gray-50 hover:bg-hover-100">
-                    <button type="button" class="w-full text-left" data-action="dropdown#toggle click->dropdown#hide">
-                      <h3 class="text-lg font-medium leading-6 text-gray-900">{{ template.title }}</h3>
-                    </button>
-                      <form method="post" action="{% url 'update-template' template.id %}" data-dropdown-target="menu">
-                        {% csrf_token %}
-                        {{ update_form.non_field_errors }}
-                          <div class="px-4 py-6 sm:p-6">
-                            <div class="grid grid-cols-4 gap-6">
-                              <div class="col-span-4 sm:col-span-2">
-                                <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                                {{ update_form.title.errors }}
-                                {% render_field update_form.title value=template.title name="title" id="title" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm" %}
-                                <p class="mt-2 text-sm italic text-gray-500">This will help you easily identify different templates.</p>
-                              </div>
-                              <div class="col-span-4 sm:col-span-2">
-                                {{ update_form.subject_line.errors }}
-                                <label for="subject_line" class="block text-sm font-medium text-gray-700"> Subject Line </label>
-                                {% render_field update_form.subject_line value=template.subject_line id="subject_line" placeholder="Software Engineer Position @ SpaceTech" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm" %}
-                              </div>
-                              <div class="col-span-4">
-                                {{ update_form.cc_s.errors }}
-                                <label for="cc_s" class="block text-sm font-medium text-gray-700"> CCs </label>
-                                {% render_field update_form.cc_s id="cc_s" value=template.cc_s placeholder="example@gmail.com, another-example@gmail.com" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm" %}
-                                <p class="mt-2 text-sm italic text-gray-500">Please use a comma separated list. No need to add your email, it will be there by default. Just add any extra people that you want to CC.</p>
-                              </div>
-                              <div class="col-span-4">
-                                {{ update_form.text.errors }}
-                                <label for="text" class="block text-sm font-medium text-gray-700"> Message </label>
-                                {% render_field update_form.text value=template.text name="text" rows=10 id="text" rows="4" placeholder="Come work for the best company in the world!" class="block w-full px-3 py-2 mt-1 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6" %}
-                              </div>
+    <section class="tl-container py-8 sm:py-12">
+        <div class="mx-auto max-w-5xl">
+            {% include "components/email-not-verified.html" with email_verified=email_verified %}
+            <div class="space-y-6">
+                {% include "account/components/settings-header.html" %}
+                {% include "account/components/settings-navigation.html" with page_name="templates" %}
+                <div class="grid gap-6 lg:grid-cols-12">
+                    <div class="lg:col-span-4">
+                        <h2 class="text-lg font-semibold text-slate-900">Outreach templates</h2>
+                        <p class="mt-2 text-sm leading-6 text-slate-600">
+                            Keep reusable messages close to the candidate profile view. Templates should save time without making outreach feel generic.
+                        </p>
+                    </div>
+                    <div class="space-y-5 lg:col-span-8">
+                        {% if subscription.status == "active" %}
+                            <div data-controller="textarea" class="space-y-3">
+                                {% for template in templates %}
+                                    <div data-controller="dropdown" class="tl-panel overflow-hidden">
+                                        <button type="button"
+                                                class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50"
+                                                data-action="dropdown#toggle click->dropdown#hide">
+                                            <span>
+                                                <span class="block text-base font-semibold text-slate-900">{{ template.title }}</span>
+                                                <span class="mt-1 block text-sm text-slate-500">{{ template.subject_line }}</span>
+                                            </span>
+                                            <span class="text-sm font-semibold text-slate-500">Edit</span>
+                                        </button>
+                                        <form method="post"
+                                              action="{% url 'update-template' template.id %}"
+                                              data-dropdown-target="menu"
+                                              class="hidden border-t border-slate-200">
+                                            {% csrf_token %}
+                                            {{ update_form.non_field_errors }}
+                                            <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
+                                                <div>
+                                                    <label for="title-{{ template.id }}" class="tl-label">Title</label>
+                                                    {{ update_form.title.errors }}
+                                                    {% render_field update_form.title value=template.title name="title" id="title-{{ template.id }}" class="tl-input mt-2" %}
+                                                    <p class="mt-2 text-xs leading-5 text-slate-500">A short internal name for the template.</p>
+                                                </div>
+                                                <div>
+                                                    {{ update_form.subject_line.errors }}
+                                                    <label for="subject-line-{{ template.id }}" class="tl-label">Subject line</label>
+                                                    {% render_field update_form.subject_line value=template.subject_line id="subject-line-{{ template.id }}" class="tl-input mt-2" placeholder="Quick question about your next role" %}
+                                                </div>
+                                                <div class="sm:col-span-2">
+                                                    {{ update_form.cc_s.errors }}
+                                                    <label for="ccs-{{ template.id }}" class="tl-label">CCs</label>
+                                                    {% render_field update_form.cc_s id="ccs-{{ template.id }}" value=template.cc_s placeholder="teammate@company.com, founder@company.com" class="tl-input mt-2" %}
+                                                    <p class="mt-2 text-xs leading-5 text-slate-500">Use a comma separated list. Your email is included by default.</p>
+                                                </div>
+                                                <div class="sm:col-span-2">
+                                                    {{ update_form.text.errors }}
+                                                    <label for="text-{{ template.id }}" class="tl-label">Message</label>
+                                                    {% render_field update_form.text value=template.text name="text" rows=10 id="text-{{ template.id }}" placeholder="Hi, I saw your profile and wanted to reach out about..." class="tl-input mt-2 min-h-56" %}
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-end gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-6">
+                                                <button type="submit"
+                                                        name="delete_object"
+                                                        class="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
+                                                    Delete
+                                                </button>
+                                                <button type="submit" class="tl-button-primary">Update template</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                {% empty %}
+                                    <div class="tl-panel p-6">
+                                        <h3 class="text-base font-semibold text-slate-900">No templates yet</h3>
+                                        <p class="mt-2 text-sm leading-6 text-slate-600">
+                                            Create your first message template below before sending outreach from candidate profiles.
+                                        </p>
+                                    </div>
+                                {% endfor %}
                             </div>
-
-                          </div>
-                          <div class="px-4 py-3 text-right bg-gray-50 sm:px-6">
-                            <button type="submit" name="delete_object" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-900 focus:ring-offset-2">Delete</button>
-                            <button type="submit" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-900 focus:ring-offset-2">
-                              Update
-                            </button>
-                          </div>
-                      </form>
+                            <div data-controller="dropdown" class="tl-panel overflow-hidden">
+                                <button type="button"
+                                        class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50"
+                                        data-action="dropdown#toggle click->dropdown#hide">
+                                    <span>
+                                        <span class="block text-base font-semibold text-slate-900">Create a new template</span>
+                                        <span class="mt-1 block text-sm text-slate-500">Add a message you can reuse from profile pages.</span>
+                                    </span>
+                                    <span class="tl-pill">New</span>
+                                </button>
+                                <form method="post"
+                                      action=""
+                                      data-dropdown-target="menu"
+                                      class="hidden border-t border-slate-200">
+                                    {% csrf_token %}
+                                    {{ form.non_field_errors }}
+                                    <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
+                                        <div>
+                                            <label for="title" class="tl-label">Title</label>
+                                            {{ form.title.errors }}
+                                            {% render_field form.title name="title" id="title" class="tl-input mt-2" placeholder="Senior backend intro" %}
+                                            <p class="mt-2 text-xs leading-5 text-slate-500">A short internal name for the template.</p>
+                                        </div>
+                                        <div>
+                                            {{ form.subject_line.errors }}
+                                            <label for="subject_line" class="tl-label">Subject line</label>
+                                            {% render_field form.subject_line id="subject_line" placeholder="Quick question about your next role" class="tl-input mt-2" %}
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            {{ form.cc_s.errors }}
+                                            <label for="cc_s" class="tl-label">CCs</label>
+                                            {% render_field form.cc_s id="cc_s" placeholder="teammate@company.com, founder@company.com" class="tl-input mt-2" %}
+                                            <p class="mt-2 text-xs leading-5 text-slate-500">Use a comma separated list. Your email is included by default.</p>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            {{ form.text.errors }}
+                                            <label for="text" class="tl-label">Message</label>
+                                            {% render_field form.text name="text" rows=10 id="text" placeholder="Hi, I saw your profile and wanted to reach out about..." class="tl-input mt-2 min-h-56" %}
+                                        </div>
+                                    </div>
+                                    <div class="border-t border-slate-200 bg-slate-50 px-5 py-4 text-right sm:px-6">
+                                        <button type="submit" class="tl-button-primary">Save template</button>
+                                    </div>
+                                </form>
+                            </div>
+                        {% else %}
+                            <a class="block rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-sm leading-6 text-slate-600 hover:border-slate-400 hover:bg-white"
+                               href="{% url 'pricing' %}">
+                                <span class="block text-base font-semibold text-slate-900">Templates require business access.</span>
+                                <span class="mt-1 block">Upgrade to create outreach templates and send candidate email from profile pages.</span>
+                            </a>
+                        {% endif %}
                     </div>
-                {% endfor %}
-              </div>
-          </div>
-
-          <div class="mt-4">
-            <div data-controller="dropdown" class="border border-blue-200 sm:overflow-hidden sm:rounded-md">
-              <button type="button" class="w-full p-4 text-left bg-blue-50 hover:bg-blue-100" data-action="dropdown#toggle click->dropdown#hide">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Create a New Template</h3>
-              </button>
-              <form method="post" action="" data-dropdown-target="menu">
-                {% csrf_token %}
-                {{ form.non_field_errors }}
-                <div>
-                  <div class="px-4 py-6 sm:p-6">
-                    <div class="grid grid-cols-4 gap-6">
-                      <div class="col-span-4 sm:col-span-2">
-                        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                        {{ form.title.errors }}
-                        {% render_field form.title name="title" id="title" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm" %}
-                        <p class="mt-2 text-sm italic text-gray-500">This will help you easily identify different templates.</p>
-                      </div>
-                      <div class="col-span-4 sm:col-span-2">
-                        {{ form.subject_line.errors }}
-                        <label for="subject_line" class="block text-sm font-medium text-gray-700"> Subject Line </label>
-                        {% render_field form.subject_line id="subject_line" placeholder="Software Engineer Position @ SpaceTech" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm" %}
-                      </div>
-                      <div class="col-span-4">
-                        {{ form.cc_s.errors }}
-                        <label for="cc_s" class="block text-sm font-medium text-gray-700"> CCs </label>
-                        {% render_field form.cc_s id="cc_s" placeholder="example@gmail.com, another-example@gmail.com" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm" %}
-                        <p class="mt-2 text-sm italic text-gray-500">Please use a comma separated list. No need to add your email, it will be there by default. Just add any extra people that you want to CC.</p>
-                      </div>
-                      <div class="col-span-4">
-                        {{ form.text.errors }}
-                        <label for="text" class="block text-sm font-medium text-gray-700"> Message </label>
-                        {% render_field form.text name="text" rows=10 id="text" rows="4" placeholder="Come work for the best company in the world!" class="block w-full px-3 py-2 mt-1 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6" %}
-                      </div>
-                    </div>
-
-                  </div>
-                  <div class="px-4 py-3 text-right bg-gray-50 sm:px-6">
-                    <button type="submit" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2">
-                      Save
-                    </button>
-                  </div>
                 </div>
-              </form>
             </div>
-          </div>
-        {% else %}
-          <div class="mt-4">
-            <a class="block w-full px-10 py-6 text-center border-2 border-gray-300 border-dashed rounded-lg group bg-gray-50 hover:border-gray-400" href="{% url 'pricing' %}">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-              <span class="block mt-2 text-sm text-gray-500">Subscribe to start creating templates.</span>
-            </a>
-          </div>
-        {% endif %}
         </div>
-
-      </div>
-    </div>
-  </div>
-</main>
-
+    </section>
 {% endblock content %}

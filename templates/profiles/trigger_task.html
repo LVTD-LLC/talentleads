@@ -1,47 +1,32 @@
 {% extends "base.html" %}
-
 {% block meta %}
-    <title>Admin Panel</title>
-    <meta name="description" content="{{ object.description }}"/>
-    <link rel="canonical" href="https://{{ request.get_host }}/profiles/{{ object.id }}" />
+    <title>Admin Panel | TalentLeads</title>
+    <meta name="description" content="Internal TalentLeads task controls." />
 {% endblock meta %}
-
 {% block content %}
-
-<div class="flex flex-col max-w-3xl mx-auto space-y-2">
-
-  <div class="bg-white shadow sm:rounded-lg">
-    <div class="px-4 py-5 sm:p-6">
-      <h3 class="text-base font-semibold leading-6 text-gray-900">Parse Comments</h3>
-      <div class="max-w-xl mt-2 text-sm text-gray-500">
-        <p>Enter HN post id for "Who Wants to be Hired".</p>
-      </div>
-      <div class="mt-5">
-        <form method="post" action="">
-          {% csrf_token %}
-          {{ form }}
-          <button
-            type="submit"
-            class="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-          >
-            Trigger Task
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div class="bg-white shadow sm:rounded-lg">
-    <div class="px-4 py-5 sm:p-6">
-      <h3 class="text-base font-semibold leading-6 text-gray-900">Send Marketing Emails</h3>
-      <div class="mt-5">
-        <a href="{% url 'send-marketing-emails' %}" class="px-5 py-3 text-lg font-semibold text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-          Send Marketing Emails
-        </a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
+    <section class="tl-container py-10">
+        <div class="mx-auto max-w-3xl space-y-5">
+            <div>
+                <p class="tl-eyebrow">Internal tools</p>
+                <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-900">Admin panel</h1>
+            </div>
+            <div class="tl-panel p-6">
+                <h2 class="text-base font-semibold text-slate-900">Parse comments</h2>
+                <p class="mt-2 max-w-xl text-sm leading-6 text-slate-600">
+                    Enter the Hacker News post id for "Who wants to be hired".
+                </p>
+                <form method="post" action="" class="mt-5 space-y-4">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="tl-button-primary">Trigger task</button>
+                </form>
+            </div>
+            <div class="tl-panel p-6">
+                <h2 class="text-base font-semibold text-slate-900">Send marketing emails</h2>
+                <p class="mt-2 text-sm leading-6 text-slate-600">Trigger the outreach job for configured marketing emails.</p>
+                <a href="{% url 'send-marketing-emails' %}"
+                   class="tl-button-primary mt-5">Send emails</a>
+            </div>
+        </div>
+    </section>
 {% endblock content %}

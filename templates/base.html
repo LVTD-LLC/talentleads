@@ -1,200 +1,235 @@
 {% load webpack_loader static %}
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!-- Other meta stuff -->
-  <link rel="apple-touch-icon" href="{% static 'vendors/favicon/logo-2.png' %}" />
-  <link rel="apple-touch-icon" href="{% static 'vendors/favicon/logo-2.png' %}" />
-  <link rel="icon" type="image/png" sizes="16x16 32x32 500x500" href="{% static 'vendors/favicon/logo-2.png' %}"/>
-
-  {% block meta %}
-  <title>Talent Leads</title>
-  <meta name="description" content="Searchable Database of HN users **Who Want to be Hired**."/>
-  <link rel="canonical" href="https://{{ request.get_host }}/" />
-      <meta property="og:type" content="website" />
-      <meta property="og:title" content="TalentLeads" />
-      <meta property="og:url" content="https://{{ request.get_host }}/" />
-      <meta property="og:description" content="Searchable Database of HN users **Who Want to be Hired**."/>
-      <meta property="og:image" content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
-      <meta name="twitter:card" content="summary" />
-      <meta name="twitter:creator" content="@rasulkireev" />
-      <meta name="twitter:site" content="@rasulkireev" />
-      <meta name="twitter:title" content="TalentLeads" />
-      <meta name="twitter:description" content="Searchable Database of HN users **Who Want to be Hired**."/>
-      <meta name="twitter:image" content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
-  {% endblock meta %}
-
-  {% stylesheet_pack 'index' %}
-  {% javascript_pack 'index' attrs='defer' %}
-
-  <script defer data-domain="gettalentleads.com" src="https://plausible-v2.cr.lvtd.dev/js/script.js"></script>
-
-  <script>
-      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-      posthog.init('phc_GTDu67rFnPbINFUdrpKR17G8O67JFft6OjVK4aimXxC',{api_host:'https://app.posthog.com'})
-  </script>
-</head>
-
-<body>
-  {% block default_messages %}
-    {% include "components/messages.html" with messages=messages %}
-  {% endblock default_messages %}
-
-  <div data-controller="dropdown" class="bg-white">
-    <header class="bg-white">
-      <nav class="flex justify-between items-center p-6 mx-auto max-w-7xl lg:px-8" aria-label="Global">
-        <div class="flex gap-x-12 items-center">
-          <a href="{% url 'home' %}" class="flex flex-row justify-between items-center p-1.5 -m-1.5 space-x-2">
-            <img class="mb-1 w-auto h-8" src="{% static 'vendors/images/logo-2.png' %}" alt="TalentLeads Logo"/>
-            <span class="text-base font-semibold text-gray-700">TalentLeads</span>
-          </a>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="apple-touch-icon"
+              href="{% static 'vendors/favicon/logo-2.png' %}" />
+        <link rel="icon"
+              type="image/png"
+              sizes="16x16 32x32 500x500"
+              href="{% static 'vendors/favicon/logo-2.png' %}" />
+        {% block meta %}
+            <title>TalentLeads | Agent-ready talent sourcing</title>
+            <meta name="description"
+                  content="Search a focused database of technical candidates, review useful profile context, and start outreach faster." />
+            <link rel="canonical" href="https://{{ request.get_host }}/" />
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="TalentLeads" />
+            <meta property="og:url" content="https://{{ request.get_host }}/" />
+            <meta property="og:description"
+                  content="Agent-ready talent sourcing for teams that need signal, not resume noise." />
+            <meta property="og:image"
+                  content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:creator" content="@rasulkireev" />
+            <meta name="twitter:site" content="@rasulkireev" />
+            <meta name="twitter:title" content="TalentLeads" />
+            <meta name="twitter:description"
+                  content="Agent-ready talent sourcing for teams that need signal, not resume noise." />
+            <meta name="twitter:image"
+                  content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
+        {% endblock meta %}
+        {% stylesheet_pack 'index' %}
+        {% javascript_pack 'index' attrs='defer' %}
+        <script defer
+                data-domain="gettalentleads.com"
+                src="https://plausible-v2.cr.lvtd.dev/js/script.js"></script>
+        <script>
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      posthog.init('phc_GTDu67rFnPbINFUdrpKR17G8O67JFft6OjVK4aimXxC',{api_host:'https://app.posthog.com'});
+        </script>
+    </head>
+    <body>
+        <a href="#main-content"
+           class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-slate-900 focus:shadow-lg">
+            Skip to content
+        </a>
+        {% block default_messages %}
+            {% include "components/messages.html" with messages=messages %}
+        {% endblock default_messages %}
+        <div class="tl-page">
+            <header data-controller="dropdown"
+                    class="sticky top-0 z-40 border-b border-slate-900/5 bg-white/82 backdrop-blur-xl">
+                <nav class="tl-container flex h-16 items-center justify-between"
+                     aria-label="Global">
+                    <a href="{% url 'home' %}"
+                       class="group flex items-center gap-3 rounded-lg">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 ring-1 ring-slate-900/10">
+                            <img class="h-5 w-5" src="{% static 'vendors/images/logo-2.png' %}" alt="" />
+                        </span>
+                        <span class="text-sm font-semibold tracking-tight text-slate-900">TalentLeads</span>
+                    </a>
+                    <div class="hidden items-center gap-8 lg:flex">
+                        <a href="{% url 'profiles' %}"
+                           class="text-sm font-medium text-slate-700 hover:text-slate-900">Browse talent</a>
+                        <a href="{% url 'pricing' %}"
+                           class="text-sm font-medium text-slate-700 hover:text-slate-900">Pricing</a>
+                        <a href="{% url 'blog_posts' %}"
+                           class="text-sm font-medium text-slate-700 hover:text-slate-900">Blog</a>
+                    </div>
+                    <div class="hidden items-center gap-3 lg:flex">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'profiles' %}" class="tl-button-primary">Open workspace</a>
+                            <div data-controller="dropdown" class="relative">
+                                <button type="button"
+                                        data-action="dropdown#toggle click@window->dropdown#hide"
+                                        data-dropdown-target="button"
+                                        class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-white ring-1 ring-slate-200 hover:ring-slate-300"
+                                        id="user-menu-button"
+                                        aria-expanded="false"
+                                        aria-controls="user-menu"
+                                        aria-haspopup="true">
+                                    <span class="sr-only">Open user menu</span>
+                                    <img class="h-8 w-8 rounded-md object-cover"
+                                         src="{% static 'vendors/images/unknown-man.png' %}"
+                                         alt="User avatar" />
+                                </button>
+                                <div data-dropdown-target="menu"
+                                     class="hidden absolute right-0 mt-2 w-48 origin-top-right rounded-lg border border-slate-200 bg-white p-1 shadow-lg"
+                                     id="user-menu"
+                                     role="menu"
+                                     aria-orientation="vertical"
+                                     aria-labelledby="user-menu-button"
+                                     tabindex="-1">
+                                    <a href="{% url 'settings' %}"
+                                       class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                                       role="menuitem"
+                                       data-action="dropdown#toggle"
+                                       tabindex="-1">Settings</a>
+                                    <a href="{% url 'account_logout' %}"
+                                       class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                                       role="menuitem"
+                                       data-action="dropdown#toggle"
+                                       tabindex="-1">Sign out</a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'account_login' %}" class="tl-button-secondary">Log in</a>
+                            <a href="{% url 'account_signup' %}" class="tl-button-primary">Start free</a>
+                        {% endif %}
+                    </div>
+                    <button data-action="dropdown#toggle click@window->dropdown#hide"
+                            data-dropdown-target="button"
+                            type="button"
+                            aria-expanded="false"
+                            aria-controls="mobile-navigation"
+                            class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-800 lg:hidden">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke-width="1.8"
+                             stroke="currentColor"
+                             aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+                        </svg>
+                    </button>
+                </nav>
+                <div data-dropdown-target="menu"
+                     id="mobile-navigation"
+                     class="hidden lg:hidden"
+                     role="dialog"
+                     aria-label="Site navigation"
+                     aria-modal="true">
+                    <div class="fixed inset-0 z-40 bg-slate-900/20"></div>
+                    <div class="fixed inset-x-3 top-3 z-50 rounded-lg border border-slate-200 bg-white p-4 shadow-xl">
+                        <div class="flex items-center justify-between">
+                            <a href="{% url 'home' %}" class="flex items-center gap-3">
+                                <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900">
+                                    <img class="h-5 w-5" src="{% static 'vendors/images/logo-2.png' %}" alt="" />
+                                </span>
+                                <span class="text-sm font-semibold text-slate-900">TalentLeads</span>
+                            </a>
+                            <button data-action="dropdown#toggle click@window->dropdown#hide"
+                                    type="button"
+                                    class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-800">
+                                <span class="sr-only">Close menu</span>
+                                <svg class="h-5 w-5"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke-width="1.8"
+                                     stroke="currentColor"
+                                     aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="mt-5 grid gap-1">
+                            <a href="{% url 'profiles' %}"
+                               class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">Browse talent</a>
+                            <a href="{% url 'pricing' %}"
+                               class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">Pricing</a>
+                            <a href="{% url 'blog_posts' %}"
+                               class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">Blog</a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'settings' %}"
+                                   class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">Settings</a>
+                                <a href="{% url 'account_logout' %}"
+                                   class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">Sign out</a>
+                            {% else %}
+                                <a href="{% url 'account_login' %}"
+                                   class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">Log in</a>
+                                <a href="{% url 'account_signup' %}" class="mt-2 tl-button-primary">Start free</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <main id="main-content">
+                {% block content %}
+                {% endblock content %}
+            </main>
+            <footer class="border-t border-slate-200/80 bg-white/60">
+                <div class="tl-container flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <a href="{% url 'home' %}" class="flex items-center gap-3">
+                            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900">
+                                <img class="h-4 w-4" src="{% static 'vendors/images/logo-2.png' %}" alt="" />
+                            </span>
+                            <span class="text-sm font-semibold text-slate-900">TalentLeads</span>
+                        </a>
+                        <p class="mt-3 max-w-md text-sm leading-6 text-slate-600">
+                            Structured candidate search and outreach for teams building a faster sourcing workflow.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-slate-600">
+                        <a href="{% url 'profiles' %}" class="hover:text-slate-900">Browse talent</a>
+                        <a href="{% url 'pricing' %}" class="hover:text-slate-900">Pricing</a>
+                        <a href="{% url 'blog_posts' %}" class="hover:text-slate-900">Blog</a>
+                        <a href="https://statushen.cr.lvtd.dev/talentleads/"
+                           class="hover:text-slate-900">Status</a>
+                    </div>
+                </div>
+                <div class="tl-container border-t border-slate-200/80 py-5">
+                    <p class="text-xs leading-5 text-slate-500">
+                        &copy; 2026 <a href="https://lvtd.dev"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="font-medium underline decoration-slate-300 underline-offset-4">LVTD, LLC</a>. All rights reserved.
+                    </p>
+                </div>
+            </footer>
         </div>
-        <div class="flex lg:hidden">
-          <button data-action="dropdown#toggle click@window->dropdown#hide" type="button" class="inline-flex justify-center items-center p-2.5 -m-2.5 text-gray-700 rounded-md">
-            <span class="sr-only">Open main menu</span>
-            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-          </button>
-        </div>
-        <div class="hidden items-center lg:flex lg:gap-x-12">
-
-          <div class="hidden lg:flex lg:gap-x-12">
-            <a href="{% url 'blog_posts' %}" class="text-base leading-6 text-gray-900">Blog</a>
-            <a href="{% url 'pricing' %}" class="text-base leading-6 text-gray-900">Pricing</a>
-          </div>
-
-          {% if user.is_authenticated %}
-          <!-- Profile dropdown -->
-          <div data-controller="dropdown" class="relative ml-3">
-              <div>
-                  <button type="button"
-                          data-action="dropdown#toggle click@window->dropdown#hide"
-                          class="flex text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                          id="user-menu-button"
-                          aria-expanded="false"
-                          aria-haspopup="true">
-                      <span class="sr-only">Open user menu</span>
-                      <img class="object-cover p-1 w-10 h-10 bg-gray-100 rounded-full border-2 border-gray-500"
-                            src="{% static 'vendors/images/unknown-man.png' %}"
-                            alt="No Personal Photo" />
-                  </button>
-              </div>
-              <div data-dropdown-target="menu"
-                   class="absolute right-0 py-1 mt-2 w-48 bg-white rounded-md ring-1 ring-black ring-opacity-5 shadow-lg origin-top-right focus:outline-none"
-                   role="menu"
-                   aria-orientation="vertical"
-                   aria-labelledby="user-menu-button"
-                   tabindex="-1">
-                  {% if user.is_authenticated %}
-                  <a href="{% url 'settings' %}"
-                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-300"
-                     role="menuitem"
-                     data-action="dropdown#toggle"
-                     tabindex="-1"
-                     id="user-menu-item-0">Settings</a>
-                  {% endif %}
-                  <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a> -->
-                  <a href="{% url 'account_logout' %}"
-                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-300"
-                     role="menuitem"
-                     data-action="dropdown#toggle"
-                     tabindex="-1"
-                     id="user-menu-item-2">Sign out</a>
-              </div>
-          </div>
-          {% else %}
-            <a href="{% url 'account_login' %}" class="text-base font-semibold leading-6 text-gray-900">
-              Log in <span aria-hidden="true">&rarr;</span>
-            </a>
-          {% endif %}
-        </div>
-      </nav>
-
-      <!-- Mobile menu, show/hide based on menu open state. -->
-      <div
-        data-dropdown-target="menu"
-        class="lg:hidden" role="dialog" aria-modal="true"
-      >
-        <!-- Background backdrop, show/hide based on slide-over state. -->
-        <div class="fixed inset-0 z-10"></div>
-        <div class="overflow-y-auto fixed inset-y-0 right-0 z-10 px-6 py-6 w-full bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div class="flex justify-between items-center">
-            <a href="{% url 'home' %}" class="p-1.5 -m-1.5">
-              <span class="sr-only">TalentLeads</span>
-              <img class="w-auto h-8" src="{% static 'vendors/images/logo-2.png' %}" alt="TalentLeads Logo"/>
-            </a>
-            <button data-action="dropdown#toggle click@window->dropdown#hide" type="button" class="p-2.5 -m-2.5 text-gray-700 rounded-md">
-              <span class="sr-only">Close menu</span>
-              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          <div class="flow-root mt-6">
-            <div class="-my-6 divide-y divide-gray-500/10">
-              <div class="py-6 space-y-2">
-                <a href="{% url 'profiles' %}" class="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50">Profiles</a>
-                <a href="{% url 'blog_posts' %}" class="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50">Blog</a>
-                {% if user.is_authenticated %}
-                  <a href="{% url 'settings' %}" class="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50">Support</a>
-                {% else %}
-                  <a href="{% url 'pricing' %}" class="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50">Pricing</a>
-                {% endif %}
-
-              </div>
-              <div class="py-6">
-                <a href="{% url 'account_login' %}" class="block px-3 py-2.5 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50">Log in</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div class="px-2 sm:px-0">
-      {% block content %}
-      {% endblock content %}
-    </div>
-
-    <footer class="bg-white">
-      <div class="px-6 py-12 mx-auto max-w-7xl md:flex md:items-center md:justify-between lg:px-8">
-        <div class="mt-8 md:mt-0">
-          <p class="text-xs leading-5 text-center text-gray-500">
-            &copy; 2024 <a href="https://lvtd.dev" target="_blank">LVTD, LLC</a>. All rights reserved.
-          </p>
-        </div>
-        <div class="text-xs leading-5 text-center text-gray-500">
-          <a href="https://statushen.cr.lvtd.dev/talentleads/" class="text-xs leading-5 text-center text-gray-500 underline">Status</a>
-        </div>
-      </div>
-    </footer>
-
-  </div>
-
-  {% block schema %}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "TalentLeads",
-      "description": "Searchable Database of HN users **Who Want to be Hired**.",
-      "thumbnailUrl": "https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}",
-      "url": "https://{{ request.get_host }}/",
-      "author": {
-        "@type": "Person",
-        "givenName": "Rasul",
-        "familyName": "Kireev",
-        "url": "https://rasulkireev.com/"
+        {% block schema %}
+            <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "TalentLeads",
+        "description": "Agent-ready talent sourcing for teams that need signal, not resume noise.",
+        "thumbnailUrl": "https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}",
+        "url": "https://{{ request.get_host }}/",
+        "author": {
+          "@type": "Person",
+          "givenName": "Rasul",
+          "familyName": "Kireev",
+          "url": "https://rasulkireev.com/"
+        }
       }
-    }
-    </script>
-  {% endblock schema %}
-
-</body>
+            </script>
+        {% endblock schema %}
+    </body>
 </html>

@@ -1,27 +1,22 @@
-{% load webpack_loader static %}
-{% load static %}
 {% load widget_tweaks %}
-
-<form action="" method="post">
-  {% csrf_token %}
-  <div class="overflow-hidden shadow sm:rounded-md">
-    <div class="px-4 py-5 bg-white sm:p-6">
-      <div class="grid grid-cols-6 gap-6">
-        {{ form.non_field_errors }}
-        <div class="col-span-6 sm:col-span-3">
-          {{ form.name.errors | safe }}
-          <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-          {% render_field form.name id="name" name="name" type="text" autocomplete="given-name" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %}
+<form action="" method="post" class="tl-panel overflow-hidden">
+    {% csrf_token %}
+    <div class="p-5 sm:p-6">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            {{ form.non_field_errors }}
+            <div>
+                {{ form.name.errors | safe }}
+                <label for="name" class="tl-label">Name</label>
+                {% render_field form.name id="name" name="name" type="text" autocomplete="name" class="tl-input mt-2" %}
+            </div>
+            <div>
+                {{ form.email.errors | safe }}
+                <label for="email-address" class="tl-label">Email</label>
+                {% render_field form.email id="email-address" name="email-address" type="email" autocomplete="email" class="tl-input mt-2" %}
+            </div>
         </div>
-        <div class="col-span-6 sm:col-span-3">
-          {{ form.email.errors | safe }}
-          <label for="email-address" class="block text-sm font-medium text-gray-700">Email</label>
-          {% render_field form.email id="email-address" name="email-address" type="text" autocomplete="email" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %}
-        </div>
-      </div>
     </div>
-    <div class="px-4 py-3 text-right bg-gray-50 sm:px-6">
-      <button type="submit" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Save</button>
+    <div class="border-t border-slate-200 bg-slate-50 px-5 py-4 text-right sm:px-6">
+        <button type="submit" class="tl-button-primary">Save changes</button>
     </div>
-  </div>
 </form>

@@ -1,84 +1,51 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
-
 {% block content %}
-
-<main class="bg-white lg:min-w-0 md:pt-10 lg:flex-1">
-  <div class="relative max-w-4xl mx-auto">
-    {% include "components/email-not-verified.html" with email_verified=email_verified %}
-    <div class="pt-10 pb-16">
-      {% include "account/components/settings-header.html" %}
-      <div class="px-4 sm:px-6 lg:px-0">
-        <div class="py-6">
-          {% include "account/components/settings-navigation.html" with page_name="settings" %}
-
-          <div class="mt-4">
-            <div class="md:grid md:grid-cols-3 md:gap-6">
-              <div class="md:col-span-1">
-                <div class="px-4 sm:px-0">
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
-                  <p class="mt-1 text-sm text-gray-600">
-                    This information is used only by us to improve the communication. People outside don't have access to this information.
-                  </p>
+    <section class="tl-container py-8 sm:py-12">
+        <div class="mx-auto max-w-5xl">
+            {% include "components/email-not-verified.html" with email_verified=email_verified %}
+            <div class="space-y-6">
+                {% include "account/components/settings-header.html" %}
+                {% include "account/components/settings-navigation.html" with page_name="settings" %}
+                <div class="grid gap-6 lg:grid-cols-12">
+                    <div class="lg:col-span-4">
+                        <h2 class="text-lg font-semibold text-slate-900">Personal information</h2>
+                        <p class="mt-2 text-sm leading-6 text-slate-600">
+                            This information helps TalentLeads support your account and communicate about sourcing workflows.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-8">{% include "account/components/personal-information-form.html" with form=form %}</div>
                 </div>
-              </div>
-              <div class="mt-5 md:col-span-2 md:mt-0">
-                {% include "account/components/personal-information-form.html" with form=form %}
-              </div>
-            </div>
-          </div>
-
-          <div class="block" aria-hidden="true">
-            <div class="py-5">
-              <div class="border-t border-gray-200"></div>
-            </div>
-          </div>
-
-          <div class="mt-4">
-            <div class="md:grid md:grid-cols-3 md:gap-6">
-              <div class="md:col-span-1">
-                <div class="px-4 sm:px-0">
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    Subscription:
-                    <span class="text-blue-700">
-                      {% if subscription.status == "active" %}
-                        Pro
-                      {% else %}
-                        Free
-                      {% endif %}
-                    </span>
-                  </h3>
-                  <p class="mt-1 text-sm text-gray-600">
-                    Here you can upgrade, cancel or change your payments information.
-                  </p>
+                <div class="grid gap-6 border-t border-slate-200 pt-6 lg:grid-cols-12">
+                    <div class="lg:col-span-4">
+                        <h2 class="text-lg font-semibold text-slate-900">
+                            Subscription
+                            <span class="ml-2 tl-pill-neutral">
+                                {% if subscription.status == "active" %}
+                                    Pro
+                                {% else %}
+                                    Free
+                                {% endif %}
+                            </span>
+                        </h2>
+                        <p class="mt-2 text-sm leading-6 text-slate-600">
+                            Manage billing access, payment information, or upgrade when you are ready to contact candidates.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-8">
+                        <div class="tl-panel p-5">
+                            {% if subscription.status %}
+                                <form method="post" action="{% url 'create-customer-portal-session' %}">
+                                    {% csrf_token %}
+                                    <button class="tl-button-primary" type="submit">Manage billing</button>
+                                </form>
+                            {% else %}
+                                <a class="tl-button-primary" href="{% url 'upgrade-user' %}">Upgrade account</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="flex items-center px-4 mt-5 md:col-span-2 md:mt-0">
-                {% if subscription.status %}
-                  <form method="post" action="{% url 'create-customer-portal-session' %}">
-                    {% csrf_token %}
-                    <button
-                      class="inline-flex items-center px-3 py-2 text-white bg-blue-600 border-2 border-transparent rounded-md hover:bg-blue-700"
-                      type="submit"
-                    >
-                      Manage
-                    </button>
-                  </form>
-                {% else %}
-                    <a
-                      class="inline-flex items-center px-3 py-2 text-white bg-blue-600 border-2 border-transparent rounded-md hover:bg-blue-700"
-                      href="{% url 'upgrade-user' %}"
-                    >
-                      Upgrade
-                    </a>
-                {% endif %}
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</main>
-
-  {% endblock content %}
+    </section>
+{% endblock content %}

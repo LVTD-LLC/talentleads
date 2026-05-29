@@ -1,288 +1,197 @@
 {% extends "base.html" %}
 {% load markdown_extras %}
 {% load widget_tweaks %}
-
 {% block content %}
-
-<div class="grid grid-cols-12 mx-auto mt-10 mb-16 overflow-hidden bg-white border border-gray-300 rounded-md sm:mb-24 max-w-7xl">
-  <div class="col-span-12 px-2 md:col-span-3 sm:px-4 sm:pt-4">
-    <form method="get">
-        <div data-controller="dropdown" class="py-4">
-          <div class="flex flex-row justify-between">
-            <label class="font-medium text-gray-900">Search</label>
-            <button type="button" class="p-1 rounded-full hover:bg-gray-100" data-action="dropdown#toggle click@->dropdown#hide">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </div>
-
-          {% if user.is_authenticated and subscription.status == "active" %}
-            <div class="hidden" data-dropdown-target="menu">
-              <div class="mb-2">
-                <label for="title" class="text-sm text-gray-700">Title</label>
-                {% render_field filter.form.title id="title" name="title" class="-mt-1 block w-full rounded border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6" %}
-              </div>
-              <div class="mb-2">
-                <label for="description" class="text-sm text-gray-700">Description</label>
-                {% render_field filter.form.description id="description" name="description" class="-mt-1 block w-full rounded border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6" %}
-              </div>
-              {% comment %} <div class="mb-2">
-                <label for="location" class="text-sm text-gray-700">Location</label>
-                {% render_field filter.form.location id="location" name="location" class="-mt-1 block w-full rounded border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6" %}
-              </div> {% endcomment %}
+    <section class="tl-container py-8 sm:py-10">
+        <div class="mb-6 grid gap-4 lg:grid-cols-12 lg:items-end">
+            <div class="lg:col-span-7">
+                <p class="tl-eyebrow">Talent workspace</p>
+                <h1 class="mt-2 text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-5xl">
+                    Search profiles with sourcing context attached.
+                </h1>
             </div>
-          {% else %}
-            <a data-dropdown-target="menu" class="hidden group flex items-center bg-gray-50 max-w-sm border border-gray-300 hover:border-gray-400 border-dashed rounded-lg mt-2 p-1.5 px-2.5" href="{% url 'pricing' %}">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-400 group-hover:hidden" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2 rotate-[-8deg] transition hidden group-hover:block" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z"/>
-            </svg>
-
-                <span class="block text-xs font-medium text-gray-600">Text search requires a paid account</span>
-            </a>
-          {% endif %}
+            <p class="max-w-2xl text-sm leading-6 text-slate-600 lg:col-span-5">
+                Filter by role, location, seniority, capacity, and stack. Open a profile when the signal is strong enough for outreach.
+            </p>
         </div>
-        <div data-controller="dropdown" class="py-4 border-t border-gray-200">
-          <div class="flex flex-row justify-between">
-            <div class="font-medium text-gray-900">Location</div>
-            <button type="button" class="p-1 rounded-full hover:bg-gray-100" data-action="dropdown#toggle click->dropdown#hide">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </div>
-          <div data-dropdown-target="menu" class="hidden">
-            <div class="pb-2">
-              <label for="city" class="text-sm text-gray-900">City</label>
-              <div class="px-2 -mt-1 overflow-auto border border-gray-200 rounded max-h-40">
-                {% render_field filter.form.city id="city" name="city" class="text-gray-600 rounded" %}
-              </div>
+        <div class="grid gap-5 lg:grid-cols-12">
+            <aside class="lg:col-span-4 xl:col-span-3">
+                <form method="get" class="tl-panel p-4">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                        <div>
+                            <h2 class="text-base font-semibold text-slate-900">Filters</h2>
+                            <p class="mt-1 text-xs leading-5 text-slate-500">Tighten the search before opening profiles.</p>
+                        </div>
+                        <a href="{% url 'profiles' %}"
+                           class="text-sm font-semibold text-slate-600 hover:text-slate-900">Reset</a>
+                    </div>
+                    <div class="space-y-5 py-5">
+                        <div>
+                            {% if user.is_authenticated and subscription.status == "active" %}
+                                <label for="title" class="tl-label">Role title</label>
+                                {% render_field filter.form.title id="title" name="title" class="tl-input mt-2" placeholder="Backend engineer" %}
+                            {% else %}
+                                <p class="tl-label">Role title</p>
+                                <a class="mt-2 flex items-center justify-between gap-3 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-sm text-slate-600 hover:border-slate-400 hover:bg-white"
+                                   href="{% url 'pricing' %}">
+                                    <span>Text search requires business access</span>
+                                    <span aria-hidden="true">&rarr;</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                        {% if user.is_authenticated and subscription.status == "active" %}
+                            <div>
+                                <label for="description" class="tl-label">Description contains</label>
+                                {% render_field filter.form.description id="description" name="description" class="tl-input mt-2" placeholder="Django, ML, infra" %}
+                            </div>
+                        {% endif %}
+                        <div class="border-t border-slate-200 pt-5">
+                            <label for="city" class="tl-label">City</label>
+                            <div class="mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                                {% render_field filter.form.city id="city" name="city" class="space-y-2" %}
+                            </div>
+                        </div>
+                        <div>
+                            <label for="state" class="tl-label">State</label>
+                            <div class="mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                                {% render_field filter.form.state id="state" name="state" class="space-y-2" %}
+                            </div>
+                        </div>
+                        <div>
+                            <label for="country" class="tl-label">Country</label>
+                            <div class="mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                                {% render_field filter.form.country id="country" name="country" class="space-y-2" %}
+                            </div>
+                        </div>
+                        <div class="border-t border-slate-200 pt-5">
+                            <label for="level" class="tl-label">Level</label>
+                            <div class="mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                                {% render_field filter.form.level id="level" name="level" class="space-y-2" %}
+                            </div>
+                        </div>
+                        <div>
+                            <label for="capacity" class="tl-label">Capacity</label>
+                            <div class="mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                                {% render_field filter.form.capacity id="capacity" name="capacity" class="space-y-2" %}
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label for="years_of_experience__gt" class="tl-label">Min years</label>
+                                {% render_field filter.form.years_of_experience__gt id="years_of_experience__gt" name="years_of_experience__gt" class="tl-input mt-2" %}
+                            </div>
+                            <div>
+                                <label for="years_of_experience__lt" class="tl-label">Max years</label>
+                                {% render_field filter.form.years_of_experience__lt id="years_of_experience__lt" name="years_of_experience__lt" class="tl-input mt-2" %}
+                            </div>
+                        </div>
+                        <div class="border-t border-slate-200 pt-5">
+                            <label for="tech_stack" class="tl-label">Tech stack</label>
+                            <div class="mt-2 max-h-64 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                                {% render_field filter.form.tech_stack id="tech_stack" name="tech_stack" class="space-y-2" %}
+                            </div>
+                        </div>
+                        <div>
+                            <label for="who_wants_to_be_hired_title" class="tl-label">Month and year</label>
+                            <div class="mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                                {% render_field filter.form.who_wants_to_be_hired_title id="who_wants_to_be_hired_title" name="who_wants_to_be_hired_title" class="space-y-2" %}
+                            </div>
+                        </div>
+                        <div>
+                            <label for="willing_to_relocate" class="tl-label">Willing to relocate</label>
+                            <div class="mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                                {% render_field filter.form.willing_to_relocate id="willing_to_relocate" name="willing_to_relocate" class="space-y-2" %}
+                            </div>
+                        </div>
+                        <div>
+                            <label for="is_remote" class="tl-label">Remote</label>
+                            {% render_field filter.form.is_remote id="is_remote" name="is_remote" class="tl-input mt-2" %}
+                        </div>
+                    </div>
+                    <div class="-mx-4 -mb-4 border-t border-slate-200 bg-slate-50 p-4">
+                        <button type="submit" class="tl-button-primary w-full">Apply filters</button>
+                    </div>
+                </form>
+            </aside>
+            <div class="lg:col-span-8 xl:col-span-9">
+                <div class="tl-panel overflow-hidden">
+                    <div class="flex items-center justify-between border-b border-slate-200 px-4 py-3 sm:px-5">
+                        <h2 class="text-sm font-semibold text-slate-900">Candidate results</h2>
+                        {% if page_obj %}
+                            <p class="text-xs font-medium text-slate-500">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+                        {% endif %}
+                    </div>
+                    <ul role="list" class="divide-y divide-slate-200">
+                        {% for profile in page_obj %}
+                            <li>
+                                <a class="group block bg-white px-4 py-5 hover:bg-slate-50 sm:px-6"
+                                   href="{% url 'profile' profile.id %}">
+                                    <div class="flex flex-col gap-4">
+                                        <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                                            <h3 class="max-w-3xl text-xl font-semibold tracking-tight text-slate-900 group-hover:text-blue-700"
+                                                title="{{ profile.title }}">{{ profile.title }}</h3>
+                                            <span class="hidden rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600 group-hover:border-slate-300 lg:inline-flex">
+                                                View profile
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            {% if profile.city and profile.country %}
+                                                <span class="tl-pill-neutral">{{ profile.city }}, {{ profile.country }}</span>
+                                            {% elif profile.location %}
+                                                <span class="tl-pill-neutral">{{ profile.location }}</span>
+                                            {% endif %}
+                                            {% if profile.level %}<span class="tl-pill-neutral">{{ profile.level }}</span>{% endif %}
+                                            {% if profile.willing_to_relocate == 'Yes' %}<span class="tl-pill-neutral">Willing to relocate</span>{% endif %}
+                                            {% if profile.is_remote %}<span class="tl-pill">Remote</span>{% endif %}
+                                            <span class="tl-pill-neutral">{{ profile.who_wants_to_be_hired_title }}</span>
+                                        </div>
+                                        <div class="max-w-4xl text-base leading-7 text-slate-600">
+                                            <p class="break-words line-clamp-3">{{ profile.description | truncatechars:420 | markdown | safe }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li class="px-6 py-16 text-center">
+                                <h3 class="text-2xl font-semibold tracking-tight text-slate-900">No candidates match those filters.</h3>
+                                <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-600">
+                                    Try widening the role, location, or stack requirements. Talent data is sparse by nature, so strict filters can hide useful candidates.
+                                </p>
+                                <a href="{% url 'profiles' %}" class="tl-button-secondary mt-6">Clear filters</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <nav class="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-3 sm:px-6"
+                         aria-label="Pagination">
+                        <div class="hidden sm:block">
+                            <p class="text-sm text-slate-600">
+                                Showing page <span class="font-semibold text-slate-900">{{ page_obj.number }}</span>
+                                of <span class="font-semibold text-slate-900">{{ page_obj.paginator.num_pages }}</span>
+                            </p>
+                        </div>
+                        <div class="flex flex-1 justify-between gap-3 sm:justify-end">
+                            {% if page_obj.has_previous %}
+                                {% if 'title' in request.get_full_path %}
+                                    <a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}"
+                                       class="tl-button-secondary">Previous</a>
+                                {% else %}
+                                    <a href="?page={{ page_obj.previous_page_number }}"
+                                       class="tl-button-secondary">Previous</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                                {% if 'title' in request.get_full_path %}
+                                    <a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}"
+                                       class="tl-button-secondary">Next</a>
+                                {% else %}
+                                    <a href="?page={{ page_obj.next_page_number }}"
+                                       class="tl-button-secondary">Next</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </nav>
+                </div>
             </div>
-            <div class="pb-2">
-              <label for="state" class="text-sm text-gray-900">State</label>
-              <div class="px-2 -mt-1 overflow-auto border border-gray-200 rounded max-h-40">
-                {% render_field filter.form.state id="state" name="state" class="text-gray-600 rounded" %}
-              </div>
-            </div>
-            <div class="pb-2">
-              <label for="country" class="text-sm text-gray-900">Country</label>
-              <div class="px-2 -mt-1 overflow-auto border border-gray-200 rounded max-h-40">
-                {% render_field filter.form.country id="country" name="country" class="text-gray-600 rounded" %}
-              </div>
-            </div>
-          </div>
         </div>
-        <div data-controller="dropdown" class="py-4 border-t border-gray-200">
-          <div class="flex flex-row justify-between">
-            <label for="level" class="font-medium text-gray-900">Level</label>
-            <button type="button" class="p-1 rounded-full hover:bg-gray-100" data-action="dropdown#toggle click->dropdown#hide">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </div>
-
-          <div class="hidden p-2 mt-2 border border-gray-200 rounded" data-dropdown-target="menu">
-            {% render_field filter.form.level id="level" name="level" class="text-gray-600 rounded" %}
-          </div>
-        </div>
-        <div data-controller="dropdown" class="py-4 border-t border-gray-200">
-          <div class="flex flex-row justify-between">
-            <label for="capacity" class="font-medium text-gray-900">Capacity</label>
-            <button type="button" class="p-1 rounded-full hover:bg-gray-100" data-action="dropdown#toggle click->dropdown#hide">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </div>
-          <div class="p-2 mt-2 border border-gray-200 rounded" data-dropdown-target="menu">
-            {% render_field filter.form.capacity id="capacity" name="capacity" class="text-gray-600 rounded" %}
-          </div>
-        </div>
-        <div data-controller="dropdown" class="py-4 border-t border-gray-200">
-          <div class="flex flex-row justify-between">
-            <label class="font-medium text-gray-900">Years of Experience</label>
-            <button type="button" class="p-1 rounded-full hover:bg-gray-100" data-action="dropdown#toggle click@window->dropdown#hide">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </div>
-          <div class="p-2 mt-2" data-dropdown-target="menu">
-            <div>
-              <label for="years_of_experience__gt" class="text-sm text-gray-700">Greater than</label>
-              {% render_field filter.form.years_of_experience__gt id="years_of_experience__gt" name="years_of_experience__gt" class="mt-2 block w-full rounded border-0 py-1.5 pl-3 text-gray-900 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6" %}
-            </div>
-            <div>
-              <label for="years_of_experience__lt" class="text-sm text-gray-700">Less than</label>
-              {% render_field filter.form.years_of_experience__lt id="years_of_experience__lt" name="years_of_experience__lt" class="mt-2 block w-full rounded border-0 py-1.5 pl-3 text-gray-900 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6" %}
-            </div>
-          </div>
-        </div>
-        <div data-controller="dropdown" class="py-4 border-t border-gray-200">
-          <div class="flex flex-row justify-between">
-            <label for="tech_stack" class="font-medium text-gray-900">Tech Stack</label>
-            <button type="button" class="p-1 rounded-full hover:bg-gray-100" data-action="dropdown#toggle click@window->dropdown#hide">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </div>
-          <div class="px-2 mt-2 overflow-auto border border-gray-200 rounded max-h-64" data-dropdown-target="menu">
-            {% render_field filter.form.tech_stack id="tech_stack" name="tech_stack" class="my-2 text-gray-600 rounded" %}
-          </div>
-        </div>
-        <div data-controller="dropdown" class="py-4 border-t border-gray-200">
-          <div class="flex flex-row justify-between">
-            <label for="who_wants_to_be_hired_title" class="font-medium text-gray-900">Month/Year</label>
-            <button type="button" class="p-1 rounded-full hover:bg-gray-100" data-action="dropdown#toggle click@window->dropdown#hide">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </div>
-          <div class="p-2 mt-2 border border-gray-200 rounded" data-dropdown-target="menu">
-            {% render_field filter.form.who_wants_to_be_hired_title id="who_wants_to_be_hired_title" name="who_wants_to_be_hired_title" class="text-gray-600 rounded" %}
-          </div>
-        </div>
-        <div data-controller="dropdown" class="py-4 border-t border-gray-200">
-          <div class="flex flex-row justify-between">
-            <label for="willing_to_relocate" class="font-medium text-gray-900">Willing to Relocate</label>
-            <button type="button" class="p-1 rounded-full hover:bg-gray-100" data-action="dropdown#toggle click->dropdown#hide">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </div>
-          <div data-dropdown-target="menu" class="px-2 mt-2 overflow-auto border border-gray-200 rounded max-h-64">
-            {% render_field filter.form.willing_to_relocate id="willing_to_relocate" name="willing_to_relocate" class="text-gray-600 rounded" %}
-          </div>
-        </div>
-        <div class="py-4 border-t border-gray-200" data-controller="dropdown">
-          <div class="flex flex-row justify-between">
-            <label for="is_remote" class="font-medium text-gray-900">Remote</label>
-            <button type="button" class="p-1 rounded-full hover:bg-gray-100" data-action="dropdown#toggle click->dropdown#hide">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </div>
-          {% render_field filter.form.is_remote id="is_remote" name="is_remote" data-dropdown-target="menu" class="mt-2 block w-full rounded border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6" %}
-        </div>
-        <div class="flex space-x-2">
-          <a href="{% url 'profiles' %}" class="px-4 py-2 mb-4 text-base font-semibold bg-gray-100 rounded-md shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Reset</a>
-          <button type="submit" class="px-4 py-2 mb-4 text-base font-semibold text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Filter</button>
-        </div>
-    </form>
-  </div>
-
-  <div class="col-span-12 border-l md:col-span-9">
-    <ul role="list" class="divide-y divide-gray-300">
-      {% for profile in page_obj %}
-      <li>
-        <a class="flex px-6 py-4 space-x-4 bg-white hover:bg-gray-50 sm:space-x-8" href="{% url 'profile' profile.id %}">
-          <div class="self-start flex-1 min-w-0 space-y-3">
-            <div class="flex items-baseline">
-              <h2 class="text-xl font-medium text-gray-900 sm:text-xl line-clamp-2 break-word" title="{{ profile.title }}">{{ profile.title }}</h2>
-            </div>
-            <div class="flex flex-col items-start space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-              <div class="space-x-2 space-y-2 text-lg text-gray-700 sm:text-base">
-                {% if profile.location %}
-                <span class="inline-flex items-center rounded-md bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-0.5 mr-1.5 h-4 w-4 text-blue-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                  </svg>
-                  {% if profile.city and profile.country %}
-                    {{ profile.city }}, {{ profile.country }}
-                  {% elif profile.location %}
-                    {{ profile.location }}
-                  {% endif %}
-                </span>
-                {% endif %}
-
-                {% if profile.level %}
-                <span class="inline-flex items-center rounded-md bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-0.5 mr-1.5 h-4 w-4 text-blue-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l7.5-7.5 7.5 7.5m-15 6l7.5-7.5 7.5 7.5" />
-                  </svg>
-                  {{ profile.level }}
-                </span>
-                {% endif %}
-
-                {% if profile.willing_to_relocate == 'Yes' %}
-                <span class="inline-flex items-center rounded-md bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-0.5 mr-1.5 h-4 w-4 text-blue-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 01-1.161.886l-.143.048a1.107 1.107 0 00-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 01-1.652.928l-.679-.906a1.125 1.125 0 00-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 00-8.862 12.872M12.75 3.031a9 9 0 016.69 14.036m0 0l-.177-.529A2.25 2.25 0 0017.128 15H16.5l-.324-.324a1.453 1.453 0 00-2.328.377l-.036.073a1.586 1.586 0 01-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 01-5.276 3.67m0 0a9 9 0 01-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25" />
-                  </svg>
-                  Willing to Relocate
-                </span>
-                {% endif %}
-
-                {% if profile.is_remote %}
-                <span class="inline-flex items-center rounded-md bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-0.5 mr-1.5 h-4 w-4 text-blue-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                  </svg>
-                  Remote
-                </span>
-                {% endif %}
-
-                <span class="inline-flex items-center rounded-md bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-0.5 mr-1.5 h-4 w-4 text-blue-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                  </svg>
-                  {{ profile.who_wants_to_be_hired_title }}
-                </span>
-              </div>
-            </div>
-            <div class="flex items-center justify-between">
-              <div class="text-lg text-gray-700 sm:text-base">
-                <p class="break-words line-clamp-3">{{ profile.description | truncatechars:400 | markdown | safe }}</p>
-              </div>
-            </div>
-          </div>
-        </a>
-      </li>
-      {% empty %}
-        <div class="max-w-2xl mx-auto my-16 text-center">
-          <p class="text-4xl font-semibold tracking-tight text-gray-900">Unfortunately such uniqie candidated don't exist yet.</p>
-        </div>
-      {% endfor %}
-    </ul>
-
-    <nav class="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6" aria-label="Pagination">
-      <div class="hidden sm:block">
-        <p class="text-sm text-gray-700">
-          Showing page
-          <span class="font-medium">{{ page_obj.number }}</span>
-          of
-          <span class="font-medium">{{ page_obj.paginator.num_pages }}</span>
-        </p>
-      </div>
-
-      <div class="flex justify-between flex-1 sm:justify-end">
-        {% if page_obj.has_previous %}
-          {% if 'title' in request.get_full_path %}
-            <a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0">Previous</a>
-          {% else %}
-            <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0">Previous</a>
-          {% endif %}
-        {% endif %}
-
-        {% if page_obj.has_next %}
-          {% if 'title' in request.get_full_path %}
-            <a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}" class="relative inline-flex items-center px-3 py-2 ml-3 text-sm font-semibold text-gray-900 bg-white rounded-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0">Next</a>
-          {% else %}
-            <a href="?page={{ page_obj.next_page_number }}" class="relative inline-flex items-center px-3 py-2 ml-3 text-sm font-semibold text-gray-900 bg-white rounded-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0">Next</a>
-          {% endif %}
-        {% endif %}
-      </div>
-    </nav>
-  </div>
-
-</div>
+    </section>
 {% endblock content %}

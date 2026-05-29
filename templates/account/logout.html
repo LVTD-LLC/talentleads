@@ -1,20 +1,26 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
-
 {% block content %}
-    <div class="mx-auto my-4 prose md:my-10 lg:prose-lg">
-        <h1 class="text-center">Please confirm Sign Out</h1>
-        <form method="post" class="flex flex-row justify-center" action="{% url 'account_logout' %}">
-            {% csrf_token %}
-
-            {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-            {% endif %}
-
-            <button class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-red-600 border border-transparent border-solid rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    type="submit">
-                Sign Out
-            </button>
-        </form>
-    </div>
+    {% url 'home' as home_url %}
+    <section class="tl-container grid min-h-[calc(100dvh-12rem)] items-center py-12">
+        <div class="tl-panel mx-auto max-w-md p-8 text-center">
+            <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Sign out?</h1>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+                You can sign back in whenever you need to search profiles or manage outreach.
+            </p>
+            <form method="post"
+                  class="mt-6 flex justify-center gap-3"
+                  action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                {% if redirect_field_value %}
+                    <input type="hidden"
+                           name="{{ redirect_field_name }}"
+                           value="{{ redirect_field_value }}" />
+                {% endif %}
+                <a href="{{ redirect_field_value|default:home_url }}"
+                   class="tl-button-secondary">Stay signed in</a>
+                <button class="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
+                        type="submit">Sign out</button>
+            </form>
+        </div>
+    </section>
 {% endblock content %}

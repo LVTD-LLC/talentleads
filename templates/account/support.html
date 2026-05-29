@@ -1,48 +1,38 @@
 {% extends "base.html" %}
 {% load markdown_extras %}
 {% load widget_tweaks %}
-
 {% block content %}
-
-<main class="bg-white lg:min-w-0 md:pt-10 lg:flex-1">
-  <div class="relative max-w-4xl mx-auto">
-    {% include "components/email-not-verified.html" with email_verified=email_verified %}
-    <div class="pt-10 pb-16">
-      {% include "account/components/settings-header.html" %}
-      <div class="px-4 sm:px-6 lg:px-0">
-        <div class="py-6">
-          {% include "account/components/settings-navigation.html" with page_name="support" %}
-          <div class="mt-4">
-            <div class="md:grid md:grid-cols-3 md:gap-6">
-              <div class="md:col-span-1">
-                <div class="px-4 sm:px-0">
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">Support</h3>
-                  <p class="mt-1 text-sm text-gray-600">
-                    Feel free to send me bugs, suggestions or anything else that comes to your mind.
-                  </p>
+    <section class="tl-container py-8 sm:py-12">
+        <div class="mx-auto max-w-5xl">
+            {% include "components/email-not-verified.html" with email_verified=email_verified %}
+            <div class="space-y-6">
+                {% include "account/components/settings-header.html" %}
+                {% include "account/components/settings-navigation.html" with page_name="support" %}
+                <div class="grid gap-6 lg:grid-cols-12">
+                    <div class="lg:col-span-4">
+                        <h2 class="text-lg font-semibold text-slate-900">Support</h2>
+                        <p class="mt-2 text-sm leading-6 text-slate-600">
+                            Send bugs, candidate-data issues, billing questions, or workflow suggestions directly from your workspace.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-8">
+                        <form method="post"
+                              enctype="multipart/form-data"
+                              class="tl-panel overflow-hidden">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="p-5 sm:p-6">
+                                {{ form.message.errors }}
+                                <label for="comment" class="tl-label">Message</label>
+                                {% render_field form.message rows="8" name="comment" id="comment" class="tl-input mt-2 min-h-48" placeholder="Tell us what happened or what you want to improve." %}
+                            </div>
+                            <div class="border-t border-slate-200 bg-slate-50 px-5 py-4 text-right sm:px-6">
+                                <button type="submit" class="tl-button-primary">Send message</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-              </div>
-              <div class="mt-5 md:col-span-2 md:mt-0">
-                <form method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  {{ form.non_field_errors }}
-                  <div class="my-2">
-                    {{ form.message.errors }}
-                    <label for="comment" class="hidden text-sm font-medium leading-6 text-gray-900">Add your comment</label>
-                    {% render_field form.message rows="8" name="comment" id="comment" class="text-lg block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:py-1.5 sm:text-sm sm:leading-6" %}
-                  </div>
-                  <button type="submit" class="rounded-md bg-blue-600 py-2.5 px-3.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                    Submit
-                  </button>
-                </form>
-              </div>
             </div>
-          </div>
-
         </div>
-      </div>
-    </div>
-  </div>
-</main>
-
+    </section>
 {% endblock content %}
