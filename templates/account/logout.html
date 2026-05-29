@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+    {% url 'home' as home_url %}
     <section class="tl-container grid min-h-[calc(100dvh-12rem)] items-center py-12">
         <div class="tl-panel mx-auto max-w-md p-8 text-center">
             <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Sign out?</h1>
@@ -15,7 +16,8 @@
                            name="{{ redirect_field_name }}"
                            value="{{ redirect_field_value }}" />
                 {% endif %}
-                <a href="{% url 'home' %}" class="tl-button-secondary">Stay signed in</a>
+                <a href="{{ redirect_field_value|default:home_url }}"
+                   class="tl-button-secondary">Stay signed in</a>
                 <button class="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
                         type="submit">Sign out</button>
             </form>

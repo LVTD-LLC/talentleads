@@ -76,9 +76,11 @@
                             <div data-controller="dropdown" class="relative">
                                 <button type="button"
                                         data-action="dropdown#toggle click@window->dropdown#hide"
+                                        data-dropdown-target="button"
                                         class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-white ring-1 ring-slate-200 hover:ring-slate-300"
                                         id="user-menu-button"
                                         aria-expanded="false"
+                                        aria-controls="user-menu"
                                         aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
                                     <img class="h-8 w-8 rounded-md object-cover"
@@ -87,6 +89,7 @@
                                 </button>
                                 <div data-dropdown-target="menu"
                                      class="hidden absolute right-0 mt-2 w-48 origin-top-right rounded-lg border border-slate-200 bg-white p-1 shadow-lg"
+                                     id="user-menu"
                                      role="menu"
                                      aria-orientation="vertical"
                                      aria-labelledby="user-menu-button"
@@ -109,7 +112,10 @@
                         {% endif %}
                     </div>
                     <button data-action="dropdown#toggle click@window->dropdown#hide"
+                            data-dropdown-target="button"
                             type="button"
+                            aria-expanded="false"
+                            aria-controls="mobile-navigation"
                             class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-800 lg:hidden">
                         <span class="sr-only">Open main menu</span>
                         <svg class="h-5 w-5"
@@ -123,8 +129,10 @@
                     </button>
                 </nav>
                 <div data-dropdown-target="menu"
+                     id="mobile-navigation"
                      class="hidden lg:hidden"
                      role="dialog"
+                     aria-label="Site navigation"
                      aria-modal="true">
                     <div class="fixed inset-0 z-40 bg-slate-900/20"></div>
                     <div class="fixed inset-x-3 top-3 z-50 rounded-lg border border-slate-200 bg-white p-4 shadow-xl">

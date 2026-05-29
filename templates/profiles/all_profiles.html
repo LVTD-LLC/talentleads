@@ -27,10 +27,11 @@
                     </div>
                     <div class="space-y-5 py-5">
                         <div>
-                            <label for="title" class="tl-label">Role title</label>
                             {% if user.is_authenticated and subscription.status == "active" %}
+                                <label for="title" class="tl-label">Role title</label>
                                 {% render_field filter.form.title id="title" name="title" class="tl-input mt-2" placeholder="Backend engineer" %}
                             {% else %}
+                                <p class="tl-label">Role title</p>
                                 <a class="mt-2 flex items-center justify-between gap-3 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-sm text-slate-600 hover:border-slate-400 hover:bg-white"
                                    href="{% url 'pricing' %}">
                                     <span>Text search requires business access</span>
