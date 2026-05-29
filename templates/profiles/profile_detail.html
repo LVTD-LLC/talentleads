@@ -230,8 +230,8 @@
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Candidate Profile - {{ object.title }}",
-    "description": "{{ object.description }}",
+    "name": "Candidate Profile - {{ object.title|escapejs }}",
+    "description": "{{ object.description|escapejs }}",
     "url": "https://{{ request.get_host }}/profiles/{{ object.id }}"
   }
     </script>
