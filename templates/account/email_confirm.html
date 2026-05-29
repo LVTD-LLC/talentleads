@@ -22,7 +22,10 @@
             {% else %}
                 <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Confirmation link expired</h1>
                 <p class="mx-auto mt-4 max-w-md text-sm leading-6 text-slate-600">
-                    This email confirmation link is invalid or no longer active. Please request a new confirmation email from your account settings.
+                    This email confirmation link is invalid or no longer active.
+                    <a class="font-semibold text-blue-700 underline underline-offset-4 hover:text-blue-800"
+                       href="{% url 'account_email' %}">Request a new confirmation email</a>
+                    from your account settings.
                 </p>
             {% endif %}
         </div>
