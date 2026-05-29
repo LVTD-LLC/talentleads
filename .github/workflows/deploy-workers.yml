@@ -44,7 +44,8 @@ jobs:
           tags: ${{ steps.image.outputs.image_name }}
 
       - name: Deploy to CapRover
-        uses: caprover/deploy-from-github@main
+        # caprover/deploy-from-github v1.2.0
+        uses: caprover/deploy-from-github@c221bd9d1c3a55de4c2b66c0dc4a3972d04c027c
         with:
           server: ${{ secrets.CAPROVER_SERVER }}
           app: ${{ env.PROJECT_NAME }}-workers
