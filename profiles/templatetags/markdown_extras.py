@@ -19,6 +19,8 @@ extension_configs = {
     }
 }
 
+# Candidate descriptions are sourced from public profile text. Images are
+# intentionally excluded to avoid hotlinked/tracking media in profile views.
 ALLOWED_TAGS = {
     "a",
     "blockquote",
@@ -68,6 +70,12 @@ class SanitizingHTMLParser(HTMLParser):
         self.parts = []
 
     def handle_starttag(self, tag, attrs):
+        if tag == "img":
+            alt_text = next((value for name, value in attrs if name == "alt" and value), "")
+            if alt_text:
+                self.parts.append(escape(alt_text))
+            return
+
         if tag not in ALLOWED_TAGS:
             return
 

@@ -85,3 +85,9 @@ class MarkdownFilterTests(TestCase):
 
         self.assertIn("<code>a &lt; b &amp;&amp; c &gt; d</code>", rendered)
         self.assertNotIn("&amp;lt;", rendered)
+
+    def test_markdown_strips_images_from_profile_descriptions(self):
+        rendered = str(markdown("![tracking pixel](https://example.com/pixel.gif)"))
+
+        self.assertNotIn("<img", rendered)
+        self.assertIn("tracking pixel", rendered)
