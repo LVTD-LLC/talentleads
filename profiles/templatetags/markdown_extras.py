@@ -7,7 +7,6 @@ from urllib.parse import urlparse
 import markdown as md
 from django import template
 from django.template.defaultfilters import stringfilter
-from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
 register = template.Library()
@@ -115,7 +114,7 @@ def sanitize_html(html):
 @stringfilter
 def markdown(value):
     html = md.markdown(
-        conditional_escape(value),
+        value,
         extensions=[
             "markdown.extensions.fenced_code",
             "markdown.extensions.codehilite",

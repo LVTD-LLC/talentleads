@@ -73,9 +73,15 @@ class MarkdownFilterTests(TestCase):
         rendered = str(markdown("<script>alert('xss')</script>"))
 
         self.assertNotIn("<script>", rendered)
-        self.assertIn("&lt;script&gt;", rendered)
+        self.assertIn("alert", rendered)
 
     def test_markdown_drops_unsafe_link_protocols(self):
         rendered = str(markdown("[bad](javascript:alert(1))"))
 
         self.assertNotIn("javascript:", rendered)
+
+    def test_markdown_preserves_code_span_special_characters(self):
+        rendered = str(markdown("`a < b && c > d`"))
+
+        self.assertIn("<code>a &lt; b &amp;&amp; c &gt; d</code>", rendered)
+        self.assertNotIn("&amp;lt;", rendered)
