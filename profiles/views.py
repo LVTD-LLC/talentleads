@@ -21,13 +21,16 @@ logger = get_talentleads_logger(__name__)
 class ProfileListView(FilterView):
     model = Profile
     template_name = "profiles/all_profiles.html"
-    queryset = Profile.objects.all()
+    queryset = Profile.objects.prefetch_related("tech_stack").order_by("-created", "-id")
     filterset_class = ProfileFilter
     paginate_by = 11
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["num_of_profiles"] = floor_to_tens(len(Profile.objects.all()))
+        context["num_of_profiles"] = floor_to_tens(Profile.objects.count())
+        query_params = self.request.GET.copy()
+        query_params.pop("page", None)
+        context["profile_querystring"] = query_params.urlencode()
 
         user = self.request.user
         if user.is_authenticated:
