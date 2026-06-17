@@ -123,8 +123,8 @@ services:
     entrypoint: >
       /bin/sh -c "
       sleep 5 &&
-      /usr/bin/mc config host add myminio http://minio:9000 talentleads talentleads &&
-      /usr/bin/mc mb myminio/talentleads-dev &&
+      /usr/bin/mc config host add myminio http://minio:9000 talentleads-user talentleads-password &&
+      /usr/bin/mc mb --ignore-existing myminio/talentleads-dev &&
       /usr/bin/mc anonymous set download myminio/talentleads-dev &&
       exit 0;
       "

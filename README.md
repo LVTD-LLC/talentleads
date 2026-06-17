@@ -21,9 +21,11 @@ The product is built for startup founders, operators, and recruiting teams that 
 - PostgreSQL with pgvector
 - Redis and django-q2 for background jobs
 - Pydantic AI with Gemini for profile extraction
+- OpenAI SDK for AI-assisted workflows
 - Jina embeddings for semantic profile vectors
 - django-allauth for accounts
 - Stripe, dj-stripe, and Mailgun/Anymail for billing and email
+- MinIO for local S3-compatible media storage
 - Tailwind CSS, Webpack, Stimulus, and Turbo for the frontend
 - Docker Compose for local development
 - GitHub Actions, GHCR, and CapRover for production deploys
@@ -100,6 +102,20 @@ make serve
 ```
 
 The app runs at [http://localhost:8010](http://localhost:8010). The frontend dev server runs on port `9091`, MailHog is available at [http://localhost:8025](http://localhost:8025), and the backend runs migrations automatically during startup.
+
+The Compose stack also starts Redis on host port `6377`, PostgreSQL on host port `5433`, MinIO on [http://localhost:9000](http://localhost:9000) with its console on [http://localhost:9001](http://localhost:9001), and a Stripe CLI listener for local webhook forwarding when Stripe credentials are configured.
+
+Leave `AWS_S3_ENDPOINT_URL` blank to use local filesystem media storage. To test S3-compatible storage through the bundled MinIO service from Django containers, use:
+
+```env
+AWS_S3_ENDPOINT_URL=http://minio:9000
+AWS_ACCESS_KEY_ID=talentleads-user
+AWS_SECRET_ACCESS_KEY=talentleads-password
+```
+
+The `createbuckets` helper service is configured to create a `talentleads-dev` bucket for local media testing.
+
+The Stripe CLI service reads `STRIPE_TEST_SECRET_KEY`, `DJSTRIPE_WEBHOOK_SECRET`, and `WEBHOOK_UUID`, then forwards events to `/stripe/webhook/<WEBHOOK_UUID>/`. Use `make test-webhook` after those values are set.
 
 Useful follow-up commands:
 
