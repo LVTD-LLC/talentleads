@@ -40,10 +40,14 @@
                     {% for post in posts %}
                         <article class="tl-card tl-card-hover flex overflow-hidden flex-col">
                             {% if post.image %}
-                                <a href="{{ post.get_absolute_url }}" class="block overflow-hidden">
+                                <a href="{{ post.get_absolute_url }}" class="block aspect-video overflow-hidden">
                                     <img src="{{ post.image.url }}"
                                          alt="{{ post.title }}"
-                                         class="h-48 w-full object-cover transition-transform duration-300 hover:scale-[1.03]" />
+                                         width="768"
+                                         height="432"
+                                         loading="lazy"
+                                         decoding="async"
+                                         class="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]" />
                                 </a>
                             {% endif %}
                             <div class="flex flex-1 flex-col p-6">

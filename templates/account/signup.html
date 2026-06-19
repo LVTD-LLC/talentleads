@@ -6,7 +6,7 @@
             <div class="hidden bg-slate-900 p-10 text-white lg:block">
                 <p class="text-sm font-semibold text-white/50">Start with the live database</p>
                 <p class="mt-5 text-4xl font-semibold tracking-[-0.03em]">Create an account before your next hiring push.</p>
-                <p class="mt-5 text-base leading-7 text-white/65">
+                <p class="mt-5 text-base leading-7 text-white/70">
                     Browse technical profiles first. Upgrade when you are ready to unlock private details and send outreach.
                 </p>
                 <div class="mt-10 grid gap-3">
@@ -33,27 +33,45 @@
                       method="post"
                       action="{% url 'account_signup' %}">
                     {% csrf_token %}
-                    {{ form.non_field_errors | safe }}
+                    {% if form.non_field_errors %}
+                        <div id="signup-form-errors">{{ form.non_field_errors }}</div>
+                    {% endif %}
                     <input type="hidden" name="remember" value="true" />
                     <div>
-                        {{ form.username.errors | safe }}
                         <label for="username" class="tl-label">Username</label>
-                        {% render_field form.username placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True class="tl-input mt-2" %}
+                        {% if form.username.errors %}
+                            <div id="username-errors">{{ form.username.errors }}</div>
+                            {% render_field form.username placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True aria-invalid="true" aria-describedby="username-errors" class="tl-input mt-2" %}
+                        {% else %}
+                            {% render_field form.username placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True class="tl-input mt-2" %}
+                        {% endif %}
                     </div>
                     <div>
-                        {{ form.email.errors | safe }}
                         <label for="email" class="tl-label">Email</label>
-                        {% render_field form.email id="email" name="email" placeholder="you@company.com" type="email" autocomplete="email" required="True" class="tl-input mt-2" %}
+                        {% if form.email.errors %}
+                            <div id="email-errors">{{ form.email.errors }}</div>
+                            {% render_field form.email id="email" name="email" placeholder="you@company.com" type="email" autocomplete="email" required="True" aria-invalid="true" aria-describedby="email-errors" class="tl-input mt-2" %}
+                        {% else %}
+                            {% render_field form.email id="email" name="email" placeholder="you@company.com" type="email" autocomplete="email" required="True" class="tl-input mt-2" %}
+                        {% endif %}
                     </div>
                     <div>
-                        {{ form.password1.errors | safe }}
                         <label for="password1" class="tl-label">Password</label>
-                        {% render_field form.password1 id="password1" name="password1" placeholder="Password" type="password" autocomplete="new-password" required="True" class="tl-input mt-2" %}
+                        {% if form.password1.errors %}
+                            <div id="password1-errors">{{ form.password1.errors }}</div>
+                            {% render_field form.password1 id="password1" name="password1" placeholder="Password" type="password" autocomplete="new-password" required="True" aria-invalid="true" aria-describedby="password1-errors" class="tl-input mt-2" %}
+                        {% else %}
+                            {% render_field form.password1 id="password1" name="password1" placeholder="Password" type="password" autocomplete="new-password" required="True" class="tl-input mt-2" %}
+                        {% endif %}
                     </div>
                     <div>
-                        {{ form.password2.errors | safe }}
                         <label for="password2" class="tl-label">Confirm password</label>
-                        {% render_field form.password2 id="password2" name="password2" type="password" autocomplete="new-password" required="True" class="tl-input mt-2" placeholder="Confirm password" %}
+                        {% if form.password2.errors %}
+                            <div id="password2-errors">{{ form.password2.errors }}</div>
+                            {% render_field form.password2 id="password2" name="password2" type="password" autocomplete="new-password" required="True" aria-invalid="true" aria-describedby="password2-errors" class="tl-input mt-2" placeholder="Confirm password" %}
+                        {% else %}
+                            {% render_field form.password2 id="password2" name="password2" type="password" autocomplete="new-password" required="True" class="tl-input mt-2" placeholder="Confirm password" %}
+                        {% endif %}
                     </div>
                     {% if redirect_field_value %}
                         <input type="hidden"

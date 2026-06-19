@@ -22,16 +22,21 @@
                                     <div data-controller="dropdown" class="tl-panel overflow-hidden">
                                         <button type="button"
                                                 class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50"
-                                                data-action="dropdown#toggle click->dropdown#hide">
-                                            <span>
-                                                <span class="block text-base font-semibold text-slate-900">{{ template.title }}</span>
-                                                <span class="mt-1 block text-sm text-slate-500">{{ template.subject_line }}</span>
+                                                data-dropdown-target="button"
+                                                data-action="dropdown#toggle"
+                                                aria-expanded="false"
+                                                aria-controls="outreach-template-{{ template.id }}">
+                                            <span class="min-w-0">
+                                                <span class="block break-words text-base font-semibold text-slate-900">{{ template.title }}</span>
+                                                <span class="mt-1 block break-words text-sm text-slate-500">{{ template.subject_line }}</span>
                                             </span>
                                             <span class="text-sm font-semibold text-slate-500">Edit</span>
                                         </button>
                                         <form method="post"
                                               action="{% url 'update-template' template.id %}"
                                               data-dropdown-target="menu"
+                                              id="outreach-template-{{ template.id }}"
+                                              aria-hidden="true"
                                               class="hidden border-t border-slate-200">
                                             {% csrf_token %}
                                             {{ update_form.non_field_errors }}
@@ -62,7 +67,7 @@
                                             <div class="flex justify-end gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-6">
                                                 <button type="submit"
                                                         name="delete_object"
-                                                        class="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
+                                                        class="inline-flex tl-touch-target items-center justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
                                                     Delete
                                                 </button>
                                                 <button type="submit" class="tl-button-primary">Update template</button>
@@ -81,8 +86,11 @@
                             <div data-controller="dropdown" class="tl-panel overflow-hidden">
                                 <button type="button"
                                         class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50"
-                                        data-action="dropdown#toggle click->dropdown#hide">
-                                    <span>
+                                        data-dropdown-target="button"
+                                        data-action="dropdown#toggle"
+                                        aria-expanded="false"
+                                        aria-controls="new-outreach-template">
+                                    <span class="min-w-0">
                                         <span class="block text-base font-semibold text-slate-900">Create a new template</span>
                                         <span class="mt-1 block text-sm text-slate-500">Add a message you can reuse from profile pages.</span>
                                     </span>
@@ -91,6 +99,8 @@
                                 <form method="post"
                                       action=""
                                       data-dropdown-target="menu"
+                                      id="new-outreach-template"
+                                      aria-hidden="true"
                                       class="hidden border-t border-slate-200">
                                     {% csrf_token %}
                                     {{ form.non_field_errors }}

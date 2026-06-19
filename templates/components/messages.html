@@ -1,15 +1,16 @@
 {% if messages %}
-    <div class="fixed inset-x-0 top-4 z-50 px-4">
+    <div class="fixed inset-x-0 top-4 z-50 px-4" aria-live="polite">
         <div class="mx-auto grid max-w-3xl gap-2">
             {% for message in messages %}
                 {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
                     <div data-controller="reveal"
                          data-reveal-target="item"
+                         role="alert"
                          class="flex items-start justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-900 shadow-sm">
-                        <p class="text-sm font-medium">{{ message }}</p>
+                        <p class="min-w-0 break-words text-sm font-medium">{{ message }}</p>
                         <button data-action="click->reveal#hide"
                                 type="button"
-                                class="rounded-md p-1 text-red-700 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-red-700 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500">
                             <span class="sr-only">Dismiss</span>
                             <svg class="h-5 w-5"
                                  xmlns="http://www.w3.org/2000/svg"
@@ -25,11 +26,12 @@
                 {% else %}
                     <div data-controller="reveal"
                          data-reveal-target="item"
+                         role="status"
                          class="flex items-start justify-between gap-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-950 shadow-sm">
-                        <p class="text-sm font-medium">{{ message }}</p>
+                        <p class="min-w-0 break-words text-sm font-medium">{{ message }}</p>
                         <button data-action="click->reveal#hide"
                                 type="button"
-                                class="rounded-md p-1 text-emerald-800 hover:bg-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-emerald-800 hover:bg-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-600">
                             <span class="sr-only">Dismiss</span>
                             <svg class="h-5 w-5"
                                  xmlns="http://www.w3.org/2000/svg"

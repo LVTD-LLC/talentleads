@@ -6,7 +6,7 @@
   :root {
     --tl-bg: #f5f7fb;
     --tl-bg-soft: #eef2f7;
-    --tl-surface: #ffffff;
+    --tl-surface: #fff;
     --tl-surface-strong: #0f172a;
     --tl-ink: #111827;
     --tl-muted: #536070;
@@ -26,8 +26,8 @@
   body {
     min-height: 100vh;
     background:
-      radial-gradient(circle at 16% -10%, rgba(49, 87, 255, 0.10), transparent 34rem),
-      linear-gradient(180deg, #ffffff 0%, var(--tl-bg) 34rem, var(--tl-bg) 100%);
+      radial-gradient(circle at 16% -10%, rgb(49 87 255 / 10%), transparent 34rem),
+      linear-gradient(180deg, #fff 0%, var(--tl-bg) 34rem, var(--tl-bg) 100%);
     color: var(--tl-ink);
     font-family:
       ui-sans-serif,
@@ -38,7 +38,12 @@
       "Segoe UI",
       sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    text-rendering: optimizeLegibility;
+    text-rendering: optimizelegibility;
+  }
+
+  html.tl-modal-open,
+  html.tl-modal-open body {
+    overflow: hidden;
   }
 
   h1,
@@ -94,31 +99,34 @@
   }
 
   .tl-panel {
-    background: rgba(255, 255, 255, 0.78);
-    border: 1px solid rgba(183, 194, 209, 0.72);
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    background: rgb(255 255 255 / 78%);
+    border: 1px solid rgb(183 194 209 / 72%);
+    box-shadow: 0 1px 2px rgb(15 23 42 / 4%);
+
     @apply rounded-lg;
   }
 
   .tl-panel-dark {
     background:
-      radial-gradient(circle at 18% 12%, rgba(49, 87, 255, 0.22), transparent 28rem),
+      radial-gradient(circle at 18% 12%, rgb(49 87 255 / 22%), transparent 28rem),
       linear-gradient(135deg, #101827 0%, #070b12 100%);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22);
+    border: 1px solid rgb(255 255 255 / 10%);
+
     @apply rounded-lg text-white;
   }
 
   .tl-card {
-    background: rgba(255, 255, 255, 0.86);
-    border: 1px solid rgba(217, 225, 236, 0.92);
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.035);
+    background: rgb(255 255 255 / 86%);
+    border: 1px solid rgb(217 225 236 / 92%);
+    box-shadow: 0 1px 2px rgb(15 23 42 / 3.5%);
+
     @apply rounded-lg;
   }
 
   .tl-card-hover {
     @apply hover:-translate-y-0.5 hover:border-slate-300 hover:bg-white;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.035);
+
+    box-shadow: 0 1px 2px rgb(15 23 42 / 3.5%);
     transition:
       transform 180ms ease,
       border-color 180ms ease,
@@ -129,6 +137,8 @@
   .tl-button-primary {
     background: var(--tl-accent);
     color: white;
+    min-height: 2.75rem;
+
     @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold shadow-sm;
   }
 
@@ -137,16 +147,12 @@
     transform: translateY(-1px);
   }
 
-  .tl-button-primary:active,
-  .tl-button-secondary:active,
-  .tl-button-dark:active {
-    transform: translateY(0) scale(0.99);
-  }
-
   .tl-button-secondary {
     background: white;
     color: var(--tl-ink);
     border: 1px solid var(--tl-line);
+    min-height: 2.75rem;
+
     @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold;
   }
 
@@ -158,6 +164,8 @@
   .tl-button-dark {
     background: #0f172a;
     color: white;
+    min-height: 2.75rem;
+
     @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold shadow-sm;
   }
 
@@ -166,8 +174,38 @@
     transform: translateY(-1px);
   }
 
+  .tl-button-primary:active,
+  .tl-button-secondary:active,
+  .tl-button-dark:active {
+    transform: translateY(0) scale(0.99);
+  }
+
+  .tl-button-primary:disabled,
+  .tl-button-secondary:disabled,
+  .tl-button-dark:disabled {
+    cursor: not-allowed;
+    opacity: 0.68;
+    transform: none;
+  }
+
+  .tl-button-primary:disabled:hover {
+    background: var(--tl-accent);
+    transform: none;
+  }
+
+  .tl-button-secondary:disabled:hover {
+    background: white;
+    border-color: var(--tl-line);
+  }
+
+  .tl-button-dark:disabled:hover {
+    background: #0f172a;
+    transform: none;
+  }
+
   .tl-link {
     color: var(--tl-ink);
+
     @apply font-semibold;
   }
 
@@ -181,20 +219,23 @@
 
   .tl-eyebrow {
     color: var(--tl-accent);
+
     @apply text-sm font-semibold;
   }
 
   .tl-pill {
     background: var(--tl-accent-soft);
     color: var(--tl-accent-dark);
-    border: 1px solid rgba(49, 87, 255, 0.16);
+    border: 1px solid rgb(49 87 255 / 16%);
+
     @apply inline-flex items-center rounded-md px-2.5 py-1 text-xs font-semibold;
   }
 
   .tl-pill-neutral {
     background: #eef2f7;
     color: #334155;
-    border: 1px solid rgba(183, 194, 209, 0.7);
+    border: 1px solid rgb(183 194 209 / 70%);
+
     @apply inline-flex items-center rounded-md px-2.5 py-1 text-xs font-semibold;
   }
 
@@ -202,12 +243,14 @@
     border: 1px solid var(--tl-line);
     background: white;
     color: var(--tl-ink);
+    min-height: 2.75rem;
+
     @apply block w-full rounded-lg px-3 py-2 text-sm shadow-sm;
   }
 
   .tl-input:focus {
     border-color: var(--tl-accent);
-    box-shadow: 0 0 0 4px rgba(49, 87, 255, 0.14);
+    box-shadow: 0 0 0 4px rgb(49 87 255 / 14%);
     outline: none;
   }
 
@@ -222,14 +265,38 @@
     @apply block text-sm font-semibold text-slate-800;
   }
 
+  .tl-choice-list label {
+    min-height: 2.75rem;
+
+    @apply flex items-center gap-2 py-1;
+  }
+
+  .tl-choice-list input[type="checkbox"],
+  .tl-choice-list input[type="radio"] {
+    @apply h-4 w-4 shrink-0;
+  }
+
+  .tl-mobile-nav-panel {
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: max(0.75rem, env(safe-area-inset-right));
+    left: max(0.75rem, env(safe-area-inset-left));
+    max-height: calc(100dvh - 1.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+
+  .tl-touch-target {
+    min-height: 2.75rem;
+  }
+
   .tl-prose {
-    @apply prose prose-slate max-w-none prose-a:font-semibold prose-a:text-blue-700 prose-headings:tracking-tight prose-pre:bg-slate-900;
+    @apply prose prose-slate max-w-none prose-a:font-semibold prose-a:text-blue-700;
+    @apply prose-headings:tracking-tight prose-pre:bg-slate-900;
   }
 
   .tl-grid-bg {
     background-image:
-      linear-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+      linear-gradient(rgb(15 23 42 / 4.5%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(15 23 42 / 4.5%) 1px, transparent 1px);
     background-size: 36px 36px;
     mask-image: linear-gradient(to bottom, black, transparent);
   }

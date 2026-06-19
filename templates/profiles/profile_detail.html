@@ -38,26 +38,42 @@
                         <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
                             <div>
                                 <p class="tl-eyebrow">Candidate profile</p>
-                                <h1 class="mt-3 max-w-4xl text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-4xl">
+                                <h1 class="mt-3 max-w-4xl break-words text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-4xl">
                                     {{ object.title }}
                                 </h1>
                             </div>
-                            <div class="lg:min-w-80">
-                                {% if subscription.status == "active" and outreach_templates %}
-                                    <div data-controller="email"
-                                         class="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                                        <input data-email-target="profileId" class="hidden" value="{{ object.id }}" />
-                                        <label for="email_template" class="sr-only">Outreach template</label>
+                            <div class="min-w-0 lg:w-80 lg:flex-none">
+                                {% if subscription.status == "active" and outreach_templates and object.email %}
+                                    <form data-controller="email"
+                                          data-email-target="sendEmailForm"
+                                          data-action="submit->email#submit"
+                                          method="post"
+                                          action="{% url 'send-email-to-profile' object.id default_outreach_template.id %}"
+                                          class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                                        {% csrf_token %}
+                                        <label for="email_template" class="tl-label">Outreach template</label>
                                         <select id="email_template"
                                                 name="email_template"
                                                 data-email-target="emailTemplate"
-                                                class="tl-input">
-                                            {% for template in outreach_templates %}<option value="{{ template.id }}">{{ template.title }}</option>{% endfor %}
+                                                data-action="change->email#updateSendEmail"
+                                                class="tl-input mt-2">
+                                            {% for template in outreach_templates %}
+                                                <option value="{{ template.id }}"
+                                                        data-send-url="{% url 'send-email-to-profile' object.id template.id %}">
+                                                    {{ template.title }}
+                                                </option>
+                                            {% endfor %}
                                         </select>
-                                        <a href="#"
-                                           data-email-target="sendEmailLink"
-                                           rel="nofollow"
-                                           class="tl-button-primary mt-3 w-full">Send outreach</a>
+                                        <button type="submit"
+                                                data-email-target="sendEmailButton"
+                                                class="tl-button-primary mt-3 w-full">
+                                            Send outreach
+                                        </button>
+                                    </form>
+                                {% elif subscription.status == "active" and outreach_templates and not object.email %}
+                                    <div class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
+                                        <span class="block font-semibold text-slate-900">No email address available.</span>
+                                        Outreach unlocks when this profile has an email address.
                                     </div>
                                 {% elif subscription.status == "active" and not outreach_templates %}
                                     <a class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 hover:border-slate-300 hover:bg-white"

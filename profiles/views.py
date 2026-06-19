@@ -1,8 +1,10 @@
 from django import forms
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
+from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, FormView
 from django_filters.views import FilterView
 from django_q.tasks import async_task
@@ -11,7 +13,7 @@ from talentleads.utils import floor_to_tens, get_talentleads_logger
 from users.models import Outreach, OutreachTemplate
 from utils.views import add_users_context
 
-from .filters import ProfileFilter
+from .filters import ProfileFilter, has_active_subscription
 from .models import Profile
 from .tasks import get_hn_pages_to_analyze, send_outreach_email_task
 
@@ -49,10 +51,12 @@ class ProfileDetailView(DetailView):
         user = self.request.user
         if user.is_authenticated:
             add_users_context(context, user)
-            context["outreach_templates"] = OutreachTemplate.objects.filter(author=user)
+            outreach_templates = OutreachTemplate.objects.filter(author=user).order_by("title")
+            context["outreach_templates"] = outreach_templates
+            context["default_outreach_template"] = outreach_templates.first()
 
         if self.object:
-            context["profile_capacity"] = self.object.capacity.split(",")
+            context["profile_capacity"] = [item.strip() for item in self.object.capacity.split(",") if item.strip()]
 
         return context
 
@@ -76,13 +80,24 @@ class TriggerAsyncTask(LoginRequiredMixin, UserPassesTestMixin, FormView):
         return super(TriggerAsyncTask, self).form_valid(form)
 
 
+@login_required(login_url="account_login")
+@require_POST
 def send_outreach_email(request, profile_id, email_template_id):
     logger.info(f"profile_id: {profile_id}")
     logger.info(f"email_template_id: {email_template_id}")
 
     user = request.user
-    profile = Profile.objects.get(id=profile_id)
-    template = OutreachTemplate.objects.get(id=email_template_id)
+    profile = get_object_or_404(Profile, id=profile_id)
+
+    if not has_active_subscription(user):
+        messages.add_message(request, messages.WARNING, "Business access is required before sending outreach.")
+        return redirect(reverse("pricing"))
+
+    if not profile.email:
+        messages.add_message(request, messages.WARNING, "This profile does not have an email address yet.")
+        return redirect(reverse("profile", kwargs={"pk": profile_id}))
+
+    template = get_object_or_404(OutreachTemplate, id=email_template_id, author=user)
 
     obj, created = Outreach.objects.get_or_create(author=user, receiver=profile, template=template)
     logger.info(f"obj, created: {obj}, {created}")
