@@ -37,12 +37,8 @@ class AccessibleDropdown extends Dropdown {
   }
 
   hide(event) {
-    if (event) {
-      super.hide(event);
-    } else if (!this.menuTarget.classList.contains('hidden')) {
-      this.leave();
-    }
-
+    const closeEvent = event || { target: document.documentElement };
+    super.hide(closeEvent);
     requestAnimationFrame(() => this.updateExpanded());
   }
 
