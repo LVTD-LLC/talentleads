@@ -1,4 +1,5 @@
 from django.forms.utils import ErrorList
+from django.utils.html import format_html, format_html_join
 
 
 class DivErrorList(ErrorList):
@@ -8,8 +9,10 @@ class DivErrorList(ErrorList):
     def as_divs(self):
         if not self:
             return ""
-        return f"""
-            <div class="p-4 my-4 border border-red-600 border-solid rounded-md bg-red-50">
+        errors = format_html_join("", "<p>{}</p>", ((error,) for error in self))
+        return format_html(
+            """
+            <div class="p-4 my-4 border border-red-600 border-solid rounded-md bg-red-50" role="alert">
               <div class="flex">
                 <div class="flex-shrink-0">
                   <!-- Heroicon name: solid/x-circle -->
@@ -18,8 +21,10 @@ class DivErrorList(ErrorList):
                   </svg>
                 </div>
                 <div class="ml-3 text-sm text-red-700">
-                      {"".join(["<p>%s</p>" % e for e in self])}
+                      {}
                 </div>
               </div>
             </div>
-         """
+         """,
+            errors,
+        )
