@@ -37,7 +37,12 @@ class AccessibleDropdown extends Dropdown {
   }
 
   hide(event) {
-    super.hide(event);
+    if (event) {
+      super.hide(event);
+    } else if (!this.menuTarget.classList.contains('hidden')) {
+      this.leave();
+    }
+
     requestAnimationFrame(() => this.updateExpanded());
   }
 
@@ -107,8 +112,7 @@ class AccessibleDropdown extends Dropdown {
   handleModalKeydown(event) {
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.menuTarget.classList.add('hidden');
-      this.updateExpanded();
+      this.hide();
       return;
     }
 
