@@ -56,36 +56,36 @@
                             <label for="description" class="tl-label">Description contains</label>
                             {% render_field filter.form.description id="description" name="description" class="tl-input mt-2" placeholder="Django, ML, infra" %}
                         </div>
-                        <div class="border-t border-slate-200 pt-5">
-                            <label for="city" class="tl-label">City</label>
-                            <div class="mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        <fieldset class="min-w-0 border-t border-slate-200 pt-5">
+                            <legend class="tl-label">City</legend>
+                            <div class="tl-choice-list mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                                 {% render_field filter.form.city id="city" name="city" class="space-y-2" %}
                             </div>
-                        </div>
-                        <div>
-                            <label for="state" class="tl-label">State</label>
-                            <div class="mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        </fieldset>
+                        <fieldset class="min-w-0">
+                            <legend class="tl-label">State</legend>
+                            <div class="tl-choice-list mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                                 {% render_field filter.form.state id="state" name="state" class="space-y-2" %}
                             </div>
-                        </div>
-                        <div>
-                            <label for="country" class="tl-label">Country</label>
-                            <div class="mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        </fieldset>
+                        <fieldset class="min-w-0">
+                            <legend class="tl-label">Country</legend>
+                            <div class="tl-choice-list mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                                 {% render_field filter.form.country id="country" name="country" class="space-y-2" %}
                             </div>
-                        </div>
-                        <div class="border-t border-slate-200 pt-5">
-                            <label for="level" class="tl-label">Level</label>
-                            <div class="mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        </fieldset>
+                        <fieldset class="min-w-0 border-t border-slate-200 pt-5">
+                            <legend class="tl-label">Level</legend>
+                            <div class="tl-choice-list mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                                 {% render_field filter.form.level id="level" name="level" class="space-y-2" %}
                             </div>
-                        </div>
-                        <div>
-                            <label for="capacity" class="tl-label">Capacity</label>
-                            <div class="mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        </fieldset>
+                        <fieldset class="min-w-0">
+                            <legend class="tl-label">Capacity</legend>
+                            <div class="tl-choice-list mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                                 {% render_field filter.form.capacity id="capacity" name="capacity" class="space-y-2" %}
                             </div>
-                        </div>
+                        </fieldset>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label for="years_of_experience__gt" class="tl-label">Min years</label>
@@ -96,24 +96,24 @@
                                 {% render_field filter.form.years_of_experience__lt id="years_of_experience__lt" name="years_of_experience__lt" class="tl-input mt-2" %}
                             </div>
                         </div>
-                        <div class="border-t border-slate-200 pt-5">
-                            <label for="tech_stack" class="tl-label">Tech stack</label>
-                            <div class="mt-2 max-h-64 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        <fieldset class="min-w-0 border-t border-slate-200 pt-5">
+                            <legend class="tl-label">Tech stack</legend>
+                            <div class="tl-choice-list mt-2 max-h-64 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                                 {% render_field filter.form.tech_stack id="tech_stack" name="tech_stack" class="space-y-2" %}
                             </div>
-                        </div>
-                        <div>
-                            <label for="who_wants_to_be_hired_title" class="tl-label">Source month</label>
-                            <div class="mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        </fieldset>
+                        <fieldset class="min-w-0">
+                            <legend class="tl-label">Source month</legend>
+                            <div class="tl-choice-list mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                                 {% render_field filter.form.who_wants_to_be_hired_title id="who_wants_to_be_hired_title" name="who_wants_to_be_hired_title" class="space-y-2" %}
                             </div>
-                        </div>
-                        <div>
-                            <label for="willing_to_relocate" class="tl-label">Willing to relocate</label>
-                            <div class="mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        </fieldset>
+                        <fieldset class="min-w-0">
+                            <legend class="tl-label">Willing to relocate</legend>
+                            <div class="tl-choice-list mt-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                                 {% render_field filter.form.willing_to_relocate id="willing_to_relocate" name="willing_to_relocate" class="space-y-2" %}
                             </div>
-                        </div>
+                        </fieldset>
                         <div>
                             <label for="is_remote" class="tl-label">Remote</label>
                             {% render_field filter.form.is_remote id="is_remote" name="is_remote" class="tl-input mt-2" %}
@@ -139,7 +139,7 @@
                                    href="{% url 'profile' profile.id %}">
                                     <div class="flex flex-col gap-4">
                                         <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                                            <h3 class="max-w-3xl text-xl font-semibold tracking-tight text-slate-900 group-hover:text-blue-700"
+                                            <h3 class="max-w-3xl break-words text-xl font-semibold tracking-tight text-slate-900 group-hover:text-blue-700"
                                                 title="{{ profile.title }}">{{ profile.title }}</h3>
                                             <span class="hidden rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600 group-hover:border-slate-300 lg:inline-flex">
                                                 View profile

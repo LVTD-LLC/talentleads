@@ -51,10 +51,11 @@ class ProfileDetailView(DetailView):
         user = self.request.user
         if user.is_authenticated:
             add_users_context(context, user)
-            context["outreach_templates"] = OutreachTemplate.objects.filter(author=user)
+            outreach_templates = OutreachTemplate.objects.filter(author=user).order_by("title")
+            context["outreach_templates"] = outreach_templates
 
         if self.object:
-            context["profile_capacity"] = self.object.capacity.split(",")
+            context["profile_capacity"] = [item.strip() for item in self.object.capacity.split(",") if item.strip()]
 
         return context
 
@@ -87,6 +88,11 @@ def send_outreach_email(request, profile_id):
 
     user = request.user
     profile = get_object_or_404(Profile, id=profile_id)
+
+    if not profile.email:
+        messages.add_message(request, messages.WARNING, "This profile does not have an email address yet.")
+        return redirect(reverse("profile", kwargs={"pk": profile_id}))
+
     template = get_object_or_404(OutreachTemplate, id=email_template_id, author=user)
 
     obj, created = Outreach.objects.get_or_create(author=user, receiver=profile, template=template)

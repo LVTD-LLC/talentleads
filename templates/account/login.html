@@ -6,7 +6,7 @@
             <div class="hidden bg-slate-900 p-10 text-white lg:block">
                 <p class="text-sm font-semibold text-white/50">TalentLeads workspace</p>
                 <p class="mt-5 text-4xl font-semibold tracking-[-0.03em]">Return to your sourcing workflow.</p>
-                <p class="mt-5 text-base leading-7 text-white/65">
+                <p class="mt-5 text-base leading-7 text-white/70">
                     Search technical profiles, review fit context, and keep outreach moving from one focused workspace.
                 </p>
                 <div class="mt-10 rounded-lg border border-white/10 bg-white/[0.04] p-5">
@@ -29,17 +29,27 @@
                       method="post"
                       action="{% url 'account_login' %}">
                     {% csrf_token %}
-                    {{ form.non_field_errors | safe }}
+                    {% if form.non_field_errors %}
+                        <div id="login-form-errors">{{ form.non_field_errors }}</div>
+                    {% endif %}
                     <input type="hidden" name="remember" value="true" />
                     <div>
-                        {{ form.login.errors | safe }}
                         <label for="username" class="tl-label">Username</label>
-                        {% render_field form.login placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True class="tl-input mt-2" %}
+                        {% if form.login.errors %}
+                            <div id="login-errors">{{ form.login.errors }}</div>
+                            {% render_field form.login placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True aria-invalid="true" aria-describedby="login-errors" class="tl-input mt-2" %}
+                        {% else %}
+                            {% render_field form.login placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True class="tl-input mt-2" %}
+                        {% endif %}
                     </div>
                     <div>
-                        {{ form.password.errors | safe }}
                         <label for="password" class="tl-label">Password</label>
-                        {% render_field form.password id="password" name="password" type="password" autocomplete="current-password" required="True" class="tl-input mt-2" placeholder="Password" %}
+                        {% if form.password.errors %}
+                            <div id="password-errors">{{ form.password.errors }}</div>
+                            {% render_field form.password id="password" name="password" type="password" autocomplete="current-password" required="True" aria-invalid="true" aria-describedby="password-errors" class="tl-input mt-2" placeholder="Password" %}
+                        {% else %}
+                            {% render_field form.password id="password" name="password" type="password" autocomplete="current-password" required="True" class="tl-input mt-2" placeholder="Password" %}
+                        {% endif %}
                     </div>
                     {% if redirect_field_value %}
                         <input type="hidden"

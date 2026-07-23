@@ -3,16 +3,26 @@
     {% csrf_token %}
     <div class="p-5 sm:p-6">
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {{ form.non_field_errors }}
+            {% if form.non_field_errors %}
+                <div class="sm:col-span-2">{{ form.non_field_errors }}</div>
+            {% endif %}
             <div>
-                {{ form.name.errors | safe }}
                 <label for="name" class="tl-label">Name</label>
-                {% render_field form.name id="name" name="name" type="text" autocomplete="name" class="tl-input mt-2" %}
+                {% if form.name.errors %}
+                    <div id="name-errors">{{ form.name.errors }}</div>
+                    {% render_field form.name id="name" name="name" type="text" autocomplete="name" aria-invalid="true" aria-describedby="name-errors" class="tl-input mt-2" %}
+                {% else %}
+                    {% render_field form.name id="name" name="name" type="text" autocomplete="name" class="tl-input mt-2" %}
+                {% endif %}
             </div>
             <div>
-                {{ form.email.errors | safe }}
                 <label for="email-address" class="tl-label">Email</label>
-                {% render_field form.email id="email-address" name="email-address" type="email" autocomplete="email" class="tl-input mt-2" %}
+                {% if form.email.errors %}
+                    <div id="settings-email-errors">{{ form.email.errors }}</div>
+                    {% render_field form.email id="email-address" name="email-address" type="email" autocomplete="email" aria-invalid="true" aria-describedby="settings-email-errors" class="tl-input mt-2" %}
+                {% else %}
+                    {% render_field form.email id="email-address" name="email-address" type="email" autocomplete="email" class="tl-input mt-2" %}
+                {% endif %}
             </div>
         </div>
     </div>
