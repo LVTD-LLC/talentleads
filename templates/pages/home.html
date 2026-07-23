@@ -36,14 +36,9 @@
                     TalentLeads gives founders, operators, and recruiting teams a searchable database of technical profiles with the context they need to judge fit before they send the first message.
                 </p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                    {% if user.is_authenticated and subscription.status == "active" %}
+                    {% if user.is_authenticated %}
                         <a href="{% url 'profiles' %}"
                            class="tl-button-primary px-5 py-3 text-base">Open talent workspace</a>
-                    {% elif user.is_authenticated and subscription.status != "active" %}
-                        <a href="{% url 'upgrade-user' %}"
-                           class="tl-button-primary px-5 py-3 text-base">Get full access</a>
-                        <a href="{% url 'profiles' %}"
-                           class="tl-button-secondary px-5 py-3 text-base">View live database</a>
                     {% else %}
                         <a href="{% url 'account_signup' %}"
                            class="tl-button-primary px-5 py-3 text-base">Start free</a>
@@ -170,23 +165,18 @@
     <section class="tl-container pb-20 pt-10 sm:pb-28">
         <div class="tl-panel grid gap-8 p-6 sm:p-8 lg:grid-cols-12 lg:items-center lg:p-10">
             <div class="lg:col-span-7">
-                <p class="tl-eyebrow">When the search gets serious</p>
+                <p class="tl-eyebrow">A focused sourcing workflow</p>
                 <h2 class="mt-4 text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-5xl">
-                    Browse the market first. Unlock outreach when you know who to contact.
+                    Browse the market, shortlist candidates, and start outreach.
                 </h2>
                 <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-                    Use the live database to understand the talent pool. When the search becomes active, upgrade for private details, templates, and a faster path to first conversations.
+                    Use the live database to understand the talent pool, save reusable outreach templates, and move from research to first conversations.
                 </p>
             </div>
             <div class="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
-                {% if user.is_authenticated and subscription.status == "active" %}
+                {% if user.is_authenticated %}
                     <a href="{% url 'profiles' %}"
                        class="tl-button-primary px-5 py-3 text-base">Open workspace</a>
-                {% elif user.is_authenticated and subscription.status != "active" %}
-                    <a href="{% url 'upgrade-user' %}"
-                       class="tl-button-primary px-5 py-3 text-base">Get full access</a>
-                    <a href="{% url 'profiles' %}"
-                       class="tl-button-secondary px-5 py-3 text-base">Browse talent</a>
                 {% else %}
                     <a href="{% url 'account_signup' %}"
                        class="tl-button-primary px-5 py-3 text-base">Create account</a>

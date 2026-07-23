@@ -49,24 +49,13 @@
                     </div>
                     <div class="space-y-5 py-5">
                         <div>
-                            {% if user.is_authenticated and subscription.status == "active" %}
-                                <label for="title" class="tl-label">Role title</label>
-                                {% render_field filter.form.title id="title" name="title" class="tl-input mt-2" placeholder="Backend engineer" %}
-                            {% else %}
-                                <p class="tl-label">Role title</p>
-                                <a class="mt-2 flex items-center justify-between gap-3 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-sm text-slate-600 hover:border-slate-400 hover:bg-white"
-                                   href="{% url 'pricing' %}">
-                                    <span>Keyword search requires business access</span>
-                                    <span aria-hidden="true">&rarr;</span>
-                                </a>
-                            {% endif %}
+                            <label for="title" class="tl-label">Role title</label>
+                            {% render_field filter.form.title id="title" name="title" class="tl-input mt-2" placeholder="Backend engineer" %}
                         </div>
-                        {% if user.is_authenticated and subscription.status == "active" %}
-                            <div>
-                                <label for="description" class="tl-label">Description contains</label>
-                                {% render_field filter.form.description id="description" name="description" class="tl-input mt-2" placeholder="Django, ML, infra" %}
-                            </div>
-                        {% endif %}
+                        <div>
+                            <label for="description" class="tl-label">Description contains</label>
+                            {% render_field filter.form.description id="description" name="description" class="tl-input mt-2" placeholder="Django, ML, infra" %}
+                        </div>
                         <fieldset class="min-w-0 border-t border-slate-200 pt-5">
                             <legend class="tl-label">City</legend>
                             <div class="tl-choice-list mt-2 max-h-40 overflow-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">

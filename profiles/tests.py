@@ -1,13 +1,16 @@
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, override_settings
+from django.urls import reverse
 
 from profiles.filters import ProfileFilter
 from profiles.models import Profile
 from profiles.templatetags.markdown_extras import markdown
 from profiles.views import ProfileListView
+from users.models import Outreach, OutreachTemplate
 
 
 def create_profile(title, description="Django engineer", city="New York"):
@@ -26,7 +29,7 @@ class ProfileSearchTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
-    def test_text_search_is_ignored_without_business_access(self):
+    def test_text_search_filters_without_subscription(self):
         create_profile("Django engineer")
         create_profile("React engineer")
         request = self.factory.get("/profiles/", {"title": "Django"})
@@ -38,22 +41,29 @@ class ProfileSearchTests(TestCase):
             request=request,
         )
 
-        self.assertEqual(list(filterset.qs.values_list("title", flat=True)), ["Django engineer", "React engineer"])
+        self.assertEqual(list(filterset.qs.values_list("title", flat=True)), ["Django engineer"])
 
-    @patch("profiles.filters.has_active_subscription", return_value=True)
-    def test_text_search_filters_with_business_access(self, _has_active_subscription):
+    @override_settings(
+        STORAGES={
+            "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+            "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+        }
+    )
+    @patch(
+        "webpack_boilerplate.loader.WebpackLoader.load_assets",
+        return_value={"entrypoints": {"index": {"assets": {"js": [], "css": []}}}},
+    )
+    def test_authenticated_profile_search_renders_without_payment_integration(self, _load_assets):
         create_profile("Django engineer")
         create_profile("React engineer")
-        request = self.factory.get("/profiles/", {"title": "Django"})
-        request.user = SimpleNamespace(is_authenticated=True)
+        user = get_user_model().objects.create_user(username="founder", email="founder@example.com", password="test")
+        self.client.force_login(user)
 
-        filterset = ProfileFilter(
-            data=request.GET,
-            queryset=Profile.objects.order_by("title"),
-            request=request,
-        )
+        response = self.client.get("/profiles/", {"title": "Django"})
 
-        self.assertEqual(list(filterset.qs.values_list("title", flat=True)), ["Django engineer"])
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Django engineer")
+        self.assertNotContains(response, "React engineer")
 
     def test_pagination_preserves_non_title_filters(self):
         for index in range(12):
@@ -66,6 +76,103 @@ class ProfileSearchTests(TestCase):
 
         self.assertEqual(response.context_data["profile_querystring"], "city=New+York")
         self.assertTrue(response.context_data["page_obj"].has_next())
+
+
+@override_settings(
+    STORAGES={
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    }
+)
+@patch(
+    "webpack_boilerplate.loader.WebpackLoader.load_assets",
+    return_value={"entrypoints": {"index": {"assets": {"js": [], "css": []}}}},
+)
+class ProfileAccessTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="founder",
+            email="founder@example.com",
+            password="test",
+        )
+        self.other_user = get_user_model().objects.create_user(
+            username="other",
+            email="other@example.com",
+            password="test",
+        )
+        self.profile = create_profile("Django engineer")
+        self.profile.email = "candidate@example.com"
+        self.profile.name = "Candidate Name"
+        self.profile.save(update_fields=["email", "name"])
+        self.template = OutreachTemplate.objects.create(
+            author=self.user,
+            title="Introduction",
+            subject_line="A role for you",
+            text="Hello!",
+        )
+
+    def test_private_contact_details_require_login(self, _load_assets):
+        response = self.client.get(reverse("profile", kwargs={"pk": self.profile.id}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, self.profile.email)
+        self.assertContains(response, "Log in to view contact details")
+
+    def test_authenticated_user_sees_contact_and_outreach_form(self, _load_assets):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("profile", kwargs={"pk": self.profile.id}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.profile.email)
+        self.assertContains(response, self.template.title)
+        self.assertContains(response, reverse("send-email-to-profile", kwargs={"profile_id": self.profile.id}))
+
+    def test_outreach_requires_login(self, _load_assets):
+        outreach_url = reverse("send-email-to-profile", kwargs={"profile_id": self.profile.id})
+
+        response = self.client.post(outreach_url, {"email_template": self.template.id})
+
+        self.assertRedirects(
+            response,
+            f"{reverse('account_login')}?next={outreach_url}",
+            fetch_redirect_response=False,
+        )
+        self.assertFalse(Outreach.objects.exists())
+
+    def test_outreach_rejects_get(self, _load_assets):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("send-email-to-profile", kwargs={"profile_id": self.profile.id}))
+
+        self.assertEqual(response.status_code, 405)
+        self.assertFalse(Outreach.objects.exists())
+
+    def test_outreach_rejects_another_users_template(self, _load_assets):
+        self.client.force_login(self.other_user)
+
+        response = self.client.post(
+            reverse("send-email-to-profile", kwargs={"profile_id": self.profile.id}),
+            {"email_template": self.template.id},
+        )
+
+        self.assertEqual(response.status_code, 404)
+        self.assertFalse(Outreach.objects.exists())
+
+    @patch("profiles.views.async_task")
+    def test_outreach_accepts_template_field_rendered_by_profile_form(self, async_task, _load_assets):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("send-email-to-profile", kwargs={"profile_id": self.profile.id}),
+            {"email_template": self.template.id},
+        )
+
+        self.assertRedirects(response, reverse("profile", kwargs={"pk": self.profile.id}))
+        self.assertTrue(
+            Outreach.objects.filter(author=self.user, receiver=self.profile, template=self.template).exists()
+        )
+        async_task.assert_called_once()
 
 
 class MarkdownFilterTests(TestCase):

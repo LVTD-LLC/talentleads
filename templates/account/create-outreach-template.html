@@ -16,8 +16,7 @@
                         </p>
                     </div>
                     <div class="space-y-5 lg:col-span-8">
-                        {% if subscription.status == "active" %}
-                            <div data-controller="textarea" class="space-y-3">
+                        <div data-controller="textarea" class="space-y-3">
                                 {% for template in templates %}
                                     <div data-controller="dropdown" class="tl-panel overflow-hidden">
                                         <button type="button"
@@ -82,8 +81,8 @@
                                         </p>
                                     </div>
                                 {% endfor %}
-                            </div>
-                            <div data-controller="dropdown" class="tl-panel overflow-hidden">
+                        </div>
+                        <div data-controller="dropdown" class="tl-panel overflow-hidden">
                                 <button type="button"
                                         class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50"
                                         data-dropdown-target="button"
@@ -132,14 +131,7 @@
                                         <button type="submit" class="tl-button-primary">Save template</button>
                                     </div>
                                 </form>
-                            </div>
-                        {% else %}
-                            <a class="block rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-sm leading-6 text-slate-600 hover:border-slate-400 hover:bg-white"
-                               href="{% url 'pricing' %}">
-                                <span class="block text-base font-semibold text-slate-900">Templates require business access.</span>
-                                <span class="mt-1 block">Upgrade to create outreach templates and send candidate email from profile pages.</span>
-                            </a>
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -13,7 +13,7 @@ from talentleads.utils import floor_to_tens, get_talentleads_logger
 from users.models import Outreach, OutreachTemplate
 from utils.views import add_users_context
 
-from .filters import ProfileFilter, has_active_subscription
+from .filters import ProfileFilter
 from .models import Profile
 from .tasks import get_hn_pages_to_analyze, send_outreach_email_task
 
@@ -53,7 +53,6 @@ class ProfileDetailView(DetailView):
             add_users_context(context, user)
             outreach_templates = OutreachTemplate.objects.filter(author=user).order_by("title")
             context["outreach_templates"] = outreach_templates
-            context["default_outreach_template"] = outreach_templates.first()
 
         if self.object:
             context["profile_capacity"] = [item.strip() for item in self.object.capacity.split(",") if item.strip()]
@@ -82,16 +81,13 @@ class TriggerAsyncTask(LoginRequiredMixin, UserPassesTestMixin, FormView):
 
 @login_required(login_url="account_login")
 @require_POST
-def send_outreach_email(request, profile_id, email_template_id):
+def send_outreach_email(request, profile_id):
+    email_template_id = request.POST.get("email_template")
     logger.info(f"profile_id: {profile_id}")
     logger.info(f"email_template_id: {email_template_id}")
 
     user = request.user
     profile = get_object_or_404(Profile, id=profile_id)
-
-    if not has_active_subscription(user):
-        messages.add_message(request, messages.WARNING, "Business access is required before sending outreach.")
-        return redirect(reverse("pricing"))
 
     if not profile.email:
         messages.add_message(request, messages.WARNING, "This profile does not have an email address yet.")

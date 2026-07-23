@@ -29,7 +29,6 @@ shift $((OPTIND - 1))
 
 # If no valid option provided, default to server
 if [ "$server" = true ]; then
-    # python manage.py djstripe_sync_models
     python manage.py collectstatic --noinput
     python manage.py migrate
     python manage.py createschedules

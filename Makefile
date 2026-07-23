@@ -17,12 +17,6 @@ test:
 bash:
 	docker compose run --rm backend bash
 
-test-webhook:
-	docker compose run --rm stripe trigger customer.subscription.created
-
-stripe-sync:
-	docker compose run --rm backend python ./manage.py djstripe_sync_models Product Price
-
 restart-worker:
 	docker compose up -d workers --force-recreate
 

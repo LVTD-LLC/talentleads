@@ -68,8 +68,6 @@
                     <div class="hidden items-center gap-8 lg:flex">
                         <a href="{% url 'profiles' %}"
                            class="text-sm font-medium text-slate-700 hover:text-slate-900">Browse talent</a>
-                        <a href="{% url 'pricing' %}"
-                           class="text-sm font-medium text-slate-700 hover:text-slate-900">Pricing</a>
                         <a href="{% url 'blog_posts' %}"
                            class="text-sm font-medium text-slate-700 hover:text-slate-900">Blog</a>
                     </div>
@@ -166,8 +164,6 @@
                         <div class="mt-5 grid gap-1">
                             <a href="{% url 'profiles' %}"
                                class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">Browse talent</a>
-                            <a href="{% url 'pricing' %}"
-                               class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">Pricing</a>
                             <a href="{% url 'blog_posts' %}"
                                class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">Blog</a>
                             {% if user.is_authenticated %}
@@ -203,7 +199,6 @@
                     </div>
                     <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-slate-600">
                         <a href="{% url 'profiles' %}" class="hover:text-slate-900">Browse talent</a>
-                        <a href="{% url 'pricing' %}" class="hover:text-slate-900">Pricing</a>
                         <a href="{% url 'blog_posts' %}" class="hover:text-slate-900">Blog</a>
                         <a href="https://statushen.cr.lvtd.dev/talentleads/"
                            class="hover:text-slate-900">Status</a>

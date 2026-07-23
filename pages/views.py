@@ -41,16 +41,3 @@ class ProductHuntView(TemplateView):
             add_users_context(context, user)
 
         return context
-
-
-class PricingView(TemplateView):
-    template_name = "pages/pricing.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.request.user
-
-        if user.is_authenticated:
-            add_users_context(context, user)
-
-        return context
