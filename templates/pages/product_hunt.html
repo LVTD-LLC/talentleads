@@ -34,16 +34,11 @@
                     The product now serves B2B sourcing teams, but the original launch still points to the same core idea: better candidate context with less manual research.
                 </p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                    {% if user.is_authenticated and subscription.status == "active" %}
+                    {% if user.is_authenticated %}
                         <a href="{% url 'profiles' %}"
                            class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-base font-semibold text-slate-900 hover:bg-slate-100">
                             Open workspace
                         </a>
-                    {% elif user.is_authenticated and subscription.status != "active" %}
-                        <a href="{% url 'upgrade-user' %}"
-                           class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-base font-semibold text-slate-900 hover:bg-slate-100">Unlock business access</a>
-                        <a href="{% url 'profiles' %}"
-                           class="inline-flex items-center justify-center rounded-lg border border-white/14 px-5 py-3 text-base font-semibold text-white hover:bg-white/8">Browse talent</a>
                     {% else %}
                         <a href="{% url 'account_signup' %}"
                            class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-base font-semibold text-slate-900 hover:bg-slate-100">Start free</a>

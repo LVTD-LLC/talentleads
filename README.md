@@ -10,8 +10,7 @@ The product is built for startup founders, operators, and recruiting teams that 
 - Uses a Pydantic AI profile analyzer to extract role, skills, location, seniority, availability, links, and contact context.
 - Generates profile embeddings with Jina and stores them in PostgreSQL with pgvector.
 - Lets users filter profiles by title, description, location, tech stack, experience, remote preference, relocation status, capacity, and hiring thread.
-- Supports authenticated profile browsing, private candidate details, saved outreach templates, and direct email outreach.
-- Handles paid access through Stripe and dj-stripe.
+- Supports authenticated access to private candidate details, saved outreach templates, and direct email outreach.
 - Includes a small token-authenticated Django Ninja API for blog publishing.
 
 ## Stack
@@ -24,7 +23,7 @@ The product is built for startup founders, operators, and recruiting teams that 
 - OpenAI SDK for AI-assisted workflows
 - Jina embeddings for semantic profile vectors
 - django-allauth for accounts
-- Stripe, dj-stripe, and Mailgun/Anymail for billing and email
+- Mailgun/Anymail for email
 - MinIO for local S3-compatible media storage
 - Tailwind CSS, Webpack, Stimulus, and Turbo for the frontend
 - Docker Compose for local development
@@ -35,10 +34,10 @@ The product is built for startup founders, operators, and recruiting teams that 
 ```text
 talentleads/        Django project settings, URLs, API mounting, auth, logging
 profiles/           Candidate profile models, filters, views, AI analysis tasks
-users/              Custom user model, account settings, billing, outreach templates
+users/              Custom user model, account settings, outreach templates
 sales/              Sent outreach email tracking
 blog/               Blog models, feeds, public views, and token-authenticated API
-pages/              Marketing, pricing, product, and static page views
+pages/              Marketing, product, and static page views
 templates/          Django templates
 frontend/           Webpack, Tailwind, Stimulus, and Turbo source
 deployment/         Local, server, and worker Dockerfiles
@@ -81,12 +80,6 @@ OPENAI_KEY=
 GEMINI_API_KEY=
 JINA_API_KEY=
 
-STRIPE_LIVE_SECRET_KEY=
-STRIPE_TEST_SECRET_KEY=
-STRIPE_LIVE_MODE=False
-DJSTRIPE_WEBHOOK_SECRET=
-WEBHOOK_UUID=
-
 MAILGUN_API_KEY=
 HNJOBS_API_TOKEN=
 HNJOBS_HOST=
@@ -103,7 +96,7 @@ make serve
 
 The app runs at [http://localhost:8010](http://localhost:8010). The frontend dev server runs on port `9091`, MailHog is available at [http://localhost:8025](http://localhost:8025), and the backend runs migrations automatically during startup.
 
-The Compose stack also starts Redis on host port `6377`, PostgreSQL on host port `5433`, MinIO on [http://localhost:9000](http://localhost:9000) with its console on [http://localhost:9001](http://localhost:9001), and a Stripe CLI listener for local webhook forwarding when Stripe credentials are configured.
+The Compose stack also starts Redis on host port `6377`, PostgreSQL on host port `5433`, and MinIO on [http://localhost:9000](http://localhost:9000) with its console on [http://localhost:9001](http://localhost:9001).
 
 Leave `AWS_S3_ENDPOINT_URL` blank to use local filesystem media storage. To test S3-compatible storage through the bundled MinIO service from Django containers, use:
 
@@ -114,8 +107,6 @@ AWS_SECRET_ACCESS_KEY=talentleads-password
 ```
 
 The `createbuckets` helper service is configured to create a `talentleads-dev` bucket for local media testing.
-
-The Stripe CLI service reads `STRIPE_TEST_SECRET_KEY`, `DJSTRIPE_WEBHOOK_SECRET`, and `WEBHOOK_UUID`, then forwards events to `/stripe/webhook/<WEBHOOK_UUID>/`. Use `make test-webhook` after those values are set.
 
 Useful follow-up commands:
 

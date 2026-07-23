@@ -16,120 +16,112 @@
                         </p>
                     </div>
                     <div class="space-y-5 lg:col-span-8">
-                        {% if subscription.status == "active" %}
-                            <div data-controller="textarea" class="space-y-3">
-                                {% for template in templates %}
-                                    <div data-controller="dropdown" class="tl-panel overflow-hidden">
-                                        <button type="button"
-                                                class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50"
-                                                data-action="dropdown#toggle click->dropdown#hide">
-                                            <span>
-                                                <span class="block text-base font-semibold text-slate-900">{{ template.title }}</span>
-                                                <span class="mt-1 block text-sm text-slate-500">{{ template.subject_line }}</span>
-                                            </span>
-                                            <span class="text-sm font-semibold text-slate-500">Edit</span>
-                                        </button>
-                                        <form method="post"
-                                              action="{% url 'update-template' template.id %}"
-                                              data-dropdown-target="menu"
-                                              class="hidden border-t border-slate-200">
-                                            {% csrf_token %}
-                                            {{ update_form.non_field_errors }}
-                                            <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
-                                                <div>
-                                                    <label for="title-{{ template.id }}" class="tl-label">Title</label>
-                                                    {{ update_form.title.errors }}
-                                                    {% render_field update_form.title value=template.title name="title" id="title-{{ template.id }}" class="tl-input mt-2" %}
-                                                    <p class="mt-2 text-xs leading-5 text-slate-500">A short internal name for the template.</p>
-                                                </div>
-                                                <div>
-                                                    {{ update_form.subject_line.errors }}
-                                                    <label for="subject-line-{{ template.id }}" class="tl-label">Subject line</label>
-                                                    {% render_field update_form.subject_line value=template.subject_line id="subject-line-{{ template.id }}" class="tl-input mt-2" placeholder="Quick question about your next role" %}
-                                                </div>
-                                                <div class="sm:col-span-2">
-                                                    {{ update_form.cc_s.errors }}
-                                                    <label for="ccs-{{ template.id }}" class="tl-label">CCs</label>
-                                                    {% render_field update_form.cc_s id="ccs-{{ template.id }}" value=template.cc_s placeholder="teammate@company.com, founder@company.com" class="tl-input mt-2" %}
-                                                    <p class="mt-2 text-xs leading-5 text-slate-500">Use a comma-separated list. Your email is included by default.</p>
-                                                </div>
-                                                <div class="sm:col-span-2">
-                                                    {{ update_form.text.errors }}
-                                                    <label for="text-{{ template.id }}" class="tl-label">Message</label>
-                                                    {% render_field update_form.text value=template.text name="text" rows=10 id="text-{{ template.id }}" placeholder="Hi, I saw your profile and wanted to reach out about..." class="tl-input mt-2 min-h-56" %}
-                                                </div>
+                        <div data-controller="textarea" class="space-y-3">
+                            {% for template in templates %}
+                                <div data-controller="dropdown" class="tl-panel overflow-hidden">
+                                    <button type="button"
+                                            class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50"
+                                            data-action="dropdown#toggle click->dropdown#hide">
+                                        <span>
+                                            <span class="block text-base font-semibold text-slate-900">{{ template.title }}</span>
+                                            <span class="mt-1 block text-sm text-slate-500">{{ template.subject_line }}</span>
+                                        </span>
+                                        <span class="text-sm font-semibold text-slate-500">Edit</span>
+                                    </button>
+                                    <form method="post"
+                                          action="{% url 'update-template' template.id %}"
+                                          data-dropdown-target="menu"
+                                          class="hidden border-t border-slate-200">
+                                        {% csrf_token %}
+                                        {{ update_form.non_field_errors }}
+                                        <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
+                                            <div>
+                                                <label for="title-{{ template.id }}" class="tl-label">Title</label>
+                                                {{ update_form.title.errors }}
+                                                {% render_field update_form.title value=template.title name="title" id="title-{{ template.id }}" class="tl-input mt-2" %}
+                                                <p class="mt-2 text-xs leading-5 text-slate-500">A short internal name for the template.</p>
                                             </div>
-                                            <div class="flex justify-end gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-6">
-                                                <button type="submit"
-                                                        name="delete_object"
-                                                        class="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
-                                                    Delete
-                                                </button>
-                                                <button type="submit" class="tl-button-primary">Update template</button>
+                                            <div>
+                                                {{ update_form.subject_line.errors }}
+                                                <label for="subject-line-{{ template.id }}" class="tl-label">Subject line</label>
+                                                {% render_field update_form.subject_line value=template.subject_line id="subject-line-{{ template.id }}" class="tl-input mt-2" placeholder="Quick question about your next role" %}
                                             </div>
-                                        </form>
-                                    </div>
-                                {% empty %}
-                                    <div class="tl-panel p-6">
-                                        <h3 class="text-base font-semibold text-slate-900">No templates yet</h3>
-                                        <p class="mt-2 text-sm leading-6 text-slate-600">
-                                            Create your first message template below before sending outreach from candidate profiles.
-                                        </p>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                            <div data-controller="dropdown" class="tl-panel overflow-hidden">
-                                <button type="button"
-                                        class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50"
-                                        data-action="dropdown#toggle click->dropdown#hide">
-                                    <span>
-                                        <span class="block text-base font-semibold text-slate-900">Create a new template</span>
-                                        <span class="mt-1 block text-sm text-slate-500">Add a message you can reuse from profile pages.</span>
-                                    </span>
-                                    <span class="tl-pill">New</span>
-                                </button>
-                                <form method="post"
-                                      action=""
-                                      data-dropdown-target="menu"
-                                      class="hidden border-t border-slate-200">
-                                    {% csrf_token %}
-                                    {{ form.non_field_errors }}
-                                    <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
-                                        <div>
-                                            <label for="title" class="tl-label">Title</label>
-                                            {{ form.title.errors }}
-                                            {% render_field form.title name="title" id="title" class="tl-input mt-2" placeholder="Senior backend intro" %}
-                                            <p class="mt-2 text-xs leading-5 text-slate-500">A short internal name for the template.</p>
+                                            <div class="sm:col-span-2">
+                                                {{ update_form.cc_s.errors }}
+                                                <label for="ccs-{{ template.id }}" class="tl-label">CCs</label>
+                                                {% render_field update_form.cc_s id="ccs-{{ template.id }}" value=template.cc_s placeholder="teammate@company.com, founder@company.com" class="tl-input mt-2" %}
+                                                <p class="mt-2 text-xs leading-5 text-slate-500">Use a comma-separated list. Your email is included by default.</p>
+                                            </div>
+                                            <div class="sm:col-span-2">
+                                                {{ update_form.text.errors }}
+                                                <label for="text-{{ template.id }}" class="tl-label">Message</label>
+                                                {% render_field update_form.text value=template.text name="text" rows=10 id="text-{{ template.id }}" placeholder="Hi, I saw your profile and wanted to reach out about..." class="tl-input mt-2 min-h-56" %}
+                                            </div>
                                         </div>
-                                        <div>
-                                            {{ form.subject_line.errors }}
-                                            <label for="subject_line" class="tl-label">Subject line</label>
-                                            {% render_field form.subject_line id="subject_line" placeholder="Quick question about your next role" class="tl-input mt-2" %}
+                                        <div class="flex justify-end gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-6">
+                                            <button type="submit"
+                                                    name="delete_object"
+                                                    class="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
+                                                Delete
+                                            </button>
+                                            <button type="submit" class="tl-button-primary">Update template</button>
                                         </div>
-                                        <div class="sm:col-span-2">
-                                            {{ form.cc_s.errors }}
-                                            <label for="cc_s" class="tl-label">CCs</label>
-                                            {% render_field form.cc_s id="cc_s" placeholder="teammate@company.com, founder@company.com" class="tl-input mt-2" %}
-                                            <p class="mt-2 text-xs leading-5 text-slate-500">Use a comma-separated list. Your email is included by default.</p>
-                                        </div>
-                                        <div class="sm:col-span-2">
-                                            {{ form.text.errors }}
-                                            <label for="text" class="tl-label">Message</label>
-                                            {% render_field form.text name="text" rows=10 id="text" placeholder="Hi, I saw your profile and wanted to reach out about..." class="tl-input mt-2 min-h-56" %}
-                                        </div>
+                                    </form>
+                                </div>
+                            {% empty %}
+                                <div class="tl-panel p-6">
+                                    <h3 class="text-base font-semibold text-slate-900">No templates yet</h3>
+                                    <p class="mt-2 text-sm leading-6 text-slate-600">
+                                        Create your first message template below before sending outreach from candidate profiles.
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div data-controller="dropdown" class="tl-panel overflow-hidden">
+                            <button type="button"
+                                    class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50"
+                                    data-action="dropdown#toggle click->dropdown#hide">
+                                <span>
+                                    <span class="block text-base font-semibold text-slate-900">Create a new template</span>
+                                    <span class="mt-1 block text-sm text-slate-500">Add a message you can reuse from profile pages.</span>
+                                </span>
+                                <span class="tl-pill">New</span>
+                            </button>
+                            <form method="post"
+                                  action=""
+                                  data-dropdown-target="menu"
+                                  class="hidden border-t border-slate-200">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
+                                    <div>
+                                        <label for="title" class="tl-label">Title</label>
+                                        {{ form.title.errors }}
+                                        {% render_field form.title name="title" id="title" class="tl-input mt-2" placeholder="Senior backend intro" %}
+                                        <p class="mt-2 text-xs leading-5 text-slate-500">A short internal name for the template.</p>
                                     </div>
-                                    <div class="border-t border-slate-200 bg-slate-50 px-5 py-4 text-right sm:px-6">
-                                        <button type="submit" class="tl-button-primary">Save template</button>
+                                    <div>
+                                        {{ form.subject_line.errors }}
+                                        <label for="subject_line" class="tl-label">Subject line</label>
+                                        {% render_field form.subject_line id="subject_line" placeholder="Quick question about your next role" class="tl-input mt-2" %}
                                     </div>
-                                </form>
-                            </div>
-                        {% else %}
-                            <a class="block rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-sm leading-6 text-slate-600 hover:border-slate-400 hover:bg-white"
-                               href="{% url 'pricing' %}">
-                                <span class="block text-base font-semibold text-slate-900">Templates require business access.</span>
-                                <span class="mt-1 block">Upgrade to create outreach templates and send candidate email from profile pages.</span>
-                            </a>
-                        {% endif %}
+                                    <div class="sm:col-span-2">
+                                        {{ form.cc_s.errors }}
+                                        <label for="cc_s" class="tl-label">CCs</label>
+                                        {% render_field form.cc_s id="cc_s" placeholder="teammate@company.com, founder@company.com" class="tl-input mt-2" %}
+                                        <p class="mt-2 text-xs leading-5 text-slate-500">Use a comma-separated list. Your email is included by default.</p>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        {{ form.text.errors }}
+                                        <label for="text" class="tl-label">Message</label>
+                                        {% render_field form.text name="text" rows=10 id="text" placeholder="Hi, I saw your profile and wanted to reach out about..." class="tl-input mt-2 min-h-56" %}
+                                    </div>
+                                </div>
+                                <div class="border-t border-slate-200 bg-slate-50 px-5 py-4 text-right sm:px-6">
+                                    <button type="submit" class="tl-button-primary">Save template</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

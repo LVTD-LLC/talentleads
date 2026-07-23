@@ -43,23 +43,20 @@
                                 </h1>
                             </div>
                             <div class="lg:min-w-80">
-                                {% if subscription.status == "active" and outreach_templates %}
-                                    <div data-controller="email"
-                                         class="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                                        <input data-email-target="profileId" class="hidden" value="{{ object.id }}" />
+                                {% if user.is_authenticated and outreach_templates %}
+                                    <form method="post"
+                                          action="{% url 'send-email-to-profile' object.id %}"
+                                          class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                                        {% csrf_token %}
                                         <label for="email_template" class="sr-only">Outreach template</label>
                                         <select id="email_template"
                                                 name="email_template"
-                                                data-email-target="emailTemplate"
                                                 class="tl-input">
                                             {% for template in outreach_templates %}<option value="{{ template.id }}">{{ template.title }}</option>{% endfor %}
                                         </select>
-                                        <a href="#"
-                                           data-email-target="sendEmailLink"
-                                           rel="nofollow"
-                                           class="tl-button-primary mt-3 w-full">Send outreach</a>
-                                    </div>
-                                {% elif subscription.status == "active" and not outreach_templates %}
+                                        <button type="submit" class="tl-button-primary mt-3 w-full">Send outreach</button>
+                                    </form>
+                                {% elif user.is_authenticated %}
                                     <a class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 hover:border-slate-300 hover:bg-white"
                                        href="{% url 'templates' %}">
                                         <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 text-white">
@@ -75,17 +72,11 @@
                                             <span class="mt-1 block text-sm leading-6 text-slate-600">Templates make profile outreach faster and more consistent.</span>
                                         </span>
                                     </a>
-                                {% elif user.is_authenticated and subscription.status != "active" %}
-                                    <a class="block rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-600 hover:border-slate-400 hover:bg-white"
-                                       href="{% url 'pricing' %}">
-                                        <span class="font-semibold text-slate-900">Upgrade to send outreach.</span>
-                                        Private contact details and email actions are included with business access.
-                                    </a>
                                 {% else %}
                                     <a class="block rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-600 hover:border-slate-400 hover:bg-white"
-                                       href="{% url 'pricing' %}">
+                                       href="{% url 'account_login' %}">
                                         <span class="font-semibold text-slate-900">Log in to contact candidates.</span>
-                                        Create an account to unlock private details and outreach tools.
+                                        Create an account to use private details and outreach tools.
                                     </a>
                                 {% endif %}
                             </div>
@@ -181,7 +172,7 @@
                     </section>
                     <section class="tl-panel p-5">
                         <h2 class="text-base font-semibold text-slate-900">Contact details</h2>
-                        {% if user.is_authenticated and subscription.status == "active" %}
+                        {% if user.is_authenticated %}
                             <dl class="mt-5 space-y-4">
                                 {% if object.name %}
                                     <div>
@@ -214,9 +205,9 @@
                             </dl>
                         {% else %}
                             <a class="mt-5 block rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5 text-sm leading-6 text-slate-600 hover:border-slate-400 hover:bg-white"
-                               href="{% url 'pricing' %}">
-                                <span class="block font-semibold text-slate-900">Business access unlocks contact details</span>
-                                <span class="mt-1 block">Unlock name, email, resume links, and outreach actions for candidates you want to contact.</span>
+                               href="{% url 'account_login' %}">
+                                <span class="block font-semibold text-slate-900">Log in to view contact details</span>
+                                <span class="mt-1 block">Create an account to view names, email addresses, resume links, and outreach actions.</span>
                             </a>
                         {% endif %}
                     </section>

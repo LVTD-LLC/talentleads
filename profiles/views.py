@@ -1,8 +1,10 @@
 from django import forms
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
+from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, FormView
 from django_filters.views import FilterView
 from django_q.tasks import async_task
@@ -76,13 +78,16 @@ class TriggerAsyncTask(LoginRequiredMixin, UserPassesTestMixin, FormView):
         return super(TriggerAsyncTask, self).form_valid(form)
 
 
-def send_outreach_email(request, profile_id, email_template_id):
+@login_required(login_url="account_login")
+@require_POST
+def send_outreach_email(request, profile_id):
+    email_template_id = request.POST.get("email_template_id")
     logger.info(f"profile_id: {profile_id}")
     logger.info(f"email_template_id: {email_template_id}")
 
     user = request.user
-    profile = Profile.objects.get(id=profile_id)
-    template = OutreachTemplate.objects.get(id=email_template_id)
+    profile = get_object_or_404(Profile, id=profile_id)
+    template = get_object_or_404(OutreachTemplate, id=email_template_id, author=user)
 
     obj, created = Outreach.objects.get_or_create(author=user, receiver=profile, template=template)
     logger.info(f"obj, created: {obj}, {created}")

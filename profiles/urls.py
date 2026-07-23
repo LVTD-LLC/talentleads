@@ -7,7 +7,7 @@ urlpatterns = [
     path("<uuid:pk>", ProfileDetailView.as_view(), name="profile"),
     path("trigger-task/", TriggerAsyncTask.as_view(), name="trigger_task"),
     path(
-        "<uuid:profile_id>/send/<uuid:email_template_id>",
+        "<uuid:profile_id>/send",
         send_outreach_email,
         name="send-email-to-profile",
     ),

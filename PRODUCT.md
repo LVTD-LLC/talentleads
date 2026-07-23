@@ -26,7 +26,7 @@ Avoid generic SaaS gradients, decorative AI-purple glow, bloated card grids, vag
 - Make the product feel agent-ready without becoming abstract: emphasize structured search, clean data, and direct actions.
 - Keep the surface quiet and fast: visual polish should improve scanning, not slow down evaluation.
 - Use specificity over buzzwords: describe what TalentLeads does in concrete sourcing and outreach terms.
-- Preserve trust at every step: forms, pricing, navigation, and profile views should feel stable and deliberate.
+- Preserve trust at every step: forms, navigation, and profile views should feel stable and deliberate.
 
 ## Accessibility & Inclusion
 

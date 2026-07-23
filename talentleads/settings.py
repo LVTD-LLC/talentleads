@@ -78,7 +78,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "django_q",
     "django_filters",
-    "djstripe",
     "anymail",
     "pages.apps.PagesConfig",
     "blog.apps.BlogConfig",
@@ -423,13 +422,6 @@ if SENTRY_DSN and env("ENVIRONMENT") == "prod":
     )
 
 OPENAI_KEY = env("OPENAI_KEY")
-
-STRIPE_LIVE_SECRET_KEY = env("STRIPE_LIVE_SECRET_KEY")
-STRIPE_TEST_SECRET_KEY = env("STRIPE_TEST_SECRET_KEY")
-STRIPE_LIVE_MODE = env("STRIPE_LIVE_MODE", bool)
-DJSTRIPE_USE_NATIVE_JSONFIELD = True
-DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
-DJSTRIPE_WEBHOOK_VALIDATION = "retrieve_event"
 
 MAILGUN_API_KEY = env("MAILGUN_API_KEY", default="")
 ANYMAIL = {

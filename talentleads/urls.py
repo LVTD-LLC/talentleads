@@ -34,7 +34,6 @@ urlpatterns = (
         path("blog/", include("blog.urls")),
         path("sales/", include("sales.urls")),
         path("uses", TemplateView.as_view(template_name="pages/uses.html"), name="uses"),
-        path("stripe/", include("djstripe.urls", namespace="djstripe")),
         path("sitemap.xml", sitemap, sitemaps),
         path("api/", api.urls),
     ]

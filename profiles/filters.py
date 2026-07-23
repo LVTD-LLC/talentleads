@@ -2,20 +2,10 @@ from django import forms
 from django.db.models import Count
 from django_filters import CharFilter, FilterSet, ModelMultipleChoiceFilter, NumberFilter
 from django_filters.filters import MultipleChoiceFilter as BaseMultipleChoiceFilter
-from djstripe.models import Subscription
 
 from profiles.choices import CapacityChoices
 
 from .models import Profile, Technology
-
-TEXT_SEARCH_FIELDS = ("title", "description")
-
-
-def has_active_subscription(user):
-    if not getattr(user, "is_authenticated", False):
-        return False
-
-    return Subscription.objects.filter(customer__subscriber=user, status="active").exists()
 
 
 # Custom MultipleChoiceFilter that uses standard Django forms field to avoid Python 3.13 compatibility issues
@@ -73,15 +63,6 @@ class ProfileFilter(FilterSet):
         ]
 
     def __init__(self, *args, **kwargs):
-        request = kwargs.get("request")
-        self.has_text_search_access = bool(request and has_active_subscription(request.user))
-
-        if not self.has_text_search_access and kwargs.get("data"):
-            data = kwargs["data"].copy()
-            for field in TEXT_SEARCH_FIELDS:
-                data.pop(field, None)
-            kwargs["data"] = data
-
         super().__init__(*args, **kwargs)
         # Dynamically populate choices from database
         self.filters["city"].extra["choices"] = [
