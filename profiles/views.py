@@ -82,7 +82,7 @@ class TriggerAsyncTask(LoginRequiredMixin, UserPassesTestMixin, FormView):
 @login_required(login_url="account_login")
 @require_POST
 def send_outreach_email(request, profile_id):
-    email_template_id = request.POST.get("email_template_id")
+    email_template_id = request.POST.get("email_template")
     logger.info(f"profile_id: {profile_id}")
     logger.info(f"email_template_id: {email_template_id}")
 

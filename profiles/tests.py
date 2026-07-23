@@ -131,7 +131,7 @@ class ProfileAccessTests(TestCase):
     def test_outreach_requires_login(self, _load_assets):
         outreach_url = reverse("send-email-to-profile", kwargs={"profile_id": self.profile.id})
 
-        response = self.client.post(outreach_url, {"email_template_id": self.template.id})
+        response = self.client.post(outreach_url, {"email_template": self.template.id})
 
         self.assertRedirects(
             response,
@@ -153,11 +153,26 @@ class ProfileAccessTests(TestCase):
 
         response = self.client.post(
             reverse("send-email-to-profile", kwargs={"profile_id": self.profile.id}),
-            {"email_template_id": self.template.id},
+            {"email_template": self.template.id},
         )
 
         self.assertEqual(response.status_code, 404)
         self.assertFalse(Outreach.objects.exists())
+
+    @patch("profiles.views.async_task")
+    def test_outreach_accepts_template_field_rendered_by_profile_form(self, async_task, _load_assets):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("send-email-to-profile", kwargs={"profile_id": self.profile.id}),
+            {"email_template": self.template.id},
+        )
+
+        self.assertRedirects(response, reverse("profile", kwargs={"pk": self.profile.id}))
+        self.assertTrue(
+            Outreach.objects.filter(author=self.user, receiver=self.profile, template=self.template).exists()
+        )
+        async_task.assert_called_once()
 
 
 class MarkdownFilterTests(TestCase):
