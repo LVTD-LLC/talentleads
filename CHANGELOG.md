@@ -19,3 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Local development via docker-compose
 - Updated a bunch of libraries
 - Blog + Feed
+
+**Fixed**
+- Use a supported Node.js runtime and deterministic npm installs for deployment image builds.

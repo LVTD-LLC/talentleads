@@ -18,6 +18,9 @@
   ],
   "author": "Rasul Kireev",
   "license": "MIT",
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "bugs": {
     "url": "https://github.com/rasulkireev/talentleads/issues"
   },
