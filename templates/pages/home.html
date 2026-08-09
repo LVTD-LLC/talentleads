@@ -1,189 +1,143 @@
 {% extends "base.html" %}
-{% load markdown_extras %}
-{% load webpack_loader static %}
+{% load webpack_loader static widget_tweaks %}
 {% block meta %}
-    <title>TalentLeads | Technical talent search for startup teams</title>
+    <title>TalentLeads | Find the right person for the right job</title>
     <meta name="description"
-          content="Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace." />
+          content="Share a job description and get a focused shortlist of people your team should contact." />
     <link rel="canonical" href="https://{{ request.get_host }}/" />
     <meta property="og:type" content="website" />
     <meta property="og:title"
-          content="TalentLeads | Technical talent search for startup teams" />
+          content="TalentLeads | Find the right person for the right job" />
     <meta property="og:url" content="https://{{ request.get_host }}/" />
     <meta property="og:description"
-          content="Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace." />
+          content="Share a job description and get a focused shortlist of people your team should contact." />
     <meta property="og:image"
           content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title"
-          content="TalentLeads | Technical talent search for startup teams" />
+          content="TalentLeads | Find the right person for the right job" />
     <meta name="twitter:description"
-          content="Find technical candidates, review useful profile context, and start targeted outreach from one focused workspace." />
+          content="Share a job description and get a focused shortlist of people your team should contact." />
     <meta name="twitter:image"
           content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
 {% endblock meta %}
 {% block content %}
-    <section class="relative overflow-hidden">
-        <div class="tl-grid-bg pointer-events-none absolute inset-x-0 top-0 h-[34rem] opacity-70"
+    <section class="relative overflow-hidden border-b border-slate-200/80 bg-[#f7f7f2]"
+             data-controller="job-match"
+             data-job-match-authenticated-value="{% if user.is_authenticated %}true{% else %}false{% endif %}">
+        <div class="tl-dot-grid pointer-events-none absolute inset-0 opacity-50"
              aria-hidden="true"></div>
-        <div class="tl-container relative grid gap-12 pb-20 pt-16 lg:grid-cols-12 lg:pb-28 lg:pt-24">
-            <div class="lg:col-span-6">
-                <p class="tl-eyebrow">Technical talent search for startup teams</p>
-                <h1 class="mt-5 max-w-4xl text-5xl font-semibold tracking-[-0.035em] text-slate-900 sm:text-6xl lg:text-7xl">
-                    Find technical candidates worth contacting.
-                </h1>
-                <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
-                    TalentLeads gives founders, operators, and recruiting teams a searchable database of technical profiles with the context they need to judge fit before they send the first message.
-                </p>
-                <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'profiles' %}"
-                           class="tl-button-primary px-5 py-3 text-base">Open talent workspace</a>
-                    {% else %}
-                        <a href="{% url 'account_signup' %}"
-                           class="tl-button-primary px-5 py-3 text-base">Start free</a>
-                        <a href="{% url 'profiles' %}"
-                           class="tl-button-secondary px-5 py-3 text-base">View live database</a>
-                    {% endif %}
+        <div class="tl-narrow relative py-20 text-center sm:py-28 lg:py-36">
+            <h1 class="mx-auto max-w-4xl text-5xl font-semibold tracking-[-0.055em] text-slate-900 sm:text-7xl lg:text-8xl">
+                Find the right person for the right job.
+            </h1>
+            <p class="mx-auto mt-7 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
+                Paste a link to the job description. We’ll find the strongest matches and show you who is worth contacting.
+            </p>
+            <form id="job-match"
+                  method="post"
+                  action="{% url 'job-match' %}"
+                  data-action="submit->job-match#submit"
+                  class="mx-auto mt-10 max-w-3xl rounded-2xl border border-slate-300/80 bg-white p-3 text-left shadow-[0_24px_70px_-38px_rgba(15,23,42,0.4)] sm:p-4">
+                {% csrf_token %}
+                <label for="job-url" class="sr-only">Job description link</label>
+                <div class="flex flex-col gap-3 sm:flex-row">
+                    {% render_field job_match_form.job_url id="job-url" data-job-match-target="input" class="min-h-12 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 placeholder:text-slate-500 focus:border-slate-900 focus:ring-slate-900" %}
+                    <button type="submit"
+                            data-job-match-target="button"
+                            class="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#ff5c35] px-5 text-sm font-semibold text-white hover:bg-[#e64b29]">
+                        Build my shortlist
+                    </button>
                 </div>
-                <div class="mt-10 flex max-w-2xl flex-col gap-3 border-y border-slate-200 py-4 text-sm leading-6 text-slate-600 sm:flex-row sm:items-center sm:gap-5">
-                    <span><strong class="font-semibold text-slate-900">{{ num_of_profiles }}+ profiles</strong> in the live database</span>
-                    <span class="hidden h-1 w-1 rounded-full bg-slate-300 sm:block" aria-hidden="true"></span>
-                    <span>Filter by skills, location, capacity, and outreach context</span>
-                </div>
-            </div>
-            <div class="lg:col-span-6">
-                <div class="tl-panel-dark p-3 sm:p-4">
-                    <div class="rounded-lg border border-white/10 bg-white/[0.03] p-3">
-                        <div class="mb-3 flex items-center justify-between px-1">
-                            <div class="flex items-center gap-1.5">
-                                <span class="h-2.5 w-2.5 rounded-full bg-white/25"></span>
-                                <span class="h-2.5 w-2.5 rounded-full bg-white/20"></span>
-                                <span class="h-2.5 w-2.5 rounded-full bg-white/10"></span>
-                            </div>
-                            <span class="rounded-md bg-white/10 px-2 py-1 text-xs font-medium text-white/70">candidate.search</span>
-                        </div>
-                        <div class="overflow-hidden rounded-lg bg-white">
-                            <img src="{% static 'vendors/images/search.png' %}"
-                                 alt="TalentLeads search interface with filters and candidate profile results"
-                                 class="w-full object-cover"
-                                 width="2432"
-                                 height="1442" />
-                        </div>
-                    </div>
-                    <div class="grid gap-3 pt-3 sm:grid-cols-2">
-                        <div class="rounded-lg border border-white/10 bg-white/[0.04] p-4">
-                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">Query</p>
-                            <p class="mt-2 text-sm leading-6 text-white/90">Find senior Python engineers open to remote startup work.</p>
-                        </div>
-                        <div class="rounded-lg border border-white/10 bg-white/[0.04] p-4">
-                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">Action</p>
-                            <p class="mt-2 text-sm leading-6 text-white/90">
-                                Compare relevant profiles with skills, capacity, and outreach context.
+                {% if job_match_form.job_url.errors %}
+                    <div class="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700"
+                         role="alert">{{ job_match_form.job_url.errors|join:" " }}</div>
+                {% endif %}
+            </form>
+            <p class="mt-4 text-sm text-slate-500">Free to use. Account required.</p>
+        </div>
+        {% if not user.is_authenticated %}
+            <dialog id="signup-required-dialog"
+                    data-job-match-target="dialog"
+                    data-action="close->job-match#closed click->job-match#backdrop"
+                    class="tl-dialog m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-left shadow-2xl">
+                <div class="p-6 sm:p-8">
+                    <div class="flex items-start justify-between gap-5">
+                        <div>
+                            <h2 class="text-2xl font-semibold tracking-[-0.025em] text-slate-900">Create a free account first.</h2>
+                            <p class="mt-3 leading-7 text-slate-600">
+                                Matching a job uses paid search tools, so we ask you to sign in before we run it. TalentLeads is still free to use.
                             </p>
                         </div>
+                        <button type="button"
+                                data-action="job-match#close"
+                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                                aria-label="Close dialog">&times;</button>
+                    </div>
+                    <div class="mt-7 grid gap-3">
+                        <a href="{% url 'account_signup' %}?next={% url 'home' %}%23job-match"
+                           class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#ff5c35] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#e64b29]">Create free account</a>
+                        <a href="{% url 'account_login' %}?next={% url 'home' %}%23job-match"
+                           class="tl-button-secondary w-full">I already have an account</a>
+                    </div>
+                </div>
+            </dialog>
+        {% endif %}
+    </section>
+    <section id="how-it-works" class="scroll-mt-20 bg-white py-20 sm:py-28">
+        <div class="tl-narrow">
+            <h2 class="text-center text-3xl font-semibold tracking-[-0.035em] text-slate-900 sm:text-5xl">
+                Hiring starts with a role, not a search box.
+            </h2>
+            <p class="mx-auto mt-5 max-w-2xl text-center text-lg leading-8 text-slate-600">
+                You already wrote what you need. We use that brief to search for people, compare the evidence, and bring the strongest matches to you.
+            </p>
+            <div class="mt-14 divide-y divide-slate-200 border-y border-slate-200">
+                <div class="grid gap-3 py-7 sm:grid-cols-[5rem_1fr] sm:items-start">
+                    <span class="text-sm font-semibold text-[#ff5c35]">01</span>
+                    <div>
+                        <h3 class="text-xl font-semibold text-slate-900">Paste the job link</h3>
+                        <p class="mt-2 leading-7 text-slate-600">
+                            We read the role, the skills, the level, and the details that make it specific.
+                        </p>
+                    </div>
+                </div>
+                <div class="grid gap-3 py-7 sm:grid-cols-[5rem_1fr] sm:items-start">
+                    <span class="text-sm font-semibold text-[#ff5c35]">02</span>
+                    <div>
+                        <h3 class="text-xl font-semibold text-slate-900">We find the strongest matches</h3>
+                        <p class="mt-2 leading-7 text-slate-600">TalentLeads looks across real profiles and ranks people against your role.</p>
+                    </div>
+                </div>
+                <div class="grid gap-3 py-7 sm:grid-cols-[5rem_1fr] sm:items-start">
+                    <span class="text-sm font-semibold text-[#ff5c35]">03</span>
+                    <div>
+                        <h3 class="text-xl font-semibold text-slate-900">Choose who to contact</h3>
+                        <p class="mt-2 leading-7 text-slate-600">See why each person fits, review their work, and reach out with context.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="tl-container py-16 sm:py-24">
-        <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
-            <div class="lg:col-span-5">
-                <p class="tl-eyebrow">How it works</p>
-                <h2 class="mt-4 text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-5xl">
-                    Go from hiring criteria to a real shortlist.
-                </h2>
-            </div>
-            <p class="max-w-2xl text-lg leading-8 text-slate-600 lg:col-span-6 lg:col-start-7">
-                Start with the role you need to fill, compare people on the signals that matter, and move into outreach without rebuilding the same research in a spreadsheet.
+    <section class="bg-slate-900 py-20 text-white sm:py-28">
+        <div class="tl-narrow text-center">
+            <p class="text-6xl font-semibold tracking-[-0.06em] sm:text-8xl">{{ num_of_profiles }}+</p>
+            <h2 class="mt-5 text-2xl font-semibold sm:text-3xl">people ready to be matched to real work.</h2>
+            <p class="mx-auto mt-4 max-w-xl leading-7 text-slate-400">
+                No endless browsing. No pile of weak profiles. Just a focused list built from the job you need to fill.
             </p>
         </div>
-        <div class="mt-12 grid gap-4 lg:grid-cols-3">
-            <div class="tl-card p-6">
-                <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-sm font-semibold text-white">
-                    1
-                </div>
-                <h3 class="mt-6 text-xl font-semibold tracking-tight text-slate-900">Search by real hiring constraints</h3>
-                <p class="mt-3 text-base leading-7 text-slate-600">
-                    Filter by role, location, experience, capacity, remote preference, and technical stack so the results match the work you actually need done.
-                </p>
-            </div>
-            <div class="tl-card p-6">
-                <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-sm font-semibold text-white">
-                    2
-                </div>
-                <h3 class="mt-6 text-xl font-semibold tracking-tight text-slate-900">Compare the context that matters</h3>
-                <p class="mt-3 text-base leading-7 text-slate-600">
-                    Review descriptions, skills, location, availability, and relevant links in one place before deciding who deserves a closer look.
-                </p>
-            </div>
-            <div class="tl-card p-6">
-                <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-sm font-semibold text-white">
-                    3
-                </div>
-                <h3 class="mt-6 text-xl font-semibold tracking-tight text-slate-900">Reach out from the profile</h3>
-                <p class="mt-3 text-base leading-7 text-slate-600">
-                    Use contact details and saved templates to send a relevant first message while the candidate context is still in front of you.
-                </p>
-            </div>
-        </div>
     </section>
-    <section class="tl-container py-16 sm:py-24">
-        <div class="grid gap-4 lg:grid-cols-12">
-            <div class="tl-panel-dark p-8 lg:col-span-7 lg:p-10">
-                <p class="text-sm font-semibold text-white/60">For B2B sourcing teams</p>
-                <h2 class="mt-4 max-w-2xl text-3xl font-semibold tracking-[-0.025em] text-white sm:text-5xl">
-                    A sourcing workspace built for operators, not a bloated ATS.
-                </h2>
-                <p class="mt-5 max-w-2xl text-lg leading-8 text-white/70">
-                    TalentLeads keeps the workflow narrow: find credible technical people, understand why they might fit, and take the next step without dragging your team into a full recruiting system.
-                </p>
-            </div>
-            <div class="grid gap-4 lg:col-span-5">
-                <div class="tl-card p-6">
-                    <h3 class="text-lg font-semibold text-slate-900">Searchable signal, not a feed</h3>
-                    <p class="mt-2 text-sm leading-6 text-slate-600">
-                        Candidate context is organized for filtering and comparison, so strong matches are easier to spot.
-                    </p>
-                </div>
-                <div class="tl-card p-6">
-                    <h3 class="text-lg font-semibold text-slate-900">People stay in control</h3>
-                    <p class="mt-2 text-sm leading-6 text-slate-600">
-                        Your team still reviews quality, personalizes outreach, and decides who is worth contacting.
-                    </p>
-                </div>
-                <div class="tl-card p-6">
-                    <h3 class="text-lg font-semibold text-slate-900">Structured for the next workflow</h3>
-                    <p class="mt-2 text-sm leading-6 text-slate-600">
-                        Clean profile fields and direct actions keep the product useful as your sourcing process grows.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="tl-container pb-20 pt-10 sm:pb-28">
-        <div class="tl-panel grid gap-8 p-6 sm:p-8 lg:grid-cols-12 lg:items-center lg:p-10">
-            <div class="lg:col-span-7">
-                <p class="tl-eyebrow">A focused sourcing workflow</p>
-                <h2 class="mt-4 text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-5xl">
-                    Browse the market, shortlist candidates, and start outreach.
-                </h2>
-                <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-                    Use the live database to understand the talent pool, save reusable outreach templates, and move from research to first conversations.
-                </p>
-            </div>
-            <div class="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
-                {% if user.is_authenticated %}
-                    <a href="{% url 'profiles' %}"
-                       class="tl-button-primary px-5 py-3 text-base">Open workspace</a>
-                {% else %}
-                    <a href="{% url 'account_signup' %}"
-                       class="tl-button-primary px-5 py-3 text-base">Create account</a>
-                    <a href="{% url 'profiles' %}"
-                       class="tl-button-secondary px-5 py-3 text-base">Browse talent</a>
-                {% endif %}
-            </div>
+    <section class="bg-[#ff5c35] py-20 text-center text-white sm:py-24">
+        <div class="tl-narrow">
+            <h2 class="text-4xl font-semibold tracking-[-0.045em] sm:text-6xl">Your next hire may already be here.</h2>
+            <p class="mx-auto mt-5 max-w-xl text-lg leading-8 text-white/85">
+                Bring the job description. We’ll help you find the people.
+            </p>
+            <a href="#job-match"
+               class="mt-8 inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3 text-base font-semibold text-slate-900 hover:bg-slate-100">
+                Match a job for free
+            </a>
         </div>
     </section>
 {% endblock content %}

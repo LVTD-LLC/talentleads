@@ -2,7 +2,6 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 
@@ -70,7 +69,7 @@ class ProfileSearchTests(TestCase):
             create_profile(f"New York engineer {index}", city="New York")
         create_profile("Austin engineer", city="Austin")
         request = self.factory.get("/profiles/", {"city": "New York"})
-        request.user = AnonymousUser()
+        request.user = get_user_model().objects.create_user(username="recruiter", password="password")
 
         response = ProfileListView.as_view()(request)
 
@@ -111,12 +110,25 @@ class ProfileAccessTests(TestCase):
             text="Hello!",
         )
 
-    def test_private_contact_details_require_login(self, _load_assets):
-        response = self.client.get(reverse("profile", kwargs={"pk": self.profile.id}))
+    def test_profile_list_requires_login(self, _load_assets):
+        response = self.client.get(reverse("profiles"))
 
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, self.profile.email)
-        self.assertContains(response, "Log in to view contact details")
+        self.assertRedirects(
+            response,
+            f"{reverse('account_login')}?next={reverse('profiles')}",
+            fetch_redirect_response=False,
+        )
+
+    def test_profile_detail_requires_login(self, _load_assets):
+        profile_url = reverse("profile", kwargs={"pk": self.profile.id})
+
+        response = self.client.get(profile_url)
+
+        self.assertRedirects(
+            response,
+            f"{reverse('account_login')}?next={profile_url}",
+            fetch_redirect_response=False,
+        )
 
     def test_authenticated_user_sees_contact_and_outreach_form(self, _load_assets):
         self.client.force_login(self.user)

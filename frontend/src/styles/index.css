@@ -91,6 +91,16 @@
     @apply min-h-screen overflow-x-hidden;
   }
 
+  .tl-dialog::backdrop {
+    background: rgb(15 23 42 / 55%);
+    backdrop-filter: blur(4px);
+  }
+
+  .tl-dot-grid {
+    background-image: radial-gradient(#b8b8ae 0.7px, transparent 0.7px);
+    background-size: 18px 18px;
+  }
+
   .tl-container {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
