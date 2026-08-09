@@ -1,0 +1,26 @@
+name: ReviewGate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: LVTD-LLC/reviewgate@v0
+        with:
+          mode: review
+          openrouter_api_key: ${{ secrets.OPENROUTER_API_KEY }}

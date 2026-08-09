@@ -20,7 +20,8 @@ from .tasks import get_hn_pages_to_analyze, send_outreach_email_task
 logger = get_talentleads_logger(__name__)
 
 
-class ProfileListView(FilterView):
+class ProfileListView(LoginRequiredMixin, FilterView):
+    login_url = "account_login"
     model = Profile
     template_name = "profiles/all_profiles.html"
     queryset = Profile.objects.prefetch_related("tech_stack").order_by("-created", "-id")
@@ -41,7 +42,8 @@ class ProfileListView(FilterView):
         return context
 
 
-class ProfileDetailView(DetailView):
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    login_url = "account_login"
     model = Profile
     template_name = "profiles/profile_detail.html"
 
