@@ -3,21 +3,17 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
 from pages.forms import JobMatchForm
-from pages.services import find_matching_profiles
+from pages.services import find_matching_profiles, validate_public_job_url
 from profiles.models import Profile
 
 
 class JobMatchFormTests(SimpleTestCase):
-    @patch("pages.forms.socket.getaddrinfo")
-    def test_accepts_public_http_url(self, getaddrinfo):
-        getaddrinfo.return_value = [
-            (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("93.184.216.34", 443))
-        ]
-
+    def test_accepts_public_http_url(self):
         form = JobMatchForm({"job_url": "https://jobs.example.com/backend-engineer"})
 
         self.assertTrue(form.is_valid())
@@ -34,21 +30,14 @@ class JobMatchFormTests(SimpleTestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("http or https", form.errors["job_url"][0])
 
-    @patch("pages.forms.socket.getaddrinfo")
+    @patch("pages.services.socket.getaddrinfo")
     def test_rejects_private_network_address(self, getaddrinfo):
         getaddrinfo.return_value = [(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("10.0.0.8", 443))]
 
-        form = JobMatchForm({"job_url": "https://jobs.example.com/backend-engineer"})
+        with self.assertRaisesMessage(ValidationError, "public job page"):
+            validate_public_job_url("https://jobs.example.com/backend-engineer")
 
-        self.assertFalse(form.is_valid())
-        self.assertIn("public job page", form.errors["job_url"][0])
-
-    @patch("pages.forms.socket.getaddrinfo")
-    def test_rejects_url_credentials(self, getaddrinfo):
-        getaddrinfo.return_value = [
-            (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("93.184.216.34", 443))
-        ]
-
+    def test_rejects_url_credentials(self):
         form = JobMatchForm({"job_url": "https://user:password@jobs.example.com/role"})
 
         self.assertFalse(form.is_valid())
@@ -85,11 +74,7 @@ class JobMatchViewTests(TestCase):
         )
 
     @patch("pages.views.find_matching_profiles")
-    @patch("pages.forms.socket.getaddrinfo")
-    def test_authenticated_user_gets_matching_people(self, getaddrinfo, find_matching_profiles):
-        getaddrinfo.return_value = [
-            (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("93.184.216.34", 443))
-        ]
+    def test_authenticated_user_gets_matching_people(self, find_matching_profiles):
         find_matching_profiles.return_value = [
             SimpleNamespace(
                 title="Senior Django engineer",

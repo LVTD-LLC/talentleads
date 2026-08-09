@@ -1,12 +1,10 @@
-import ipaddress
-import socket
 from urllib.parse import urlsplit
 
 from django import forms
 from django.core.exceptions import ValidationError
 
 
-def validate_public_job_url(url):
+def validate_job_url(url):
     parsed = urlsplit(url)
 
     if parsed.scheme not in {"http", "https"}:
@@ -27,19 +25,6 @@ def validate_public_job_url(url):
     if port not in (80, 443):
         raise ValidationError("Job links must use a standard web port.")
 
-    try:
-        addresses = socket.getaddrinfo(hostname, port, type=socket.SOCK_STREAM)
-    except socket.gaierror as error:
-        raise ValidationError("We could not find that job page. Check the link and try again.") from error
-
-    if not addresses:
-        raise ValidationError("We could not find that job page. Check the link and try again.")
-
-    for address in addresses:
-        ip = ipaddress.ip_address(address[4][0].split("%", 1)[0])
-        if not ip.is_global:
-            raise ValidationError("Enter a link to a public job page.")
-
     return url
 
 
@@ -56,4 +41,4 @@ class JobMatchForm(forms.Form):
     )
 
     def clean_job_url(self):
-        return validate_public_job_url(self.cleaned_data["job_url"])
+        return validate_job_url(self.cleaned_data["job_url"])

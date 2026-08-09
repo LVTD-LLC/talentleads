@@ -1,6 +1,8 @@
+import ipaddress
 import re
+import socket
 from html.parser import HTMLParser
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 
 import httpx
 from django.core.exceptions import ValidationError
@@ -9,7 +11,7 @@ from pgvector.django import CosineDistance
 from profiles.models import Profile
 from profiles.tasks import get_jina_embedding
 
-from .forms import validate_public_job_url
+from .forms import validate_job_url
 
 MAX_JOB_PAGE_BYTES = 500_000
 MAX_JOB_TEXT_CHARACTERS = 16_000
@@ -18,6 +20,28 @@ MAX_REDIRECTS = 3
 
 class JobPageFetchError(Exception):
     pass
+
+
+def validate_public_job_url(url):
+    validate_job_url(url)
+    parsed = urlsplit(url)
+    hostname = parsed.hostname
+    port = parsed.port or (443 if parsed.scheme == "https" else 80)
+
+    try:
+        addresses = socket.getaddrinfo(hostname, port, type=socket.SOCK_STREAM)
+    except socket.gaierror as error:
+        raise ValidationError("We could not find that job page. Check the link and try again.") from error
+
+    if not addresses:
+        raise ValidationError("We could not find that job page. Check the link and try again.")
+
+    for address in addresses:
+        ip = ipaddress.ip_address(address[4][0].split("%", 1)[0])
+        if not ip.is_global:
+            raise ValidationError("Enter a link to a public job page.")
+
+    return url
 
 
 class JobPageTextParser(HTMLParser):
