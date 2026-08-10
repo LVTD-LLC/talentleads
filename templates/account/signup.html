@@ -1,85 +1,85 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block content %}
-    <section class="tl-container grid min-h-[calc(100dvh-12rem)] items-center py-12">
-        <div class="mx-auto grid w-full max-w-5xl overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm lg:grid-cols-2">
-            <div class="hidden bg-slate-900 p-10 text-white lg:block">
-                <p class="text-sm font-semibold text-white/50">Start with the live database</p>
-                <p class="mt-5 text-4xl font-semibold tracking-[-0.03em]">Create an account before your next hiring push.</p>
-                <p class="mt-5 text-base leading-7 text-white/70">
-                    Browse technical profiles first. Upgrade when you are ready to unlock private details and send outreach.
-                </p>
-                <div class="mt-10 grid gap-3">
-                    <div class="rounded-lg border border-white/10 bg-white/[0.04] p-4 text-sm text-white/70">
-                        Search profiles by role, stack, and location.
-                    </div>
-                    <div class="rounded-lg border border-white/10 bg-white/[0.04] p-4 text-sm text-white/70">
-                        Keep outreach templates ready when a fit appears.
-                    </div>
-                </div>
-            </div>
-            <div class="p-6 sm:p-10">
-                <div>
-                    <p class="tl-eyebrow">Create account</p>
-                    <h1 class="mt-3 text-3xl font-semibold tracking-[-0.025em] text-slate-900">Set up your TalentLeads account</h1>
-                    <p class="mt-3 text-sm leading-6 text-slate-600">
-                        Already have an account?
-                        <a href="{% url 'account_login' %}"
-                           class="font-semibold text-blue-700 hover:text-blue-800">Log in.</a>
+    <section class="tl-page-stage">
+        <div class="tl-container grid min-h-[calc(100dvh-12rem)] items-center py-12">
+            <div class="tl-auth-shell mx-auto">
+                <div class="tl-panel-dark hidden rounded-none border-0 p-10 lg:block">
+                    <p class="text-sm font-semibold text-white/50">Start with the live database</p>
+                    <p class="mt-5 text-4xl font-semibold tracking-[-0.03em]">Create an account before your next hiring push.</p>
+                    <p class="mt-5 text-base leading-7 text-white/70">
+                        Browse technical profiles first. Upgrade when you are ready to unlock private details and send outreach.
                     </p>
+                    <div class="mt-10 grid gap-3">
+                        <div class="rounded-lg border border-white/10 bg-white/[0.04] p-4 text-sm text-white/70">
+                            Search profiles by role, stack, and location.
+                        </div>
+                        <div class="rounded-lg border border-white/10 bg-white/[0.04] p-4 text-sm text-white/70">
+                            Keep outreach templates ready when a fit appears.
+                        </div>
+                    </div>
                 </div>
-                <form class="mt-8 space-y-5"
-                      id="signup_form"
-                      method="post"
-                      action="{% url 'account_signup' %}">
-                    {% csrf_token %}
-                    {% if form.non_field_errors %}
-                        <div id="signup-form-errors">{{ form.non_field_errors }}</div>
-                    {% endif %}
-                    <input type="hidden" name="remember" value="true" />
+                <div class="p-6 sm:p-10">
                     <div>
-                        <label for="username" class="tl-label">Username</label>
-                        {% if form.username.errors %}
-                            <div id="username-errors">{{ form.username.errors }}</div>
-                            {% render_field form.username placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True aria-invalid="true" aria-describedby="username-errors" class="tl-input mt-2" %}
-                        {% else %}
-                            {% render_field form.username placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True class="tl-input mt-2" %}
-                        {% endif %}
+                        <p class="tl-eyebrow">Create account</p>
+                        <h1 class="mt-3 text-3xl font-semibold tracking-[-0.025em] text-slate-900">Set up your TalentLeads account</h1>
+                        <p class="mt-3 text-sm leading-6 text-slate-600">
+                            Already have an account?
+                            <a href="{% url 'account_login' %}"
+                               class="font-semibold text-[#e64b29] hover:text-[#c93f20]">Log in.</a>
+                        </p>
                     </div>
-                    <div>
-                        <label for="email" class="tl-label">Email</label>
-                        {% if form.email.errors %}
-                            <div id="email-errors">{{ form.email.errors }}</div>
-                            {% render_field form.email id="email" name="email" placeholder="you@company.com" type="email" autocomplete="email" required="True" aria-invalid="true" aria-describedby="email-errors" class="tl-input mt-2" %}
-                        {% else %}
-                            {% render_field form.email id="email" name="email" placeholder="you@company.com" type="email" autocomplete="email" required="True" class="tl-input mt-2" %}
+                    <form class="mt-8 space-y-5"
+                          id="signup_form"
+                          method="post"
+                          action="{% url 'account_signup' %}">
+                        {% csrf_token %}
+                        {% if form.non_field_errors %}<div id="signup-form-errors">{{ form.non_field_errors }}</div>{% endif %}
+                        <input type="hidden" name="remember" value="true" />
+                        <div>
+                            <label for="username" class="tl-label">Username</label>
+                            {% if form.username.errors %}
+                                <div id="username-errors">{{ form.username.errors }}</div>
+                                {% render_field form.username placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True aria-invalid="true" aria-describedby="username-errors" class="tl-input mt-2" %}
+                            {% else %}
+                                {% render_field form.username placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True class="tl-input mt-2" %}
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="email" class="tl-label">Email</label>
+                            {% if form.email.errors %}
+                                <div id="email-errors">{{ form.email.errors }}</div>
+                                {% render_field form.email id="email" name="email" placeholder="you@company.com" type="email" autocomplete="email" required="True" aria-invalid="true" aria-describedby="email-errors" class="tl-input mt-2" %}
+                            {% else %}
+                                {% render_field form.email id="email" name="email" placeholder="you@company.com" type="email" autocomplete="email" required="True" class="tl-input mt-2" %}
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="password1" class="tl-label">Password</label>
+                            {% if form.password1.errors %}
+                                <div id="password1-errors">{{ form.password1.errors }}</div>
+                                {% render_field form.password1 id="password1" name="password1" placeholder="Password" type="password" autocomplete="new-password" required="True" aria-invalid="true" aria-describedby="password1-errors" class="tl-input mt-2" %}
+                            {% else %}
+                                {% render_field form.password1 id="password1" name="password1" placeholder="Password" type="password" autocomplete="new-password" required="True" class="tl-input mt-2" %}
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="password2" class="tl-label">Confirm password</label>
+                            {% if form.password2.errors %}
+                                <div id="password2-errors">{{ form.password2.errors }}</div>
+                                {% render_field form.password2 id="password2" name="password2" type="password" autocomplete="new-password" required="True" aria-invalid="true" aria-describedby="password2-errors" class="tl-input mt-2" placeholder="Confirm password" %}
+                            {% else %}
+                                {% render_field form.password2 id="password2" name="password2" type="password" autocomplete="new-password" required="True" class="tl-input mt-2" placeholder="Confirm password" %}
+                            {% endif %}
+                        </div>
+                        {% if redirect_field_value %}
+                            <input type="hidden"
+                                   name="{{ redirect_field_name }}"
+                                   value="{{ redirect_field_value }}" />
                         {% endif %}
-                    </div>
-                    <div>
-                        <label for="password1" class="tl-label">Password</label>
-                        {% if form.password1.errors %}
-                            <div id="password1-errors">{{ form.password1.errors }}</div>
-                            {% render_field form.password1 id="password1" name="password1" placeholder="Password" type="password" autocomplete="new-password" required="True" aria-invalid="true" aria-describedby="password1-errors" class="tl-input mt-2" %}
-                        {% else %}
-                            {% render_field form.password1 id="password1" name="password1" placeholder="Password" type="password" autocomplete="new-password" required="True" class="tl-input mt-2" %}
-                        {% endif %}
-                    </div>
-                    <div>
-                        <label for="password2" class="tl-label">Confirm password</label>
-                        {% if form.password2.errors %}
-                            <div id="password2-errors">{{ form.password2.errors }}</div>
-                            {% render_field form.password2 id="password2" name="password2" type="password" autocomplete="new-password" required="True" aria-invalid="true" aria-describedby="password2-errors" class="tl-input mt-2" placeholder="Confirm password" %}
-                        {% else %}
-                            {% render_field form.password2 id="password2" name="password2" type="password" autocomplete="new-password" required="True" class="tl-input mt-2" placeholder="Confirm password" %}
-                        {% endif %}
-                    </div>
-                    {% if redirect_field_value %}
-                        <input type="hidden"
-                               name="{{ redirect_field_name }}"
-                               value="{{ redirect_field_value }}" />
-                    {% endif %}
-                    <button type="submit" class="tl-button-primary w-full py-3">Create account</button>
-                </form>
+                        <button type="submit" class="tl-button-primary w-full py-3">Create account</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>

@@ -3,9 +3,7 @@
     {% csrf_token %}
     <div class="p-5 sm:p-6">
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {% if form.non_field_errors %}
-                <div class="sm:col-span-2">{{ form.non_field_errors }}</div>
-            {% endif %}
+            {% if form.non_field_errors %}<div class="sm:col-span-2">{{ form.non_field_errors }}</div>{% endif %}
             <div>
                 <label for="name" class="tl-label">Name</label>
                 {% if form.name.errors %}

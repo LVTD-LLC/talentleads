@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+{% block meta %}
+    <title>Pricing | TalentLeads</title>
+    <meta name="description"
+          content="TalentLeads is free to use while we build the best focused technical talent search workspace." />
+    <link rel="canonical"
+          href="https://{{ request.get_host }}{% url 'pricing' %}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pricing | TalentLeads" />
+    <meta property="og:url"
+          content="https://{{ request.get_host }}{% url 'pricing' %}" />
+    <meta property="og:description"
+          content="Search technical profiles, review candidate context, and manage outreach for free." />
+    <meta property="og:image"
+          content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Pricing | TalentLeads" />
+    <meta name="twitter:description"
+          content="Search technical profiles, review candidate context, and manage outreach for free." />
+    <meta name="twitter:image"
+          content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
+{% endblock meta %}
+{% block content %}
+    <section class="tl-page-stage">
+        <div class="tl-container py-16 sm:py-24">
+            <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+                <div class="lg:col-span-7">
+                    <p class="tl-eyebrow">Pricing</p>
+                    <h1 class="tl-page-heading mt-4">Start sourcing without adding another subscription.</h1>
+                </div>
+                <p class="tl-page-lede lg:col-span-5">
+                    TalentLeads is free while we build alongside early sourcing teams. Search the database, review full candidate context, and use outreach tools at no cost.
+                </p>
+            </div>
+            <div class="mt-12 grid gap-5 lg:grid-cols-12">
+                <div class="tl-panel p-6 sm:p-8 lg:col-span-7">
+                    <div class="flex flex-col gap-5 border-b border-slate-200 pb-8 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                            <p class="tl-eyebrow">Early access</p>
+                            <h2 class="mt-3 text-3xl font-semibold tracking-[-0.025em] text-slate-900">The complete sourcing workspace</h2>
+                        </div>
+                        <span class="tl-pill-neutral">No credit card</span>
+                    </div>
+                    <div class="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                        <div>
+                            <h3 class="font-semibold text-slate-900">Structured talent search</h3>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                Filter by role, location, seniority, capacity, remote preference, and technical stack.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900">Full profile context</h3>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                Review candidate descriptions, skills, availability, contact details, and relevant links.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900">Reusable outreach</h3>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                Save message templates and send a relevant first note from the candidate profile.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900">Direct support</h3>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                Send account questions, data issues, and product feedback from your workspace.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tl-panel-dark flex flex-col p-6 sm:p-8 lg:col-span-5">
+                    <p class="text-sm font-semibold text-white/60">Everything included</p>
+                    <div class="mt-5 flex items-end gap-3">
+                        <span class="text-6xl font-semibold tracking-[-0.05em] text-white">$0</span>
+                        <span class="pb-2 text-sm font-medium text-white/60">during early access</span>
+                    </div>
+                    <p class="mt-5 text-sm leading-6 text-white/70">
+                        If pricing changes later, we will explain what is changing before it affects your account. There is no payment method to add today.
+                    </p>
+                    <div class="mt-auto pt-10">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'profiles' %}"
+                               class="inline-flex w-full items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100">Open talent workspace</a>
+                        {% else %}
+                            <a href="{% url 'account_signup' %}"
+                               class="inline-flex w-full items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100">Create free account</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
