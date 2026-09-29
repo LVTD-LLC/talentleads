@@ -121,3 +121,22 @@ class ProfileMatchingTests(TestCase):
         matches = find_matching_profiles("https://jobs.example.com/backend-engineer")
 
         self.assertEqual(matches[0], close_match)
+
+
+@override_settings(
+    STORAGES={
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    }
+)
+class PublicPageTests(TestCase):
+    @patch(
+        "webpack_boilerplate.loader.WebpackLoader.load_assets",
+        return_value={"entrypoints": {"index": {"assets": {"js": [], "css": []}}}},
+    )
+    def test_pricing_describes_current_free_access(self, _load_assets):
+        response = self.client.get(reverse("pricing"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "$0")
+        self.assertContains(response, "No credit card")

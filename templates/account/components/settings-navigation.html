@@ -1,6 +1,5 @@
 <div class="overflow-x-auto">
-    <nav class="flex gap-2 rounded-lg border border-slate-200 bg-white p-1"
-         aria-label="Settings navigation">
+    <nav class="tl-settings-nav" aria-label="Settings navigation">
         <a href="{% url 'settings' %}"
            class="rounded-lg px-3 py-2 text-sm font-semibold {% if page_name == 'settings' %}bg-slate-900 text-white{% else %}text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %} whitespace-nowrap">General</a>
         <a href="{% url 'templates' %}"

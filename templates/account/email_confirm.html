@@ -5,7 +5,7 @@
     <title>Confirm Email | TalentLeads</title>
 {% endblock meta %}
 {% block content %}
-    <section class="tl-container grid min-h-[calc(100dvh-12rem)] items-center py-12">
+    <section class="tl-page-stage tl-container grid min-h-[calc(100dvh-12rem)] items-center py-12">
         <div class="tl-panel mx-auto max-w-xl p-8 text-center">
             {% if confirmation %}
                 <p class="tl-eyebrow">Email confirmation</p>
@@ -23,7 +23,7 @@
                 <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Confirmation link expired</h1>
                 <p class="mx-auto mt-4 max-w-md text-sm leading-6 text-slate-600">
                     This email confirmation link is invalid or no longer active.
-                    <a class="font-semibold text-blue-700 underline underline-offset-4 hover:text-blue-800"
+                    <a class="font-semibold text-[#e64b29] underline underline-offset-4 hover:text-[#c93f20]"
                        href="{% url 'account_email' %}">Request a new confirmation email</a>
                     from your account settings.
                 </p>

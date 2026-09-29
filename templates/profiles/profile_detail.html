@@ -25,7 +25,7 @@
           content="https://{{ request.get_host }}{% static 'vendors/images/logo-2.png' %}" />
 {% endblock meta %}
 {% block content %}
-    <section class="tl-container py-8 sm:py-10">
+    <section class="tl-page-stage tl-container py-10 sm:py-16">
         <a href="{% url 'profiles' %}"
            class="mb-6 inline-flex items-center text-sm font-semibold text-slate-600 hover:text-slate-900">
             <span aria-hidden="true">&larr;</span>
@@ -34,7 +34,7 @@
         <div class="grid gap-5 xl:grid-cols-12">
             <article class="xl:col-span-8">
                 <div class="tl-panel overflow-hidden">
-                    <div class="border-b border-slate-200 bg-white px-5 py-6 sm:px-7">
+                    <div class="tl-surface-header px-5 py-6 sm:px-7">
                         <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
                             <div>
                                 <p class="tl-eyebrow">Candidate profile</p>
@@ -49,16 +49,10 @@
                                           class="rounded-lg border border-slate-200 bg-slate-50 p-3">
                                         {% csrf_token %}
                                         <label for="email_template" class="tl-label">Outreach template</label>
-                                        <select id="email_template"
-                                                name="email_template"
-                                                class="tl-input mt-2">
-                                            {% for template in outreach_templates %}
-                                                <option value="{{ template.id }}">{{ template.title }}</option>
-                                            {% endfor %}
+                                        <select id="email_template" name="email_template" class="tl-input mt-2">
+                                            {% for template in outreach_templates %}<option value="{{ template.id }}">{{ template.title }}</option>{% endfor %}
                                         </select>
-                                        <button type="submit" class="tl-button-primary mt-3 w-full">
-                                            Send outreach
-                                        </button>
+                                        <button type="submit" class="tl-button-primary mt-3 w-full">Send outreach</button>
                                     </form>
                                 {% elif user.is_authenticated and outreach_templates and not object.email %}
                                     <div class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
@@ -196,7 +190,7 @@
                                         <dt class="text-sm text-slate-500">Email</dt>
                                         <dd class="mt-1 break-words text-sm font-semibold text-slate-900">
                                             <a href="mailto:{{ object.email }}"
-                                               class="underline decoration-slate-300 underline-offset-4 hover:text-blue-700">{{ object.email }}</a>
+                                               class="underline decoration-slate-300 underline-offset-4 hover:text-[#e64b29]">{{ object.email }}</a>
                                         </dd>
                                     </div>
                                 {% endif %}
