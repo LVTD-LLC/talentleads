@@ -1,3 +1,10 @@
+
+## 2026-09-29
+
+### Removed
+
+- Remove this repository's ReviewGate PR-review GitHub Actions workflow; retain application CI and deployment workflows.
+
 <!-- Types of changes -->
 **Added** for new features.
 **Changed** for changes in existing functionality.
